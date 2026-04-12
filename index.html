@@ -220,12 +220,14 @@ body {
 </div>
 
 <script>
+const BASE_URL = "https://my-projct-production.up.railway.app";
+
 document.getElementById("loginForm").addEventListener("submit", function(e){
     e.preventDefault();
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
 
-    fetch("http://localhost:3000/login", {
+    fetch(`${BASE_URL}/login`, {
         method: "POST",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify({ email, password })
@@ -244,7 +246,7 @@ function signup() {
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
 
-    fetch("http://localhost:3000/signup", {
+    fetch(`${BASE_URL}/signup`, {
         method: "POST",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify({ email, password })

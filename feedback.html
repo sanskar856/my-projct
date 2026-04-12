@@ -178,6 +178,8 @@ textarea::placeholder{ color:#ccc; }
 
 <script>
 
+const BASE_URL = "https://my-projct-production.up.railway.app";
+
 let selectedTaste = "";
 let selectedStars = 0;
 
@@ -208,7 +210,7 @@ function submitFeedback(){
         return;
     }
 
-    fetch("http://localhost:3000/feedback", {
+    fetch(`${BASE_URL}/feedback`, {
         method: "POST",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify({
