@@ -1,0 +1,71 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    scroll-behavior: smooth;
+}
+
+.hero {
+    background: url("images/canteen.jpg") no-repeat center center/cover;
+    height: 100vh;
+}
+
+.overlay {
+    background: rgba(0,0,0,0.6);
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+}
+
+.count {
+    font-size: 50px;
+    font-weight: bold;
+    color: #ff6a00;
+}
+
+img {
+    transition: 0.3s;
+}
+
+img:hover {
+    transform: scale(1.05);
+}
+.dark-mode {
+    background-color: #121212;
+    color: white;
+}
+
+.dark-mode .card {
+    background-color: #1e1e1e;
+    color: white;
+}
+
+.dark-mode .navbar {
+    background-color: #000 !important;
+}
+
+/* Transparent Navbar Default */
+.navbar {
+    transition: 0.4s;
+}
+
+/* Scroll kelela asel tar */
+.navbar.scrolled {
+    background-color: #000 !important;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+}
+
+.hero {
+    /* Online Image Link */
+    background-image: linear-gradient(rgba(244, 242, 242, 0.423), rgba(255, 251, 251, 0.275)), 
+                      url("https://content.jdmagicbox.com/v2/comp/sangamner/g6/9999px241.x241.250530032443.m9g6/catalogue/atithi-canteen-ghulewadi-sangamner-mess-z16fQTGqFB.jpg"); 
+    
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed; /* Yaamule scroll kartana photo ekya jagi thambto, je khup premium diste */
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}

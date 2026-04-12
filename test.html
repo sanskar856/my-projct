@@ -1,0 +1,32 @@
+<select id="payment">
+  <option>UPI</option>
+  <option>Cash</option>
+</select>
+<script>
+function save() {
+    let name = document.getElementById("name").value;
+    let payment = document.getElementById("payment").value;
+
+    let data = JSON.parse(localStorage.getItem("data")) || [];
+
+    data.push({
+        name: name,
+        payment: payment
+    });
+
+    localStorage.setItem("data", JSON.stringify(data));
+
+    show();
+}
+
+function show() {
+    let data = JSON.parse(localStorage.getItem("data")) || [];
+    let output = "";
+
+    data.forEach(d => {
+        output += "<li>" + d.name + " - " + d.payment + "</li>";
+    });
+
+    document.getElementById("list").innerHTML = output;
+}
+</script>

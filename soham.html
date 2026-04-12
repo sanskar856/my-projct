@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Smart Campus Canteen</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link rel="stylesheet" href="nn.css">
+    
+</head>
+
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+  <div class="container">
+    <a class="navbar-brand fw-bold" href="#">🍴 Atithi Canteen</a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto align-items-center">
+
+        <li class="nav-item">
+          <a class="nav-link" href="#">Home</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="./menu.html">Menu</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="./feedback.html">Feedback</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="#offers">Offers</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="./contact.html">Contact</a>
+        </li>
+<li class="nav-item">
+          <a class="nav-link" href="./order.html">Order Tracking</a>
+        </li>
+
+        
+        <!-- Dark Mode Button -->
+        <li class="nav-item">
+          <button class="btn btn-outline-light ms-3" onclick="toggleDarkMode()">
+            🌙
+          </button>
+        </li>
+
+      </ul>
+    </div>
+  </div>
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Atithi Canteen - Order Tracking</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<style>
+body {
+    background-color: #f8f9fa;
+}
+
+
+
+.status {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+</style>
+</head>
+
+<body>
+
+
+
+<script>
+
+let statusList = [
+    "Order Placed 🧾",
+    "Preparing 👨‍🍳",
+    "Ready 🍽️",
+    "Delivered ✅"
+];
+
+let progress = [25, 50, 75, 100];
+
+let index = 0;
+
+function nextStatus() {
+    if (index < statusList.length - 1) {
+        index++;
+        updateUI();
+    }
+}
+
+function updateUI() {
+    document.getElementById("statusText").innerText = statusList[index];
+    document.getElementById("progressBar").style.width = progress[index] + "%";
+}
+
+// Auto update every 5 sec (real feel)
+setInterval(() => {
+    if (index < statusList.length - 1) {
+        index++;
+        updateUI();
+    }
+}, 5000);
+
+</script>
+
+</body>
+</html>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+    <div class="overlay text-center">
+        <div>
+            <h1>Fresh Food | Fast Service | Smart Ordering</h1>
+            <p>Order Online & Skip the Queue 🚀</p>
+            <a href="./menu.html" class="btn btn-warning btn-lg m-2">Order Now</a>
+            <a href="#offers" class="btn btn-outline-light btn-lg m-2">View Offers</a>
+        </div>
+    </div>
+</section>
+
+<!-- Counter Section -->
+<section id="counter" class="py-5 text-center bg-light">
+    <div class="container">
+        <h2 class="mb-4">📊 Live Canteen Stats</h2>
+        <div class="row">
+            <div class="col-md-4">
+                <h1 class="count" data-target="350">0</h1>
+                <p>Students Served</p>
+            </div>
+            <div class="col-md-4">
+                <h1 class="count" data-target="700">0</h1>
+                <p>Orders Completed</p>
+            </div>
+            <div class="col-md-4">
+                <h1 class="count" data-target="5">0</h1>
+                <p>Star Rating ⭐</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Gallery -->
+<section id="gallery" class="py-5 text-center">
+    <div class="container">
+        <h2 class="mb-4">📸 Our Canteen Gallery</h2>
+        <div class="row">
+            <div class="col-md-4"><img src="images/food1.jpg" class="img-fluid rounded shadow"></div>
+            <div class="col-md-4"><img src="images/food2.jpg" class="img-fluid rounded shadow"></div>
+            <div class="col-md-4"><img src="images/food3.jpg" class="img-fluid rounded shadow"></div>
+        </div>
+    </div>
+</section>
+
+<!-- Offers -->
+<section id="offers" class="py-5 bg-light text-center">
+    <div class="container">
+        <h2 class="mb-4">🔥 Live Offers</h2>
+        <div class="row">
+            <div class="col-md-4"><div class="card p-4 shadow">Buy 1 Get 1 Free 🍔</div></div>
+            <div class="col-md-4"><div class="card p-4 shadow">20% OFF on Pizza 🍕</div></div>
+            <div class="col-md-4"><div class="card p-4 shadow">Free Cold Drink 🥤</div></div>
+        </div>
+    </div>
+</section>
+
+<!-- Token Demo -->
+<section id="token" class="py-5 text-center">
+    <div class="container">
+        <h2 class="mb-4">🎟 Live Token System</h2>
+        <div class="card p-4 shadow">
+            <h3>Your Token Number: #45</h3>
+            <p>Status: Preparing 🍳</p>
+            <p>Estimated Time: 8 Minutes</p>
+        </div>
+    </div>
+</section>
+
+<footer class="bg-dark text-white text-center p-3">
+    © 2026 Smart Campus Canteen | Designed by Sanskar 💻
+</footer>
+
+<script src="script.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

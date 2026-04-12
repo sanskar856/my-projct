@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Atithi Canteen | Order Online</title>
+
+<style>
+:root {
+    --primary: #ff8c00;
+    --secondary: #22c55e;
+    --bg: #0f172a;
+}
+
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #0f172a, #1e293b);
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+    color: white;
+    overflow-x: hidden;
+}
+
+body::before{
+    content:"";
+    position:fixed;
+    width:200%;
+    height:200%;
+    background: radial-gradient(circle, rgba(255,204,0,0.08), transparent 60%);
+    animation: moveBg 10s linear infinite;
+    z-index:0;
+}
+
+@keyframes moveBg{
+    0%{transform:translate(0,0);}
+    50%{transform:translate(-25%,-25%);}
+    100%{transform:translate(0,0);}
+}
+
+.logo{
+    position:absolute;
+    top:20px;
+    left:50%;
+    transform:translateX(-50%);
+    font-size:26px;
+    font-weight:bold;
+    letter-spacing:3px;
+    z-index:10;
+    overflow:hidden;
+    white-space:nowrap;
+    border-right:3px solid #ffcc00;
+    width:0;
+    animation: typing 4s steps(14) forwards, blink 0.7s infinite, floatLogo 3s ease-in-out infinite;
+    text-shadow:0 0 5px #ffcc00,0 0 10px #ffcc00,0 0 20px #ff8800;
+}
+
+@keyframes typing{
+    from{width:0;}
+    to{width:280px;}
+}
+
+@keyframes blink{
+    50%{border-color:transparent;}
+}
+
+@keyframes floatLogo{
+    0%,100%{transform:translate(-50%,0);}
+    50%{transform:translate(-50%,-6px);}
+}
+
+.checkout-container {
+    width: 100%;
+    max-width: 520px;
+    background: rgba(255,255,255,0.08);
+    backdrop-filter: blur(20px);
+    border-radius: 25px;
+    padding: 25px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+    margin-top: 80px;
+    position: relative;
+    z-index: 2;
+}
+
+.input-field {
+    width: 100%;
+    padding: 14px;
+    margin-bottom: 12px;
+    border-radius: 12px;
+    border: none;
+    outline: none;
+    background: rgba(255,255,255,0.1);
+    color: white;
+}
+
+.item-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 14px;
+    margin-bottom: 10px;
+    border-radius: 15px;
+    background: rgba(255,255,255,0.08);
+}
+
+.qty-controls {
+    display: flex;
+    gap: 10px;
+}
+
+.qty-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 10px;
+    border: none;
+}
+
+.total-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 22px;
+    font-weight: bold;
+    margin: 15px 0;
+    color: #22c55e;
+}
+
+.pay-option-group {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.pay-option {
+    padding: 12px;
+    text-align: center;
+    border-radius: 12px;
+    cursor: pointer;
+    border: 1px solid rgba(255,255,255,0.2);
+}
+
+.pay-option.active {
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+.btn-order {
+    width: 100%;
+    padding: 18px;
+    border: none;
+    border-radius: 18px;
+    background: linear-gradient(90deg, #22c55e, #16a34a);
+    font-size: 18px;
+    font-weight: bold;
+    color: white;
+    cursor: pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div class="logo">ATITHI AVCOE</div>
+
+<div class="checkout-container">
+
+<input type="text" id="custName" class="input-field" placeholder="Your Name">
+<input type="text" id="custAddress" class="input-field" placeholder="Table No">
+
+<div class="item-row" data-price="15">
+<span>Samosa ₹15</span>
+<div class="qty-controls">
+<button class="qty-btn" onclick="updateQty(this,-1)">-</button>
+<span class="qty-num">0</span>
+<button class="qty-btn" onclick="updateQty(this,1)">+</button>
+</div>
+</div>
+
+<div class="item-row" data-price="20">
+<span>Poha ₹20</span>
+<div class="qty-controls">
+<button class="qty-btn" onclick="updateQty(this,-1)">-</button>
+<span class="qty-num">0</span>
+<button class="qty-btn" onclick="updateQty(this,1)">+</button>
+</div>
+</div>
+
+<div class="pay-option-group">
+<div class="pay-option active" id="lab1" onclick="selectPay(1)">UPI</div>
+<div class="pay-option" id="lab2" onclick="selectPay(2)">Cash</div>
+</div>
+
+<div class="total-row">
+<span>Total</span>
+<span id="grandTotal">₹0</span>
+</div>
+
+<button class="btn-order" onclick="placeOrder()">Confirm Order 🚀</button>
+
+</div>
+
+<script>
+function updateQty(btn, change){
+let span = btn.parentElement.querySelector(".qty-num");
+let val = parseInt(span.innerText) + change;
+if(val < 0) val = 0;
+span.innerText = val;
+calculateTotal();
+}
+
+function calculateTotal(){
+let total = 0;
+document.querySelectorAll(".item-row").forEach(row=>{
+let price = parseInt(row.dataset.price);
+let qty = parseInt(row.querySelector(".qty-num").innerText);
+total += price * qty;
+});
+document.getElementById("grandTotal").innerText = "₹" + total;
+}
+
+function selectPay(id){
+document.getElementById("lab1").classList.remove("active");
+document.getElementById("lab2").classList.remove("active");
+document.getElementById("lab"+id).classList.add("active");
+}
+
+function placeOrder(){
+let name = document.getElementById("custName").value;
+let addr = document.getElementById("custAddress").value;
+let total = parseInt(document.getElementById("grandTotal").innerText.replace("₹",""));
+let payment = document.querySelector(".pay-option.active").innerText;
+
+if(!name || !addr || total == 0){
+alert("Fill all details");
+return;
+}
+
+let items = [];
+
+document.querySelectorAll(".item-row").forEach(row=>{
+let itemName = row.querySelector("span").innerText;
+let qty = parseInt(row.querySelector(".qty-num").innerText);
+if(qty > 0){
+items.push({name:itemName, quantity:qty});
+}
+});
+
+fetch("http://localhost:3000/order", {
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify({name,address:addr,payment,total,items})
+})
+.then(res=>res.json())
+.then(data=>{
+alert(data.message);
+if(data.success){
+window.location.href="thankyou.html";
+}
+})
+.catch(err=>{
+alert("Server error ❌");
+console.log(err);
+});
+}
+</script>
+
+</body>
+</html>
