@@ -199,6 +199,8 @@ body::before{
 </div>
 
 <script>
+const BASE_URL = "https://my-projct-production.up.railway.app";
+
 function updateQty(btn, change){
 let span = btn.parentElement.querySelector(".qty-num");
 let val = parseInt(span.innerText) + change;
@@ -244,7 +246,7 @@ items.push({name:itemName, quantity:qty});
 }
 });
 
-fetch("http://localhost:3000/order", {
+fetch(`${BASE_URL}/order`, {
 method:"POST",
 headers:{"Content-Type":"application/json"},
 body:JSON.stringify({name,address:addr,payment,total,items})
