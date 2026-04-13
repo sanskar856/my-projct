@@ -4,24 +4,77 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Contact Us | Atithi Canteen</title>
-
 <style>
 :root{
     --primary:#ff8c00;
     --secondary:#22c55e;
 }
-
 body{
     margin:0;
     font-family:'Segoe UI',sans-serif;
     background: linear-gradient(135deg,#0f172a,#1e293b);
     display:flex;
-    justify-content:center;
+    flex-direction:column;
+    align-items:center;
     padding:20px;
     color:white;
+    min-height:100vh;
 }
 
-/* MAIN CARD */
+/* ===== ANIMATED HEADER ===== */
+.canteen-header{
+    text-align:center;
+    margin-bottom:20px;
+    animation: fadeDown 0.8s ease;
+}
+@keyframes fadeDown{
+    from{opacity:0;transform:translateY(-20px);}
+    to{opacity:1;transform:translateY(0);}
+}
+.logo-text{
+    font-size:26px;
+    font-weight:900;
+    letter-spacing:4px;
+    background: linear-gradient(90deg, #facc15, #ff8c00, #facc15);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: shimmer 2.5s linear infinite;
+}
+@keyframes shimmer{
+    0%{background-position:0% center;}
+    100%{background-position:200% center;}
+}
+.avcoe-badge{
+    display:inline-block;
+    margin-top:6px;
+    padding:4px 16px;
+    border-radius:50px;
+    font-size:11px;
+    letter-spacing:3px;
+    color:#facc15;
+    border:1px solid rgba(250,204,21,0.4);
+    background:rgba(250,204,21,0.08);
+    animation: pulse 2s infinite;
+}
+@keyframes pulse{
+    0%,100%{box-shadow:0 0 0 0 rgba(250,204,21,0.3);}
+    50%{box-shadow:0 0 0 6px rgba(250,204,21,0);}
+}
+.fork-icon{
+    font-size:32px;
+    display:block;
+    margin-bottom:6px;
+    animation: swing 2s ease-in-out infinite;
+    transform-origin: top center;
+}
+@keyframes swing{
+    0%,100%{transform:rotate(-10deg);}
+    50%{transform:rotate(10deg);}
+}
+
+/* ===== MAIN CARD ===== */
 .contact-container{
     max-width:450px;
     width:100%;
@@ -30,32 +83,34 @@ body{
     border-radius:25px;
     overflow:hidden;
     box-shadow:0 10px 40px rgba(0,0,0,0.5);
+    animation: fadeUp 0.9s ease;
+    border:1px solid rgba(255,255,255,0.08);
+}
+@keyframes fadeUp{
+    from{opacity:0;transform:translateY(20px);}
+    to{opacity:1;transform:translateY(0);}
 }
 
-/* HEADER */
 .contact-header{
     background: rgba(255,140,0,0.2);
     text-align:center;
     padding:35px 20px;
     border-bottom:1px solid rgba(255,255,255,0.1);
 }
-
 .contact-header h2{
     margin:0;
     font-size:26px;
     color:var(--primary);
+    animation: bounce 1.5s infinite;
 }
-
-.contact-header p{
-    opacity:0.8;
+@keyframes bounce{
+    0%,100%{transform:translateY(0);}
+    50%{transform:translateY(-5px);}
 }
+.contact-header p{ opacity:0.8; margin:8px 0 0; }
 
-/* CONTENT */
-.contact-content{
-    padding:25px;
-}
+.contact-content{ padding:25px; }
 
-/* CONTACT CARD */
 .contact-method{
     display:flex;
     align-items:center;
@@ -67,15 +122,19 @@ body{
     text-decoration:none;
     color:white;
     transition:0.3s;
+    animation: fadeIn 0.5s ease-in-out;
 }
-
+@keyframes fadeIn{
+    from{opacity:0;transform:translateY(10px);}
+    to{opacity:1;transform:translateY(0);}
+}
 .contact-method:hover{
     transform:translateY(-5px);
     background: rgba(255,255,255,0.1);
     border-color: var(--primary);
+    box-shadow: 0 8px 20px rgba(255,140,0,0.2);
 }
 
-/* ICON */
 .icon-circle{
     width:45px;
     height:45px;
@@ -86,33 +145,25 @@ body{
     font-size:20px;
     margin-right:15px;
     background: rgba(255,140,0,0.2);
+    flex-shrink:0;
+    transition:0.3s;
+}
+.contact-method:hover .icon-circle{
+    transform:scale(1.15) rotate(10deg);
+    background: rgba(255,140,0,0.35);
 }
 
-/* TEXT */
-.details h4{
-    margin:0;
-    font-size:15px;
-}
+.details h4{ margin:0; font-size:15px; }
+.details p{ margin:3px 0 0; font-size:13px; opacity:0.7; }
 
-.details p{
-    margin:3px 0 0;
-    font-size:13px;
-    opacity:0.7;
-}
-
-/* HOURS */
 .hours-box{
     margin-top:20px;
     padding:15px;
     background: rgba(255,255,255,0.05);
     border-radius:15px;
+    border:1px solid rgba(255,255,255,0.08);
 }
-
-.hours-box h5{
-    margin:0 0 10px;
-    color:var(--primary);
-}
-
+.hours-box h5{ margin:0 0 10px; color:var(--primary); }
 .hour-row{
     display:flex;
     justify-content:space-between;
@@ -120,46 +171,69 @@ body{
     margin-bottom:6px;
     opacity:0.85;
 }
+.hour-row.today{ color:var(--secondary); font-weight:bold; }
 
-.hour-row.today{
-    color:var(--secondary);
-    font-weight:bold;
-}
-
-/* BACK BUTTON */
 .btn-back{
     display:block;
     text-align:center;
     margin-top:15px;
     padding:12px;
     border-radius:12px;
-    background: var(--primary);
-    color:white;
+    background: linear-gradient(90deg,#ff8c00,#facc15);
+    color:#0f172a;
     text-decoration:none;
     font-weight:bold;
     transition:0.3s;
+    position:relative;
+    overflow:hidden;
 }
-
-.btn-back:hover{
-    transform:scale(1.05);
+.btn-back::before{
+    content:"";
+    position:absolute;
+    top:-50%; left:-60%;
+    width:40%; height:200%;
+    background:rgba(255,255,255,0.2);
+    transform:skewX(-20deg);
+    animation:btnshine 2.5s infinite;
 }
-
-/* SMALL ANIMATION */
-.contact-method{
-    animation: fadeIn 0.5s ease-in-out;
+@keyframes btnshine{
+    0%{left:-60%;}
+    100%{left:130%;}
 }
+.btn-back:hover{ transform:scale(1.04); box-shadow:0 8px 20px rgba(255,140,0,0.3); }
 
-@keyframes fadeIn{
-    from{opacity:0; transform:translateY(10px);}
-    to{opacity:1; transform:translateY(0);}
+/* floating particles */
+.particles{
+    position:fixed;
+    top:0;left:0;
+    width:100%;height:100%;
+    pointer-events:none;
+    z-index:0;
+    overflow:hidden;
+}
+.particle{
+    position:absolute;
+    animation: floatUp linear infinite;
+    opacity:0.12;
+}
+@keyframes floatUp{
+    0%{transform:translateY(100vh) rotate(0deg);opacity:0.12;}
+    100%{transform:translateY(-100px) rotate(360deg);opacity:0;}
 }
 </style>
 </head>
-
 <body>
 
-<div class="contact-container">
+<div class="particles" id="particles"></div>
 
+<!-- Animated Header -->
+<div class="canteen-header">
+    <span class="fork-icon">🍴</span>
+    <div class="logo-text">ATITHI CANTEEN</div>
+    <div class="avcoe-badge">✦ AVCOE ✦</div>
+</div>
+
+<div class="contact-container">
     <div class="contact-header">
         <h2>📞 Get in Touch</h2>
         <p>We are always here to help you</p>
@@ -167,7 +241,7 @@ body{
 
     <div class="contact-content">
 
-        <a href="https://wa.me/919000000000" class="contact-method">
+        <a href="https://wa.me/919272157935" class="contact-method">
             <div class="icon-circle">💬</div>
             <div class="details">
                 <h4>WhatsApp</h4>
@@ -175,11 +249,11 @@ body{
             </div>
         </a>
 
-        <a href="tel:+919000000000" class="contact-method">
+        <a href="tel:+919272157935" class="contact-method">
             <div class="icon-circle">📞</div>
             <div class="details">
                 <h4>Call Us</h4>
-                <p>+91 9272157935 (sanskar Gaikwad)</p>
+                <p>+91 9272157935 (Sanskar Gaikwad)</p>
             </div>
         </a>
 
@@ -187,18 +261,16 @@ body{
             <div class="icon-circle">📍</div>
             <div class="details">
                 <h4>Location</h4>
-                <p>Atithi Canteen,Amrutvahini college of engg sangmner</p>
+                <p>Atithi Canteen, Amrutvahini College of Engg, Sangmner</p>
             </div>
         </a>
 
         <div class="hours-box">
             <h5>⏰ Operating Hours</h5>
-
             <div class="hour-row">
                 <span>Mon - Sat</span>
                 <span>8:00 AM - 9:00 PM</span>
             </div>
-
             <div class="hour-row today">
                 <span>Sunday</span>
                 <span>Closed</span>
@@ -206,9 +278,24 @@ body{
         </div>
 
         <a href="#" class="btn-back">← Back to Home</a>
-
     </div>
 </div>
+
+<script>
+// Floating particles
+const emojis = ["🍕","🍔","🍜","☎️","📍","💬","🍛","🥗"];
+const container = document.getElementById("particles");
+for(let i = 0; i < 12; i++){
+    const p = document.createElement("div");
+    p.className = "particle";
+    p.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+    p.style.left = Math.random() * 100 + "vw";
+    p.style.animationDuration = (6 + Math.random() * 8) + "s";
+    p.style.animationDelay = (Math.random() * 6) + "s";
+    p.style.fontSize = (14 + Math.random() * 16) + "px";
+    container.appendChild(p);
+}
+</script>
 
 </body>
 </html>

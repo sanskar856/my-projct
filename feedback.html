@@ -4,23 +4,84 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Feedback | Atithi Canteen</title>
-
 <style>
 :root{
     --accent:#ff4757;
     --gold:#facc15;
 }
-
 body{
     margin:0;
     font-family:'Segoe UI',sans-serif;
     background: linear-gradient(135deg,#0f172a,#1e293b);
     display:flex;
-    justify-content:center;
+    flex-direction:column;
+    align-items:center;
     padding:20px;
     color:white;
+    min-height:100vh;
 }
 
+/* ===== ANIMATED HEADER ===== */
+.canteen-header{
+    text-align:center;
+    margin-bottom:20px;
+    animation: fadeDown 0.8s ease;
+}
+
+@keyframes fadeDown{
+    from{opacity:0;transform:translateY(-20px);}
+    to{opacity:1;transform:translateY(0);}
+}
+
+.logo-text{
+    font-size:26px;
+    font-weight:900;
+    letter-spacing:4px;
+    background: linear-gradient(90deg, #facc15, #ff8c00, #facc15);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: shimmer 2.5s linear infinite;
+}
+
+@keyframes shimmer{
+    0%{background-position:0% center;}
+    100%{background-position:200% center;}
+}
+
+.avcoe-badge{
+    display:inline-block;
+    margin-top:6px;
+    padding:4px 16px;
+    border-radius:50px;
+    font-size:11px;
+    letter-spacing:3px;
+    color:#facc15;
+    border:1px solid rgba(250,204,21,0.4);
+    background:rgba(250,204,21,0.08);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse{
+    0%,100%{box-shadow:0 0 0 0 rgba(250,204,21,0.3);}
+    50%{box-shadow:0 0 0 6px rgba(250,204,21,0);}
+}
+
+.fork-icon{
+    font-size:32px;
+    display:block;
+    margin-bottom:6px;
+    animation: swing 2s ease-in-out infinite;
+    transform-origin: top center;
+}
+
+@keyframes swing{
+    0%,100%{transform:rotate(-10deg);}
+    50%{transform:rotate(10deg);}
+}
+
+/* ===== CARD ===== */
 .feedback-card{
     width:100%;
     max-width:420px;
@@ -30,6 +91,13 @@ body{
     padding:25px;
     text-align:center;
     box-shadow:0 10px 40px rgba(0,0,0,0.5);
+    border:1px solid rgba(255,255,255,0.08);
+    animation: fadeUp 0.9s ease;
+}
+
+@keyframes fadeUp{
+    from{opacity:0;transform:translateY(20px);}
+    to{opacity:1;transform:translateY(0);}
 }
 
 .icon-header{
@@ -124,19 +192,63 @@ textarea::placeholder{ color:#ccc; }
     cursor:pointer;
     margin-top:20px;
     transition:0.3s;
+    position:relative;
+    overflow:hidden;
+}
+
+.btn-submit::before{
+    content:"";
+    position:absolute;
+    top:-50%; left:-60%;
+    width:40%; height:200%;
+    background:rgba(255,255,255,0.15);
+    transform:skewX(-20deg);
+    animation:btnshine 2.5s infinite;
+}
+
+@keyframes btnshine{
+    0%{left:-60%;}
+    100%{left:130%;}
 }
 
 .btn-submit:hover{
     transform:scale(1.05);
     box-shadow:0 10px 25px rgba(255,71,87,0.3);
 }
+
+.particles{
+    position:fixed;
+    top:0;left:0;
+    width:100%;height:100%;
+    pointer-events:none;
+    z-index:0;
+    overflow:hidden;
+}
+
+.particle{
+    position:absolute;
+    animation: floatUp linear infinite;
+    opacity:0.15;
+}
+
+@keyframes floatUp{
+    0%{transform:translateY(100vh) rotate(0deg);opacity:0.15;}
+    100%{transform:translateY(-100px) rotate(360deg);opacity:0;}
+}
 </style>
 </head>
-
 <body>
 
-<div class="feedback-card">
+<div class="particles" id="particles"></div>
 
+<!-- Animated Header -->
+<div class="canteen-header">
+    <span class="fork-icon">🍴</span>
+    <div class="logo-text">ATITHI CANTEEN</div>
+    <div class="avcoe-badge">✦ AVCOE ✦</div>
+</div>
+
+<div class="feedback-card">
     <div class="icon-header">😋</div>
     <h2>How was your food?</h2>
     <p>Your feedback helps us improve 🍽️</p>
@@ -173,15 +285,27 @@ textarea::placeholder{ color:#ccc; }
     </div>
 
     <button class="btn-submit" onclick="submitFeedback()">Send Feedback 🚀</button>
-
 </div>
 
 <script>
-
 const BASE_URL = "https://my-projct-production.up.railway.app";
 
 let selectedTaste = "";
 let selectedStars = 0;
+
+// Floating food particles
+const emojis = ["🍕","🍔","🍜","🍱","🍛","🥘","🍗","🥗"];
+const container = document.getElementById("particles");
+for(let i = 0; i < 12; i++){
+    const p = document.createElement("div");
+    p.className = "particle";
+    p.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+    p.style.left = Math.random() * 100 + "vw";
+    p.style.animationDuration = (6 + Math.random() * 8) + "s";
+    p.style.animationDelay = (Math.random() * 6) + "s";
+    p.style.fontSize = (14 + Math.random() * 16) + "px";
+    container.appendChild(p);
+}
 
 function setEmoji(el){
     document.querySelectorAll('#tasteEmoji span').forEach(s=>s.classList.remove('active'));
@@ -200,25 +324,13 @@ function submitFeedback(){
     const name = document.getElementById('custName').value.trim();
     const comments = document.getElementById('comments').value;
 
-    if(!name){
-        alert("Please enter your name!");
-        return;
-    }
-
-    if(!selectedTaste || selectedStars === 0){
-        alert("Please complete rating!");
-        return;
-    }
+    if(!name){ alert("Please enter your name!"); return; }
+    if(!selectedTaste || selectedStars === 0){ alert("Please complete rating!"); return; }
 
     fetch(`${BASE_URL}/feedback`, {
         method: "POST",
         headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({
-            name: name,
-            taste: selectedTaste,
-            hygiene: selectedStars,
-            comments: comments
-        })
+        body: JSON.stringify({ name, taste: selectedTaste, hygiene: selectedStars, comments })
     })
     .then(res => res.json())
     .then(data => {
@@ -233,7 +345,6 @@ function submitFeedback(){
         console.log(err);
     });
 }
-
 </script>
 
 </body>
