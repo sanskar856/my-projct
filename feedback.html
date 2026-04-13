@@ -222,7 +222,11 @@ function submitFeedback(){
     })
     .then(res => res.json())
     .then(data => {
-        alert(data.message);
+        if(data.success){
+            alert("Feedback submitted! Thank you 😊");
+        } else {
+            alert("Failed! Please try again.");
+        }
     })
     .catch(err => {
         alert("Server error ❌");
