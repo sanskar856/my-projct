@@ -2,112 +2,102 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Order Tracking</title>
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Atithi Canteen | Order Tracking</title>
 <style>
-body {
-  font-family: Arial;
-  background: linear-gradient(135deg,#ff8c00,#ff3d00);
-  color: white;
-  text-align: center;
-  padding: 50px;
-}
-
-h1 {
-  margin-bottom: 20px;
-}
-
-.card {
-  background: white;
-  color: black;
-  padding: 20px;
-  border-radius: 15px;
-  width: 300px;
-  margin: auto;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-}
-
-.progress-bar {
-  height: 10px;
-  background: #ddd;
-  border-radius: 10px;
-  overflow: hidden;
-  margin: 20px 0;
-}
-
-.progress {
-  height: 10px;
-  width: 0%;
-  background: #22c55e;
-  transition: 1s;
-}
-
-.status {
-  font-size: 18px;
-  margin-top: 10px;
-}
-
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Segoe UI',sans-serif;background:linear-gradient(135deg,#0f172a,#1e293b);min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;color:white;}
+.logo{font-size:20px;font-weight:bold;letter-spacing:3px;margin-bottom:24px;text-shadow:0 0 10px #ffcc00,0 0 20px #ff8800;}
+.card{width:100%;max-width:400px;background:rgba(255,255,255,0.07);backdrop-filter:blur(20px);border-radius:24px;padding:28px 24px;border:1px solid rgba(255,255,255,0.1);box-shadow:0 20px 60px rgba(0,0,0,0.5);text-align:center;}
+.order-icon{font-size:52px;margin-bottom:12px;animation:bounce 1s ease-in-out infinite;}
+@keyframes bounce{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
+.item-title{font-size:22px;font-weight:700;margin-bottom:4px;}
+.price-tag{font-size:16px;color:#facc15;margin-bottom:24px;}
+.steps{display:flex;flex-direction:column;gap:12px;margin:20px 0;text-align:left;}
+.step{display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:14px;border:1px solid rgba(255,255,255,0.08);background:rgba(255,255,255,0.04);transition:0.4s;}
+.step.done{background:rgba(34,197,94,0.12);border-color:rgba(34,197,94,0.3);}
+.step.active{background:rgba(255,140,0,0.12);border-color:rgba(255,140,0,0.4);}
+.step-icon{font-size:24px;min-width:32px;text-align:center;}
+.step-name{font-size:14px;font-weight:600;color:rgba(255,255,255,0.5);}
+.step.done .step-name{color:#22c55e;}
+.step.active .step-name{color:#ff8c00;}
+.step-desc{font-size:12px;color:rgba(255,255,255,0.3);margin-top:2px;}
+.step-check{font-size:18px;opacity:0;transition:0.3s;}
+.step.done .step-check{opacity:1;}
+.progress-wrap{margin:20px 0 8px;}
+.progress-label{display:flex;justify-content:space-between;font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:8px;}
+.bar{background:rgba(255,255,255,0.1);height:10px;border-radius:99px;overflow:hidden;}
+.progress{height:100%;width:0%;background:linear-gradient(90deg,#ff8c00,#facc15);border-radius:99px;transition:width 0.8s ease;}
+.status-msg{font-size:15px;color:rgba(255,255,255,0.7);margin-top:16px;}
+.eta{font-size:13px;color:rgba(255,255,255,0.35);margin-top:6px;}
 </style>
 </head>
-
 <body>
-
-<h1>🍽️ Order Tracking</h1>
-
+<div class="logo">🍴 ATITHI CANTEEN AVCOE</div>
 <div class="card">
-
-  <h2 id="itemName">Item</h2>
-  <h3 id="price">Rs.0</h3>
-
-  <div class="progress-bar">
-    <div class="progress" id="progress"></div>
+  <div class="order-icon" id="orderIcon">⏳</div>
+  <div class="item-title" id="itemName">Loading...</div>
+  <div class="price-tag" id="priceTag"></div>
+  <div class="progress-wrap">
+    <div class="progress-label"><span>Progress</span><span id="pctLabel">0%</span></div>
+    <div class="bar"><div class="progress" id="progressBar"></div></div>
   </div>
-
-  <div class="status" id="status">Order Received 📦</div>
-
+  <div class="steps" id="stepsContainer"></div>
+  <div class="status-msg" id="statusMsg">Your order is being received...</div>
+  <div class="eta" id="etaMsg"></div>
 </div>
 
 <script>
+const params=new URLSearchParams(window.location.search);
+const itemParam=params.get("item")||"Your Order";
+const priceParam=params.get("price")||"0";
+const orderId=params.get("id")||"";
 
-// 👉 URL मधून data ghe (menu varun yeto)
-const params = new URLSearchParams(window.location.search);
-const item = params.get("item");
-const price = params.get("price");
+document.getElementById("itemName").innerText=decodeURIComponent(itemParam);
+document.getElementById("priceTag").innerText=priceParam>0?"Rs."+priceParam:"";
+if(orderId) document.getElementById("etaMsg").innerText="Order ID: #"+orderId;
 
-// 👉 show item
-document.getElementById("itemName").innerText = item;
-document.getElementById("price").innerText = "Rs." + price;
-
-
-// 👉 tracking animation
-let progress = document.getElementById("progress");
-let status = document.getElementById("status");
-
-let steps = [
-  "Order Received 📦",
-  "Cooking Started 🍳",
-  "Out for Delivery 🚚",
-  "Delivered Successfully ✅"
+const steps=[
+  {name:"Order Received",icon:"📋",desc:"We got your order!",pct:25},
+  {name:"Cooking",icon:"👨‍🍳",desc:"Chef is preparing your food",pct:50},
+  {name:"Ready for Pickup",icon:"🔔",desc:"Almost there...",pct:75},
+  {name:"Delivered!",icon:"✅",desc:"Enjoy your meal!",pct:100}
 ];
+const icons=["⏳","🍳","🔔","🎉"];
+const msgs=["Your order is being received...","Chef is cooking! 👨‍🍳","Food ready! Come pick it up 🔔","Delivered! Enjoy 😋"];
 
-let width = 0;
-let step = 0;
+const container=document.getElementById("stepsContainer");
+steps.forEach((s,i)=>{
+  const div=document.createElement("div");
+  div.className="step"; div.id="step"+i;
+  div.innerHTML=`<div class="step-icon">${s.icon}</div><div style="flex:1"><div class="step-name">${s.name}</div><div class="step-desc">${s.desc}</div></div><div class="step-check">✓</div>`;
+  container.appendChild(div);
+});
 
-let interval = setInterval(() => {
+let cur=0;
+function updateStep(i){
+  for(let j=0;j<i;j++) document.getElementById("step"+j).className="step done";
+  if(i<steps.length) document.getElementById("step"+i).className="step active";
+  document.getElementById("progressBar").style.width=steps[i]?steps[i].pct+"%":"100%";
+  document.getElementById("pctLabel").innerText=(steps[i]?steps[i].pct:100)+"%";
+  document.getElementById("orderIcon").innerText=icons[i]||"✅";
+  document.getElementById("statusMsg").innerText=msgs[i]||"Done!";
+}
+updateStep(0);
 
-  width += 25;
-  progress.style.width = width + "%";
-  status.innerText = steps[step];
-
-  step++;
-
-  if(width >= 100){
+const interval=setInterval(()=>{
+  cur++;
+  if(cur>=steps.length){
     clearInterval(interval);
+    steps.forEach((_,i)=>document.getElementById("step"+i).className="step done");
+    document.getElementById("progressBar").style.width="100%";
+    document.getElementById("pctLabel").innerText="100%";
+    document.getElementById("orderIcon").innerText="🎉";
+    document.getElementById("statusMsg").innerText="Delivered! Enjoy 😋";
+    return;
   }
-
-}, 3000);
-
+  updateStep(cur);
+},4000);
 </script>
-
 </body>
 </html>

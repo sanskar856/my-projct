@@ -4,87 +4,85 @@ const cors = require("cors");
 const path = require("path");
 
 const app = express();
-app.post("/order", (req, res) => {
-  const { item, price } = req.body;
 
-  db.query(
-    "INSERT INTO orders (item, price, status) VALUES (?, ?, ?)",
-    [item, price, "Order Received"],
-    (err, result) => {
-      if(err) return res.send(err);
-
-      res.json({ orderId: result.insertId });
-    }
-  );
-});
-
-app.use(cors({ origin: "*" }));
+app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname)));
 
-const db = mysql.createConnection({
-    host: process.env.MYSQLHOST,
-    user: process.env.MYSQLUSER,
+// ✅ createPool — auto reconnect
+const db = mysql.createPool({
+    host:     process.env.MYSQLHOST,
+    user:     process.env.MYSQLUSER,
     password: process.env.MYSQLPASSWORD,
     database: process.env.MYSQLDATABASE,
-    port: process.env.MYSQLPORT,
-    charset: "utf8mb4"
+    port:     process.env.MYSQLPORT,
+    waitForConnections: true,
+    connectionLimit: 10,
+    queueLimit: 0
 });
 
-db.connect(err => {
-    if (err) {
-        console.log("❌ DB Error:", err.message);
-    } else {
-        console.log("✅ Connected to MySQL DB!");
+db.getConnection((err, connection) => {
+    if (err) { console.log("❌ DB FAILED:", err.message); return; }
+    console.log("✅ DB CONNECTED");
+    connection.release();
+
+    db.query(`CREATE TABLE IF NOT EXISTS orders (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(100), address VARCHAR(100), payment VARCHAR(20), total INT, items TEXT, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)`);
+    db.query(`CREATE TABLE IF NOT EXISTS users (id INT AUTO_INCREMENT PRIMARY KEY, email VARCHAR(100) UNIQUE, password VARCHAR(100), created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)`);
+    db.query(`CREATE TABLE IF NOT EXISTS feedback (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(100), taste INT, hygiene INT, comments TEXT, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)`);
+});
+
+// ✅ Health check
+app.get("/health", (req, res) => {
+    db.query("SELECT 1", (err) => {
+        if(err) return res.status(500).json({status:"DB error",error:err.message});
+        res.json({status:"OK",message:"Server and DB running ✅"});
+    });
+});
+
+app.post("/order", (req, res) => {
+    console.log("📦 ORDER:", req.body);
+    const { name, address, payment, total, items } = req.body;
+    if (!name || !address || total === undefined) {
+        return res.status(400).json({success:false,message:"Missing fields"});
     }
+    db.query(
+        "INSERT INTO orders (name, address, payment, total, items) VALUES (?, ?, ?, ?, ?)",
+        [name, address, payment||"Cash", total, JSON.stringify(items||[])],
+        (err, result) => {
+            if (err) { console.log("❌ SQL:", err.message); return res.status(500).json({success:false,message:"DB error: "+err.message}); }
+            console.log("✅ ORDER ID:", result.insertId);
+            res.json({success:true,message:"Order placed!",orderId:result.insertId});
+        }
+    );
 });
 
 app.post("/signup", (req, res) => {
     const { email, password } = req.body;
-    if (!email || !password) return res.json({ success: false, message: "Email & Password required!" });
+    if(!email||!password) return res.status(400).json({success:false});
     db.query("INSERT INTO users (email, password) VALUES (?, ?)", [email, password], (err) => {
-        if (err) return res.json({ success: false, message: "Signup failed!" });
-        res.json({ success: true, message: "Signup successful! Please login." });
+        if (err) return res.json({success:false,message:err.code==="ER_DUP_ENTRY"?"Already registered":err.message});
+        res.json({success:true});
     });
 });
 
 app.post("/login", (req, res) => {
-    console.log("🔐 LOGIN HIT:", req.body);
     const { email, password } = req.body;
-    if (!email || !password) return res.json({ success: false, message: "Email & Password required!" });
     db.query("SELECT * FROM users WHERE email=? AND password=?", [email, password], (err, result) => {
-        if (err) return res.json({ success: false, message: "DB Error" });
-        if (result.length > 0) {
-            res.json({ success: true, message: "Login successful! 🎉" });
-        } else {
-            res.json({ success: false, message: "Invalid email or password!" });
-        }
-    });
-});
-
-app.post("/order", (req, res) => {
-    const { name, address, payment, total, items } = req.body;
-    if (!name || !address || !total) return res.json({ success: false, message: "All fields required!" });
-    db.query("INSERT INTO orders (name, address, payment, total, items) VALUES (?, ?, ?, ?, ?)",
-        [name, address, payment, total, JSON.stringify(items)], (err) => {
-        if (err) return res.json({ success: false, message: "Order failed ❌" });
-        res.json({ success: true, message: "Order placed successfully ✅" });
+        if (err) return res.status(500).json({success:false});
+        res.json({success:result.length>0});
     });
 });
 
 app.post("/feedback", (req, res) => {
     const { name, taste, hygiene, comments } = req.body;
-    db.query("INSERT INTO feedback (name, taste, hygiene, comments) VALUES (?, ?, ?, ?)", 
-    [name, taste, hygiene, comments], (err) => {
-        if (err) {
-            console.log("❌ Feedback Error:", err.message);
-            return res.json({ success: false, message: "Feedback failed!" });
-        }
-        res.json({ success: true, message: "Feedback submitted! 🙏" });
+    db.query("INSERT INTO feedback (name, taste, hygiene, comments) VALUES (?, ?, ?, ?)", [name, taste, hygiene, comments], (err) => {
+        if (err) return res.status(500).json({success:false});
+        res.json({success:true});
     });
 });
 
+app.use((req, res) => res.status(404).json({success:false,message:"Route not found"}));
+app.use((err, req, res, next) => res.status(500).json({success:false,message:"Server error"}));
+
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-    console.log(`🚀 Server running on port ${PORT}`);
-});
+app.listen(PORT, () => console.log("🚀 PORT:", PORT));

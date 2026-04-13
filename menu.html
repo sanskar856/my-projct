@@ -177,6 +177,18 @@ document.querySelectorAll(".filter-btn").forEach(btn=>{
     });
   });
 });
+let cartItems = [];
+
+function addToCart(item, price) {
+    cartItems.push({ item, price });
+    alert(item + " added!");
+}
+
+// Order button click
+function goToOrder() {
+    localStorage.setItem("cart", JSON.stringify(cartItems));
+    window.location.href = "order.html";
+}
 </script>
 </body>
 </html>

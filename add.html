@@ -31,7 +31,7 @@ input:focus{border-color:rgba(255,140,0,0.5);background:rgba(255,255,255,0.12);}
 .pay-opt.active{border-color:#ff8c00;background:rgba(255,140,0,0.15);}
 .btn-main{width:100%;padding:17px;border:none;border-radius:16px;background:linear-gradient(90deg,#ff8c00,#facc15);font-size:17px;font-weight:bold;color:#0f172a;cursor:pointer;margin-top:10px;transition:0.3s;letter-spacing:1px;}
 .btn-main:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(255,140,0,0.3);}
-/* Modal */
+.btn-main:disabled{opacity:0.6;cursor:not-allowed;transform:none;}
 .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:100;justify-content:center;align-items:center;padding:20px;}
 .overlay.show{display:flex;}
 .modal{background:linear-gradient(145deg,#1e293b,#0f172a);border-radius:24px;padding:28px 24px;text-align:center;max-width:340px;width:100%;border:1px solid rgba(255,255,255,0.1);}
@@ -48,23 +48,22 @@ input:focus{border-color:rgba(255,140,0,0.5);background:rgba(255,255,255,0.12);}
 .app{background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);border-radius:8px;padding:5px 12px;font-size:12px;color:rgba(255,255,255,0.65);}
 .btn-paid{width:100%;padding:14px;border:none;border-radius:13px;background:linear-gradient(90deg,#22c55e,#16a34a);font-size:15px;font-weight:bold;color:white;cursor:pointer;margin-bottom:8px;transition:0.3s;}
 .btn-paid:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(34,197,94,0.3);}
+.btn-paid:disabled{opacity:0.6;cursor:not-allowed;transform:none;}
 .btn-cancel{width:100%;padding:11px;border:1px solid rgba(255,255,255,0.15);border-radius:13px;background:transparent;color:rgba(255,255,255,0.4);cursor:pointer;font-size:13px;}
-/* Cash confirm modal */
 .cash-modal{background:linear-gradient(145deg,#1e293b,#0f172a);border-radius:24px;padding:28px 24px;text-align:center;max-width:340px;width:100%;border:1px solid rgba(255,255,255,0.1);}
 .cash-icon{font-size:48px;margin-bottom:10px;}
 .cash-modal h3{font-size:20px;margin-bottom:8px;}
 .cash-note{font-size:14px;color:rgba(255,255,255,0.55);margin-bottom:20px;line-height:1.6;}
+.spinner{display:inline-block;width:18px;height:18px;border:2px solid rgba(0,0,0,0.3);border-top-color:#0f172a;border-radius:50%;animation:spin 0.7s linear infinite;vertical-align:middle;margin-right:8px;}
+@keyframes spin{to{transform:rotate(360deg);}}
 </style>
 </head>
 <body>
-
 <div class="logo">🍴 ATITHI CANTEEN AVCOE</div>
-
 <div class="box">
   <div class="sec-title">Customer Details</div>
   <input type="text" id="custName" placeholder="👤 Your Full Name">
   <input type="text" id="custTable" placeholder="🪑 Table Number">
-
   <div class="sec-title">Your Item</div>
   <div class="item-card">
     <div>
@@ -77,12 +76,10 @@ input:focus{border-color:rgba(255,140,0,0.5);background:rgba(255,255,255,0.12);}
       <button class="q-btn" onclick="changeQty(1)">+</button>
     </div>
   </div>
-
   <div class="total-box">
     <span class="total-label">Total Amount</span>
     <span class="total-amt" id="totalAmt">₹0</span>
   </div>
-
   <div class="pay-section">
     <div class="pay-title">💳 Payment Method</div>
     <div class="pay-options">
@@ -90,8 +87,7 @@ input:focus{border-color:rgba(255,140,0,0.5);background:rgba(255,255,255,0.12);}
       <div class="pay-opt" id="btnCash" onclick="selectPay('cash')">💵 Cash</div>
     </div>
   </div>
-
-  <button class="btn-main" onclick="placeOrder()">Place Order 🚀</button>
+  <button class="btn-main" id="placeBtn" onclick="placeOrder()">Place Order 🚀</button>
 </div>
 
 <!-- UPI Modal -->
@@ -99,9 +95,7 @@ input:focus{border-color:rgba(255,140,0,0.5);background:rgba(255,255,255,0.12);}
   <div class="modal">
     <div class="badge">SECURE PAYMENT</div>
     <h3>Scan & Pay 📱</h3>
-    <div class="qr-wrap">
-      <img id="qrImg" src="" alt="UPI QR">
-    </div>
+    <div class="qr-wrap"><img id="qrImg" src="" alt="UPI QR"></div>
     <div class="amt-box">
       <div class="amt-lbl">Total Payable</div>
       <div class="amt-val" id="modalAmt">₹0</div>
@@ -109,11 +103,9 @@ input:focus{border-color:rgba(255,140,0,0.5);background:rgba(255,255,255,0.12);}
     <div class="upi-lbl">UPI ID</div>
     <div class="upi-id">9272157935@ybl</div>
     <div class="apps">
-      <span class="app">GPay</span>
-      <span class="app">PhonePe</span>
-      <span class="app">Paytm</span>
+      <span class="app">GPay</span><span class="app">PhonePe</span><span class="app">Paytm</span>
     </div>
-    <button class="btn-paid" onclick="confirmOrder()">✅ Payment Done — Confirm</button>
+    <button class="btn-paid" id="upiConfirmBtn" onclick="confirmOrder()">✅ Payment Done — Confirm</button>
     <button class="btn-cancel" onclick="closeUPI()">✕ Cancel</button>
   </div>
 </div>
@@ -131,7 +123,7 @@ input:focus{border-color:rgba(255,140,0,0.5);background:rgba(255,255,255,0.12);}
       Please pay <strong id="cashAmtText">₹0</strong> cash at the counter after receiving your order.<br><br>
       Show this screen to the staff if needed.
     </div>
-    <button class="btn-paid" onclick="confirmOrder()">✅ Confirm Order</button>
+    <button class="btn-paid" id="cashConfirmBtn" onclick="confirmOrder()">✅ Confirm Order</button>
     <button class="btn-cancel" onclick="closeCash()">✕ Cancel</button>
   </div>
 </div>
@@ -145,88 +137,82 @@ let itemName  = "Item";
 let itemPrice = 0;
 let qty       = 1;
 let payMode   = "upi";
+let isLoading = false;
 
-// Read URL params
 const params = new URLSearchParams(window.location.search);
 if(params.get("item"))  itemName  = decodeURIComponent(params.get("item"));
-if(params.get("price")) itemPrice = parseInt(params.get("price"));
+if(params.get("price")) itemPrice = parseInt(params.get("price")) || 0;
 
 document.getElementById("displayName").innerText  = itemName;
 document.getElementById("displayPrice").innerText = "Rs." + itemPrice + " per piece";
 updateTotal();
 
-function changeQty(d){
-  qty = Math.max(1, qty + d);
-  document.getElementById("qtyNum").innerText = qty;
-  updateTotal();
-}
-
-function updateTotal(){
-  document.getElementById("totalAmt").innerText = "Rs." + (itemPrice * qty);
-}
-
+function changeQty(d){ qty=Math.max(1,qty+d); document.getElementById("qtyNum").innerText=qty; updateTotal(); }
+function updateTotal(){ document.getElementById("totalAmt").innerText="Rs."+(itemPrice*qty); }
 function selectPay(mode){
-  payMode = mode;
-  document.getElementById("btnUPI").classList.toggle("active", mode === "upi");
-  document.getElementById("btnCash").classList.toggle("active", mode === "cash");
+  payMode=mode;
+  document.getElementById("btnUPI").classList.toggle("active",mode==="upi");
+  document.getElementById("btnCash").classList.toggle("active",mode==="cash");
 }
 
 function placeOrder(){
-  const name  = document.getElementById("custName").value.trim();
-  const table = document.getElementById("custTable").value.trim();
-  if(!name)  { alert("Please enter your name!"); return; }
-  if(!table) { alert("Please enter table number!"); return; }
-
-  const total = itemPrice * qty;
-
-  if(payMode === "upi"){
-    const upiLink = `upi://pay?pa=${UPI_ID}&pn=${encodeURIComponent(UPI_NAME)}&am=${total}&cu=INR`;
-    const qrUrl   = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(upiLink)}`;
-    document.getElementById("qrImg").src    = qrUrl;
-    document.getElementById("modalAmt").innerText = "Rs." + total;
+  const name=document.getElementById("custName").value.trim();
+  const table=document.getElementById("custTable").value.trim();
+  if(!name){alert("Please enter your name!");return;}
+  if(!table){alert("Please enter table number!");return;}
+  const total=itemPrice*qty;
+  if(payMode==="upi"){
+    const upiLink=`upi://pay?pa=${UPI_ID}&pn=${encodeURIComponent(UPI_NAME)}&am=${total}&cu=INR`;
+    const qrUrl=`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(upiLink)}`;
+    document.getElementById("qrImg").src=qrUrl;
+    document.getElementById("modalAmt").innerText="Rs."+total;
     document.getElementById("upiModal").classList.add("show");
   } else {
-    document.getElementById("cashAmt").innerText     = "Rs." + total;
-    document.getElementById("cashAmtText").innerText = "Rs." + total;
+    document.getElementById("cashAmt").innerText="Rs."+total;
+    document.getElementById("cashAmtText").innerText="Rs."+total;
     document.getElementById("cashModal").classList.add("show");
   }
 }
 
 function confirmOrder(){
-  const name  = document.getElementById("custName").value.trim();
-  const table = document.getElementById("custTable").value.trim();
-  const total = itemPrice * qty;
-  const orderData = {
-    name,
-    address: table,
-    payment: payMode === "upi" ? "UPI" : "Cash",
-    total,
-    items: [{ name: itemName, quantity: qty }]
-  };
-  fetch(`${BASE_URL}/order`, {
-    method:"POST",
-    headers:{"Content-Type":"application/json"},
-    body: JSON.stringify(orderData)
+  if(isLoading) return;
+  const name=document.getElementById("custName").value.trim();
+  const table=document.getElementById("custTable").value.trim();
+  const total=itemPrice*qty;
+  if(!name||!table){alert("Please fill name and table number!");return;}
+
+  const orderData={name,address:table,payment:payMode==="upi"?"UPI":"Cash",total,items:[{name:itemName,quantity:qty}]};
+
+  isLoading=true;
+  const confirmBtn=payMode==="upi"?document.getElementById("upiConfirmBtn"):document.getElementById("cashConfirmBtn");
+  confirmBtn.disabled=true;
+  confirmBtn.innerHTML='<span class="spinner"></span>Placing Order...';
+
+  const controller=new AbortController();
+  const timeout=setTimeout(()=>controller.abort(),10000);
+
+  fetch(`${BASE_URL}/order`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(orderData),signal:controller.signal})
+  .then(r=>{clearTimeout(timeout);if(!r.ok)throw new Error("Server status: "+r.status);return r.json();})
+  .then(d=>{
+    if(d.success){window.location.href="thankyou.html?id="+d.orderId;}
+    else throw new Error(d.message||"Order failed");
   })
-  .then(r => r.json())
-.then(d => {
-  if(d.success){
-
-    // 🔥 orderId ghe
-    const orderId = d.orderId;
-
-    // 👉 redirect with id
-    window.location.href = "thankyou.html?id=" + orderId;
-
-  } else {
-    alert("Order failed! Please try again.");
-  }
-})
-  .catch(() => alert("Server error! Please try again."));
+  .catch(err=>{
+    clearTimeout(timeout);
+    console.error("❌ Order Error:",err);
+    let msg="Order failed. Please try again.";
+    if(err.name==="AbortError") msg="Timeout! Railway server check करा.";
+    else if(err.message.includes("Failed to fetch")) msg="Server connect होत नाही! Internet check करा.";
+    else msg="Error: "+err.message;
+    alert(msg);
+    isLoading=false;
+    confirmBtn.disabled=false;
+    confirmBtn.innerHTML=payMode==="upi"?"✅ Payment Done — Confirm":"✅ Confirm Order";
+  });
 }
 
-function closeUPI()  { document.getElementById("upiModal").classList.remove("show"); }
-function closeCash() { document.getElementById("cashModal").classList.remove("show"); }
+function closeUPI(){if(!isLoading)document.getElementById("upiModal").classList.remove("show");}
+function closeCash(){if(!isLoading)document.getElementById("cashModal").classList.remove("show");}
 </script>
 </body>
 </html>
