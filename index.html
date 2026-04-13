@@ -234,17 +234,23 @@ document.getElementById("loginForm").addEventListener("submit", function(e){
     })
     .then(res => res.json())
     .then(data => {
-        alert(data.message);
         if(data.success){
             window.location.href = "soham.html";
+        } else {
+            alert("Invalid email or password!");  // ✅ alert(data.message) काढला
         }
     })
-    .catch(err => alert("Server error"));
+    .catch(err => alert("Server error! Please try again."));
 });
 
 function signup() {
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
+
+    if(!email || !password){
+        alert("Email and password enter");
+        return;
+    }
 
     fetch(`${BASE_URL}/signup`, {
         method: "POST",
@@ -252,8 +258,14 @@ function signup() {
         body: JSON.stringify({ email, password })
     })
     .then(res => res.json())
-    .then(data => alert(data.message))
-    .catch(err => alert("Server error"));
+    .then(data => {
+        if(data.success){
+            alert("Account created please login!");
+        } else {
+            alert(data.message || "Signup failed! Try again.");
+        }
+    })
+    .catch(err => alert("Server error! Please try again."));
 }
 </script>
 
