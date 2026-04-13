@@ -4,6 +4,19 @@ const cors = require("cors");
 const path = require("path");
 
 const app = express();
+app.post("/order", (req, res) => {
+  const { item, price } = req.body;
+
+  db.query(
+    "INSERT INTO orders (item, price, status) VALUES (?, ?, ?)",
+    [item, price, "Order Received"],
+    (err, result) => {
+      if(err) return res.send(err);
+
+      res.json({ orderId: result.insertId });
+    }
+  );
+});
 
 app.use(cors({ origin: "*" }));
 app.use(express.json());

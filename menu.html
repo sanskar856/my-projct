@@ -41,6 +41,7 @@ body{min-height:100vh;overflow-x:hidden;background:linear-gradient(-45deg,#ff512
 .cat-biscuits{background:#ede7f6;color:#6a1b9a;}
 </style>
 </head>
+
 <body>
 <div class="food-float">
   <span>🍪</span><span>🥤</span><span>🍦</span><span>☕</span><span>🍨</span><span>🧃</span>
@@ -59,7 +60,7 @@ body{min-height:100vh;overflow-x:hidden;background:linear-gradient(-45deg,#ff512
 </div>
 <div class="menu-grid" id="menuGrid"></div>
 <div class="notification" id="notification"></div>
-
+<button class="add-btn">Add to Cart 🛒</button>
 <script>
 // =============================================
 // IMAGE ADD KARNYASATHI: img:"" madhe URL paste kara
@@ -127,16 +128,25 @@ function loadMenu(data){
     const top = item.img
       ? `<img src="${item.img}" class="menu-thumb" onerror="this.style.display='none';this.nextSibling.style.display='flex'">         <div class="menu-emoji-box" style="background:${item.bg};display:none">${item.emoji}</div>`
       : `<div class="menu-emoji-box" style="background:${item.bg}">${item.emoji}</div>`;
-    card.innerHTML=top+`
-      <div class="menu-info">
-        <div class="menu-name">${item.name}${item.isNew?'<span class="new-badge">NEW</span>':''}</div>
-        <div class="menu-price">Rs.${item.price}</div>
-        <span class="cat-label cat-${item.category}">${catLabel[item.category]}</span><br>
-        <a href="add.html">
-    <button class="add-btn">Add to Cart 🛒</button>
-</a>
+    card.innerHTML = top + `
+  <div class="menu-info">
 
-      </div>`;
+    <div class="menu-name">
+      ${item.name}${item.isNew ? '<span class="new-badge">NEW</span>' : ''}
+    </div>
+
+    <div class="menu-price">Rs.${item.price}</div>
+
+    <span class="cat-label cat-${item.category}">
+      ${catLabel[item.category]}
+    </span><br>
+
+    <a href="add.html?item=${encodeURIComponent(item.name)}&price=${item.price}">
+      <button class="add-btn">Order Now 🚀</button>
+    </a>
+
+  </div>
+`;
     grid.appendChild(card);
   });
 }

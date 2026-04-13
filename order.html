@@ -2,194 +2,49 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Atithi AVCOE - Order Tracking</title>
+<title>Order Tracking</title>
 
 <style>
-
-/* 🌈 BACKGROUND */
-body{
-    font-family: 'Segoe UI', sans-serif;
-    background: linear-gradient(-45deg,#0f172a,#1e293b,#0ea5e9,#9333ea);
-    background-size:400% 400%;
-    animation: gradientBG 10s ease infinite;
-    color: white;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    height:100vh;
-    overflow:hidden;
-    position:relative;
+body {
+  font-family: Arial;
+  background: linear-gradient(135deg,#ff8c00,#ff3d00);
+  color: white;
+  text-align: center;
+  padding: 50px;
 }
 
-@keyframes gradientBG{
-    0%{background-position:0% 50%;}
-    50%{background-position:100% 50%;}
-    100%{background-position:0% 50%;}
+h1 {
+  margin-bottom: 20px;
 }
 
-/* 🔥 LOGO */
-.logo{
-    position:absolute;
-    top:20px;
-    left:50%;
-    transform:translateX(-50%);
-    font-size:28px;
-    font-weight:bold;
-    letter-spacing:3px;
-    color:#fff;
-    text-transform:uppercase;
-
-    overflow:hidden;
-    white-space:nowrap;
-    border-right:3px solid #ffcc00;
-    width:0;
-
-    animation: typing 4s steps(14) forwards,
-               blink 0.7s infinite,
-               floatLogo 3s ease-in-out infinite;
-
-    text-shadow:0 0 5px #ffcc00,
-                0 0 10px #ffcc00,
-                0 0 20px #ff8800,
-                0 0 40px #ff8800;
+.card {
+  background: white;
+  color: black;
+  padding: 20px;
+  border-radius: 15px;
+  width: 300px;
+  margin: auto;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
 }
 
-@keyframes typing{
-    from{width:0}
-    to{width:260px}
-}
-
-@keyframes blink{
-    50%{border-color:transparent}
-}
-
-@keyframes floatLogo{
-    0%,100%{transform:translate(-50%,0);}
-    50%{transform:translate(-50%,-8px);}
-}
-
-/* 🍔 FLOATING FOOD */
-.food-bg{
-    position:absolute;
-    width:100%;
-    height:100%;
-    top:0;
-    left:0;
-    z-index:0;
-}
-
-.food-bg span{
-    position:absolute;
-    bottom:-100px;
-    font-size:28px;
-    animation: floatFood 15s linear infinite;
-    opacity:0.6;
-}
-
-.food-bg span:nth-child(1){left:10%; animation-duration:12s;}
-.food-bg span:nth-child(2){left:25%; animation-duration:18s;}
-.food-bg span:nth-child(3){left:40%; animation-duration:14s;}
-.food-bg span:nth-child(4){left:55%; animation-duration:20s;}
-.food-bg span:nth-child(5){left:70%; animation-duration:16s;}
-.food-bg span:nth-child(6){left:85%; animation-duration:22s;}
-
-@keyframes floatFood{
-    0%{transform:translateY(0) rotate(0deg); opacity:0;}
-    50%{opacity:1;}
-    100%{transform:translateY(-1000px) rotate(360deg); opacity:0;}
-}
-
-/* ✨ PARTICLES */
-.particles span{
-    position:absolute;
-    width:6px;
-    height:6px;
-    background:#fff;
-    border-radius:50%;
-    opacity:0.5;
-    animation: moveParticles 8s linear infinite;
-}
-
-.particles span:nth-child(1){top:10%; left:20%;}
-.particles span:nth-child(2){top:30%; left:70%;}
-.particles span:nth-child(3){top:60%; left:40%;}
-.particles span:nth-child(4){top:80%; left:10%;}
-.particles span:nth-child(5){top:50%; left:85%;}
-
-@keyframes moveParticles{
-    0%{transform:translateY(0);}
-    100%{transform:translateY(-200px);}
-}
-
-/* CARD */
-.tracker {
-    width: 420px;
-    background: rgba(255,255,255,0.08);
-    padding: 25px;
-    border-radius: 20px;
-    backdrop-filter: blur(15px);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-    z-index:2;
-}
-
-/* STATUS */
-.status {
-    font-size: 22px;
-    font-weight: bold;
-    margin-bottom: 15px;
-    text-align: center;
-}
-
-/* PROGRESS */
 .progress-bar {
-    width: 100%;
-    height: 10px;
-    background: rgba(255,255,255,0.2);
-    border-radius: 10px;
-    overflow: hidden;
-    margin-bottom: 20px;
+  height: 10px;
+  background: #ddd;
+  border-radius: 10px;
+  overflow: hidden;
+  margin: 20px 0;
 }
 
 .progress {
-    height: 100%;
-    width: 0%;
-    background: linear-gradient(90deg, #ffcc00, #ff8800);
-    transition: 0.5s;
+  height: 10px;
+  width: 0%;
+  background: #22c55e;
+  transition: 1s;
 }
 
-/* STEPS */
-.steps {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
-}
-
-.step {
-    text-align: center;
-    font-size: 12px;
-    opacity: 0.4;
-    transition: 0.3s;
-}
-
-.step.active {
-    opacity: 1;
-    transform: scale(1.1);
-    color: #ffcc00;
-}
-
-.dot {
-    width: 12px;
-    height: 12px;
-    background: gray;
-    border-radius: 50%;
-    margin: auto;
-    margin-bottom: 5px;
-}
-
-.step.active .dot {
-    background: #ffcc00;
-    box-shadow: 0 0 10px #ffcc00;
+.status {
+  font-size: 18px;
+  margin-top: 10px;
 }
 
 </style>
@@ -197,84 +52,59 @@ body{
 
 <body>
 
-<!-- 🔥 LOGO -->
-<div class="logo">ATITHI AVCOE</div>
+<h1>🍽️ Order Tracking</h1>
 
-<!-- 🍔 FOOD -->
-<div class="food-bg">
-    <span>🍔</span>
-    <span>🍟</span>
-    <span>🍕</span>
-    <span>🥤</span>
-    <span>🍩</span>
-    <span>🍿</span>
-</div>
+<div class="card">
 
-<!-- ✨ PARTICLES -->
-<div class="particles">
-    <span></span><span></span><span></span><span></span><span></span>
-</div>
+  <h2 id="itemName">Item</h2>
+  <h3 id="price">Rs.0</h3>
 
-<!-- 📦 TRACKER -->
-<div class="tracker">
+  <div class="progress-bar">
+    <div class="progress" id="progress"></div>
+  </div>
 
-<div class="status" id="statusText">Order Placed 🧾</div>
-
-<div class="progress-bar">
-    <div class="progress" id="progressBar"></div>
-</div>
-
-<div class="steps">
-    <div class="step active" id="s1">
-        <div class="dot"></div>
-        Placed
-    </div>
-
-    <div class="step" id="s2">
-        <div class="dot"></div>
-        Cooking
-    </div>
-
-    <div class="step" id="s3">
-        <div class="dot"></div>
-        Ready
-    </div>
-
-    <div class="step" id="s4">
-        <div class="dot"></div>
-        Delivered
-    </div>
-</div>
+  <div class="status" id="status">Order Received 📦</div>
 
 </div>
 
 <script>
 
-let statusList = [
-    "Order Placed 🧾",
-    "Cooking 👨‍🍳",
-    "Ready 🍽️",
-    "Delivered ✅"
+// 👉 URL मधून data ghe (menu varun yeto)
+const params = new URLSearchParams(window.location.search);
+const item = params.get("item");
+const price = params.get("price");
+
+// 👉 show item
+document.getElementById("itemName").innerText = item;
+document.getElementById("price").innerText = "Rs." + price;
+
+
+// 👉 tracking animation
+let progress = document.getElementById("progress");
+let status = document.getElementById("status");
+
+let steps = [
+  "Order Received 📦",
+  "Cooking Started 🍳",
+  "Out for Delivery 🚚",
+  "Delivered Successfully ✅"
 ];
 
-let progress = [0, 33, 66, 100];
-let index = 0;
+let width = 0;
+let step = 0;
 
-function updateUI(){
-    document.getElementById("statusText").innerText = statusList[index];
-    document.getElementById("progressBar").style.width = progress[index] + "%";
+let interval = setInterval(() => {
 
-    for(let i=1;i<=4;i++){
-        document.getElementById("s"+i).classList.remove("active");
-    }
-    document.getElementById("s"+(index+1)).classList.add("active");
-}
+  width += 25;
+  progress.style.width = width + "%";
+  status.innerText = steps[step];
 
-setInterval(()=>{
-    if(index < statusList.length-1){
-        index++;
-        updateUI();
-    }
+  step++;
+
+  if(width >= 100){
+    clearInterval(interval);
+  }
+
 }, 3000);
 
 </script>

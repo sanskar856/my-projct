@@ -3,267 +3,230 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Atithi Canteen | Order Online</title>
-
+<title>Atithi Canteen | Place Order</title>
 <style>
-:root {
-    --primary: #ff8c00;
-    --secondary: #22c55e;
-    --bg: #0f172a;
-}
-
-body {
-    margin: 0;
-    font-family: 'Segoe UI', sans-serif;
-    background: linear-gradient(135deg, #0f172a, #1e293b);
-    display: flex;
-    justify-content: center;
-    padding: 20px;
-    color: white;
-    overflow-x: hidden;
-}
-
-body::before{
-    content:"";
-    position:fixed;
-    width:200%;
-    height:200%;
-    background: radial-gradient(circle, rgba(255,204,0,0.08), transparent 60%);
-    animation: moveBg 10s linear infinite;
-    z-index:0;
-}
-
-@keyframes moveBg{
-    0%{transform:translate(0,0);}
-    50%{transform:translate(-25%,-25%);}
-    100%{transform:translate(0,0);}
-}
-
-.logo{
-    position:absolute;
-    top:20px;
-    left:50%;
-    transform:translateX(-50%);
-    font-size:26px;
-    font-weight:bold;
-    letter-spacing:3px;
-    z-index:10;
-    overflow:hidden;
-    white-space:nowrap;
-    border-right:3px solid #ffcc00;
-    width:0;
-    animation: typing 4s steps(14) forwards, blink 0.7s infinite, floatLogo 3s ease-in-out infinite;
-    text-shadow:0 0 5px #ffcc00,0 0 10px #ffcc00,0 0 20px #ff8800;
-}
-
-@keyframes typing{
-    from{width:0;}
-    to{width:280px;}
-}
-
-@keyframes blink{
-    50%{border-color:transparent;}
-}
-
-@keyframes floatLogo{
-    0%,100%{transform:translate(-50%,0);}
-    50%{transform:translate(-50%,-6px);}
-}
-
-.checkout-container {
-    width: 100%;
-    max-width: 520px;
-    background: rgba(255,255,255,0.08);
-    backdrop-filter: blur(20px);
-    border-radius: 25px;
-    padding: 25px;
-    box-shadow: 0 15px 40px rgba(0,0,0,0.5);
-    margin-top: 80px;
-    position: relative;
-    z-index: 2;
-}
-
-.input-field {
-    width: 100%;
-    padding: 14px;
-    margin-bottom: 12px;
-    border-radius: 12px;
-    border: none;
-    outline: none;
-    background: rgba(255,255,255,0.1);
-    color: white;
-}
-
-.item-row {
-    display: flex;
-    justify-content: space-between;
-    padding: 14px;
-    margin-bottom: 10px;
-    border-radius: 15px;
-    background: rgba(255,255,255,0.08);
-}
-
-.qty-controls {
-    display: flex;
-    gap: 10px;
-}
-
-.qty-btn {
-    width: 32px;
-    height: 32px;
-    border-radius: 10px;
-    border: none;
-}
-
-.total-row {
-    display: flex;
-    justify-content: space-between;
-    font-size: 22px;
-    font-weight: bold;
-    margin: 15px 0;
-    color: #22c55e;
-}
-
-.pay-option-group {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-}
-
-.pay-option {
-    padding: 12px;
-    text-align: center;
-    border-radius: 12px;
-    cursor: pointer;
-    border: 1px solid rgba(255,255,255,0.2);
-}
-
-.pay-option.active {
-    border-color: var(--primary);
-    color: var(--primary);
-}
-
-.btn-order {
-    width: 100%;
-    padding: 18px;
-    border: none;
-    border-radius: 18px;
-    background: linear-gradient(90deg, #22c55e, #16a34a);
-    font-size: 18px;
-    font-weight: bold;
-    color: white;
-    cursor: pointer;
-}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Segoe UI',sans-serif;background:linear-gradient(135deg,#0f172a,#1e293b);min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:20px;color:white;}
+.logo{font-size:22px;font-weight:bold;letter-spacing:3px;margin:16px 0 20px;text-shadow:0 0 10px #ffcc00,0 0 20px #ff8800;animation:float 3s ease-in-out infinite;}
+@keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-5px);}}
+.box{width:100%;max-width:480px;background:rgba(255,255,255,0.07);backdrop-filter:blur(20px);border-radius:24px;padding:24px;border:1px solid rgba(255,255,255,0.1);box-shadow:0 20px 60px rgba(0,0,0,0.5);}
+.sec-title{font-size:11px;letter-spacing:2px;color:rgba(255,255,255,0.4);text-transform:uppercase;margin:16px 0 8px;}
+input{width:100%;padding:13px 16px;border-radius:12px;border:1px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.08);color:white;font-size:15px;outline:none;margin-bottom:10px;}
+input::placeholder{color:rgba(255,255,255,0.35);}
+input:focus{border-color:rgba(255,140,0,0.5);background:rgba(255,255,255,0.12);}
+.item-card{display:flex;justify-content:space-between;align-items:center;padding:16px;border-radius:16px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.1);margin-bottom:12px;}
+.item-name{font-size:16px;font-weight:600;}
+.item-price{font-size:13px;color:#facc15;margin-top:3px;}
+.qty-row{display:flex;align-items:center;gap:12px;}
+.q-btn{width:34px;height:34px;border-radius:10px;border:none;background:linear-gradient(135deg,#ff8c00,#facc15);color:#0f172a;font-size:20px;font-weight:bold;cursor:pointer;transition:0.2s;}
+.q-btn:hover{transform:scale(1.1);}
+.qty{font-size:18px;font-weight:bold;min-width:24px;text-align:center;}
+.total-box{display:flex;justify-content:space-between;align-items:center;padding:16px;border-radius:14px;background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.3);margin:16px 0;}
+.total-label{color:rgba(255,255,255,0.6);font-size:15px;}
+.total-amt{font-size:26px;font-weight:bold;color:#22c55e;}
+.pay-section{margin:16px 0;}
+.pay-title{font-size:13px;color:rgba(255,255,255,0.5);margin-bottom:10px;letter-spacing:1px;text-transform:uppercase;}
+.pay-options{display:flex;gap:10px;}
+.pay-opt{flex:1;padding:14px;border-radius:14px;border:2px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.05);color:white;font-size:15px;font-weight:600;cursor:pointer;text-align:center;transition:0.3s;}
+.pay-opt.active{border-color:#ff8c00;background:rgba(255,140,0,0.15);}
+.btn-main{width:100%;padding:17px;border:none;border-radius:16px;background:linear-gradient(90deg,#ff8c00,#facc15);font-size:17px;font-weight:bold;color:#0f172a;cursor:pointer;margin-top:10px;transition:0.3s;letter-spacing:1px;}
+.btn-main:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(255,140,0,0.3);}
+/* Modal */
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:100;justify-content:center;align-items:center;padding:20px;}
+.overlay.show{display:flex;}
+.modal{background:linear-gradient(145deg,#1e293b,#0f172a);border-radius:24px;padding:28px 24px;text-align:center;max-width:340px;width:100%;border:1px solid rgba(255,255,255,0.1);}
+.badge{display:inline-block;background:rgba(250,204,21,0.15);border:1px solid rgba(250,204,21,0.3);border-radius:50px;padding:3px 14px;font-size:11px;letter-spacing:2px;color:#facc15;margin-bottom:10px;text-transform:uppercase;}
+.modal h3{font-size:20px;margin-bottom:4px;}
+.qr-wrap{background:white;border-radius:14px;padding:10px;display:inline-block;margin:14px 0;}
+.qr-wrap img{width:170px;height:170px;display:block;}
+.amt-box{background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.3);border-radius:12px;padding:12px;margin-bottom:14px;}
+.amt-lbl{font-size:12px;color:rgba(255,255,255,0.5);margin-bottom:3px;}
+.amt-val{font-size:26px;font-weight:bold;color:#22c55e;}
+.upi-lbl{font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:3px;}
+.upi-id{font-size:14px;color:#facc15;font-weight:600;margin-bottom:14px;}
+.apps{display:flex;justify-content:center;gap:10px;margin-bottom:16px;}
+.app{background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);border-radius:8px;padding:5px 12px;font-size:12px;color:rgba(255,255,255,0.65);}
+.btn-paid{width:100%;padding:14px;border:none;border-radius:13px;background:linear-gradient(90deg,#22c55e,#16a34a);font-size:15px;font-weight:bold;color:white;cursor:pointer;margin-bottom:8px;transition:0.3s;}
+.btn-paid:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(34,197,94,0.3);}
+.btn-cancel{width:100%;padding:11px;border:1px solid rgba(255,255,255,0.15);border-radius:13px;background:transparent;color:rgba(255,255,255,0.4);cursor:pointer;font-size:13px;}
+/* Cash confirm modal */
+.cash-modal{background:linear-gradient(145deg,#1e293b,#0f172a);border-radius:24px;padding:28px 24px;text-align:center;max-width:340px;width:100%;border:1px solid rgba(255,255,255,0.1);}
+.cash-icon{font-size:48px;margin-bottom:10px;}
+.cash-modal h3{font-size:20px;margin-bottom:8px;}
+.cash-note{font-size:14px;color:rgba(255,255,255,0.55);margin-bottom:20px;line-height:1.6;}
 </style>
 </head>
-
 <body>
 
-<div class="logo">ATITHI AVCOE</div>
+<div class="logo">🍴 ATITHI CANTEEN AVCOE</div>
 
-<div class="checkout-container">
+<div class="box">
+  <div class="sec-title">Customer Details</div>
+  <input type="text" id="custName" placeholder="👤 Your Full Name">
+  <input type="text" id="custTable" placeholder="🪑 Table Number">
 
-<input type="text" id="custName" class="input-field" placeholder="Your Name">
-<input type="text" id="custAddress" class="input-field" placeholder="Table No">
+  <div class="sec-title">Your Item</div>
+  <div class="item-card">
+    <div>
+      <div class="item-name" id="displayName">—</div>
+      <div class="item-price" id="displayPrice">₹0 per piece</div>
+    </div>
+    <div class="qty-row">
+      <button class="q-btn" onclick="changeQty(-1)">−</button>
+      <span class="qty" id="qtyNum">1</span>
+      <button class="q-btn" onclick="changeQty(1)">+</button>
+    </div>
+  </div>
 
-<div class="item-row" data-price="15">
-<span>Samosa ₹15</span>
-<div class="qty-controls">
-<button class="qty-btn" onclick="updateQty(this,-1)">-</button>
-<span class="qty-num">0</span>
-<button class="qty-btn" onclick="updateQty(this,1)">+</button>
+  <div class="total-box">
+    <span class="total-label">Total Amount</span>
+    <span class="total-amt" id="totalAmt">₹0</span>
+  </div>
+
+  <div class="pay-section">
+    <div class="pay-title">💳 Payment Method</div>
+    <div class="pay-options">
+      <div class="pay-opt active" id="btnUPI" onclick="selectPay('upi')">📱 UPI</div>
+      <div class="pay-opt" id="btnCash" onclick="selectPay('cash')">💵 Cash</div>
+    </div>
+  </div>
+
+  <button class="btn-main" onclick="placeOrder()">Place Order 🚀</button>
 </div>
+
+<!-- UPI Modal -->
+<div class="overlay" id="upiModal">
+  <div class="modal">
+    <div class="badge">SECURE PAYMENT</div>
+    <h3>Scan & Pay 📱</h3>
+    <div class="qr-wrap">
+      <img id="qrImg" src="" alt="UPI QR">
+    </div>
+    <div class="amt-box">
+      <div class="amt-lbl">Total Payable</div>
+      <div class="amt-val" id="modalAmt">₹0</div>
+    </div>
+    <div class="upi-lbl">UPI ID</div>
+    <div class="upi-id">9272157935@ybl</div>
+    <div class="apps">
+      <span class="app">GPay</span>
+      <span class="app">PhonePe</span>
+      <span class="app">Paytm</span>
+    </div>
+    <button class="btn-paid" onclick="confirmOrder()">✅ Payment Done — Confirm</button>
+    <button class="btn-cancel" onclick="closeUPI()">✕ Cancel</button>
+  </div>
 </div>
 
-<div class="item-row" data-price="20">
-<span>Poha ₹20</span>
-<div class="qty-controls">
-<button class="qty-btn" onclick="updateQty(this,-1)">-</button>
-<span class="qty-num">0</span>
-<button class="qty-btn" onclick="updateQty(this,1)">+</button>
-</div>
-</div>
-
-<div class="pay-option-group">
-<div class="pay-option active" id="lab1" onclick="selectPay(1)">UPI</div>
-<div class="pay-option" id="lab2" onclick="selectPay(2)">Cash</div>
-</div>
-
-<div class="total-row">
-<span>Total</span>
-<span id="grandTotal">₹0</span>
-</div>
-
-<button class="btn-order" onclick="placeOrder()">Confirm Order 🚀</button>
-
+<!-- Cash Modal -->
+<div class="overlay" id="cashModal">
+  <div class="cash-modal">
+    <div class="cash-icon">💵</div>
+    <h3>Cash Payment</h3>
+    <div class="amt-box" style="margin:14px 0;">
+      <div class="amt-lbl">Amount to Pay at Counter</div>
+      <div class="amt-val" id="cashAmt">₹0</div>
+    </div>
+    <div class="cash-note">
+      Please pay <strong id="cashAmtText">₹0</strong> cash at the counter after receiving your order.<br><br>
+      Show this screen to the staff if needed.
+    </div>
+    <button class="btn-paid" onclick="confirmOrder()">✅ Confirm Order</button>
+    <button class="btn-cancel" onclick="closeCash()">✕ Cancel</button>
+  </div>
 </div>
 
 <script>
 const BASE_URL = "https://my-projct-production.up.railway.app";
+const UPI_ID   = "9272157935@ybl";
+const UPI_NAME = "Atithi Canteen";
 
-function updateQty(btn, change){
-let span = btn.parentElement.querySelector(".qty-num");
-let val = parseInt(span.innerText) + change;
-if(val < 0) val = 0;
-span.innerText = val;
-calculateTotal();
+let itemName  = "Item";
+let itemPrice = 0;
+let qty       = 1;
+let payMode   = "upi";
+
+// Read URL params
+const params = new URLSearchParams(window.location.search);
+if(params.get("item"))  itemName  = decodeURIComponent(params.get("item"));
+if(params.get("price")) itemPrice = parseInt(params.get("price"));
+
+document.getElementById("displayName").innerText  = itemName;
+document.getElementById("displayPrice").innerText = "Rs." + itemPrice + " per piece";
+updateTotal();
+
+function changeQty(d){
+  qty = Math.max(1, qty + d);
+  document.getElementById("qtyNum").innerText = qty;
+  updateTotal();
 }
 
-function calculateTotal(){
-let total = 0;
-document.querySelectorAll(".item-row").forEach(row=>{
-let price = parseInt(row.dataset.price);
-let qty = parseInt(row.querySelector(".qty-num").innerText);
-total += price * qty;
-});
-document.getElementById("grandTotal").innerText = "₹" + total;
+function updateTotal(){
+  document.getElementById("totalAmt").innerText = "Rs." + (itemPrice * qty);
 }
 
-function selectPay(id){
-document.getElementById("lab1").classList.remove("active");
-document.getElementById("lab2").classList.remove("active");
-document.getElementById("lab"+id).classList.add("active");
+function selectPay(mode){
+  payMode = mode;
+  document.getElementById("btnUPI").classList.toggle("active", mode === "upi");
+  document.getElementById("btnCash").classList.toggle("active", mode === "cash");
 }
 
 function placeOrder(){
-let name = document.getElementById("custName").value;
-let addr = document.getElementById("custAddress").value;
-let total = parseInt(document.getElementById("grandTotal").innerText.replace("₹",""));
-let payment = document.querySelector(".pay-option.active").innerText;
+  const name  = document.getElementById("custName").value.trim();
+  const table = document.getElementById("custTable").value.trim();
+  if(!name)  { alert("Please enter your name!"); return; }
+  if(!table) { alert("Please enter table number!"); return; }
 
-if(!name || !addr || total == 0){
-alert("Fill all details");
-return;
+  const total = itemPrice * qty;
+
+  if(payMode === "upi"){
+    const upiLink = `upi://pay?pa=${UPI_ID}&pn=${encodeURIComponent(UPI_NAME)}&am=${total}&cu=INR`;
+    const qrUrl   = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(upiLink)}`;
+    document.getElementById("qrImg").src    = qrUrl;
+    document.getElementById("modalAmt").innerText = "Rs." + total;
+    document.getElementById("upiModal").classList.add("show");
+  } else {
+    document.getElementById("cashAmt").innerText     = "Rs." + total;
+    document.getElementById("cashAmtText").innerText = "Rs." + total;
+    document.getElementById("cashModal").classList.add("show");
+  }
 }
 
-let items = [];
+function confirmOrder(){
+  const name  = document.getElementById("custName").value.trim();
+  const table = document.getElementById("custTable").value.trim();
+  const total = itemPrice * qty;
+  const orderData = {
+    name,
+    address: table,
+    payment: payMode === "upi" ? "UPI" : "Cash",
+    total,
+    items: [{ name: itemName, quantity: qty }]
+  };
+  fetch(`${BASE_URL}/order`, {
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body: JSON.stringify(orderData)
+  })
+  .then(r => r.json())
+.then(d => {
+  if(d.success){
 
-document.querySelectorAll(".item-row").forEach(row=>{
-let itemName = row.querySelector("span").innerText;
-let qty = parseInt(row.querySelector(".qty-num").innerText);
-if(qty > 0){
-items.push({name:itemName, quantity:qty});
-}
-});
+    // 🔥 orderId ghe
+    const orderId = d.orderId;
 
-fetch(`${BASE_URL}/order`, {
-method:"POST",
-headers:{"Content-Type":"application/json"},
-body:JSON.stringify({name,address:addr,payment,total,items})
+    // 👉 redirect with id
+    window.location.href = "thankyou.html?id=" + orderId;
+
+  } else {
+    alert("Order failed! Please try again.");
+  }
 })
-.then(res=>res.json())
-.then(data=>{
-alert(data.message);
-if(data.success){
-window.location.href="thankyou.html";
+  .catch(() => alert("Server error! Please try again."));
 }
-})
-.catch(err=>{
-alert("Server error ❌");
-console.log(err);
-});
-}
+
+function closeUPI()  { document.getElementById("upiModal").classList.remove("show"); }
+function closeCash() { document.getElementById("cashModal").classList.remove("show"); }
 </script>
-
 </body>
 </html>
