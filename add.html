@@ -4,72 +4,87 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Atithi Canteen | Place Order</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:'Segoe UI',sans-serif;background:linear-gradient(135deg,#0f172a,#1e293b);min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:20px;color:white;}
-.logo{font-size:22px;font-weight:bold;letter-spacing:3px;margin:16px 0 20px;text-shadow:0 0 10px #ffcc00,0 0 20px #ff8800;animation:float 3s ease-in-out infinite;}
-@keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-5px);}}
-.box{width:100%;max-width:480px;background:rgba(255,255,255,0.07);backdrop-filter:blur(20px);border-radius:24px;padding:24px;border:1px solid rgba(255,255,255,0.1);box-shadow:0 20px 60px rgba(0,0,0,0.5);}
-.sec-title{font-size:11px;letter-spacing:2px;color:rgba(255,255,255,0.4);text-transform:uppercase;margin:16px 0 8px;}
-input{width:100%;padding:13px 16px;border-radius:12px;border:1px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.08);color:white;font-size:15px;outline:none;margin-bottom:10px;}
-input::placeholder{color:rgba(255,255,255,0.35);}
-input:focus{border-color:rgba(255,140,0,0.5);background:rgba(255,255,255,0.12);}
-.item-card{display:flex;justify-content:space-between;align-items:center;padding:16px;border-radius:16px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.1);margin-bottom:12px;}
+body{font-family:'DM Sans',sans-serif;background:#020010;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:80px 20px 40px;color:white;}
+#galaxy-canvas{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;}
+.gnavbar{position:fixed;top:0;left:0;right:0;z-index:100;padding:14px 24px;display:flex;justify-content:space-between;align-items:center;background:rgba(5,3,25,0.7);backdrop-filter:blur(20px);border-bottom:1px solid rgba(139,92,246,0.2);}
+.gnav-brand{font-family:'Playfair Display',serif;font-size:18px;background:linear-gradient(135deg,#a78bfa,#60a5fa,#f472b6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.gnav-back{padding:7px 16px;border-radius:20px;font-size:13px;color:rgba(255,255,255,0.7);text-decoration:none;border:1px solid rgba(139,92,246,0.3);transition:0.3s;}
+.gnav-back:hover{color:#a78bfa;background:rgba(139,92,246,0.1);}
+
+.box{position:relative;z-index:2;width:100%;max-width:480px;background:rgba(5,3,25,0.82);border-radius:24px;padding:28px;border:1px solid rgba(139,92,246,0.2);animation:cardEntry 0.8s cubic-bezier(0.34,1.56,0.64,1) both;}
+.box::before{content:"";position:absolute;inset:-1px;border-radius:24px;background:linear-gradient(120deg,rgba(139,92,246,0.5),rgba(59,130,246,0.3),rgba(236,72,153,0.4));-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:borderGlow 4s linear infinite;pointer-events:none;}
+
+.sec-title{font-size:10px;letter-spacing:2px;color:rgba(167,139,250,0.5);text-transform:uppercase;margin:16px 0 8px;}
+input{width:100%;padding:12px 16px;border-radius:12px;border:1px solid rgba(139,92,246,0.2);background:rgba(139,92,246,0.07);color:white;font-size:14px;outline:none;margin-bottom:10px;font-family:'DM Sans',sans-serif;transition:0.3s;}
+input::placeholder{color:rgba(167,139,250,0.35);}
+input:focus{border-color:rgba(139,92,246,0.6);background:rgba(139,92,246,0.12);box-shadow:0 0 0 3px rgba(139,92,246,0.12);}
+
+.item-card{display:flex;justify-content:space-between;align-items:center;padding:16px;border-radius:16px;background:rgba(139,92,246,0.08);border:1px solid rgba(139,92,246,0.2);margin-bottom:12px;}
 .item-name{font-size:16px;font-weight:600;}
-.item-price{font-size:13px;color:#facc15;margin-top:3px;}
+.item-price{font-size:13px;color:#a78bfa;margin-top:3px;}
 .qty-row{display:flex;align-items:center;gap:12px;}
-.q-btn{width:34px;height:34px;border-radius:10px;border:none;background:linear-gradient(135deg,#ff8c00,#facc15);color:#0f172a;font-size:20px;font-weight:bold;cursor:pointer;transition:0.2s;}
+.q-btn{width:34px;height:34px;border-radius:10px;border:none;background:linear-gradient(135deg,#7c3aed,#3b82f6);color:white;font-size:20px;font-weight:bold;cursor:pointer;transition:0.2s;}
 .q-btn:hover{transform:scale(1.1);}
 .qty{font-size:18px;font-weight:bold;min-width:24px;text-align:center;}
-.total-box{display:flex;justify-content:space-between;align-items:center;padding:16px;border-radius:14px;background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.3);margin:16px 0;}
+
+.total-box{display:flex;justify-content:space-between;align-items:center;padding:16px;border-radius:14px;background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.3);margin:16px 0;}
 .total-label{color:rgba(255,255,255,0.6);font-size:15px;}
-.total-amt{font-size:26px;font-weight:bold;color:#22c55e;}
-.pay-section{margin:16px 0;}
-.pay-title{font-size:13px;color:rgba(255,255,255,0.5);margin-bottom:10px;letter-spacing:1px;text-transform:uppercase;}
-.pay-options{display:flex;gap:10px;}
-.pay-opt{flex:1;padding:14px;border-radius:14px;border:2px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.05);color:white;font-size:15px;font-weight:600;cursor:pointer;text-align:center;transition:0.3s;}
-.pay-opt.active{border-color:#ff8c00;background:rgba(255,140,0,0.15);}
-.btn-main{width:100%;padding:17px;border:none;border-radius:16px;background:linear-gradient(90deg,#ff8c00,#facc15);font-size:17px;font-weight:bold;color:#0f172a;cursor:pointer;margin-top:10px;transition:0.3s;letter-spacing:1px;}
-.btn-main:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(255,140,0,0.3);}
+.total-amt{font-size:26px;font-weight:bold;color:#a78bfa;}
+
+.pay-title{font-size:12px;color:rgba(167,139,250,0.5);margin-bottom:10px;letter-spacing:1px;text-transform:uppercase;}
+.pay-options{display:flex;gap:10px;margin-bottom:16px;}
+.pay-opt{flex:1;padding:13px;border-radius:14px;border:1px solid rgba(139,92,246,0.2);background:rgba(139,92,246,0.06);color:rgba(255,255,255,0.7);font-size:14px;font-weight:600;cursor:pointer;text-align:center;transition:0.3s;}
+.pay-opt.active{border-color:rgba(139,92,246,0.6);background:rgba(139,92,246,0.18);color:#a78bfa;}
+
+.btn-main{width:100%;padding:15px;border:none;border-radius:16px;background:linear-gradient(135deg,#7c3aed,#3b82f6);color:white;font-size:16px;font-weight:700;cursor:pointer;transition:0.3s;position:relative;overflow:hidden;animation:loginPulse 2s ease-in-out infinite;font-family:'DM Sans',sans-serif;}
+.btn-main::after{content:"";position:absolute;top:-50%;left:-60%;width:30%;height:200%;background:rgba(255,255,255,0.2);transform:skewX(-20deg);animation:shine 2.5s ease-in-out infinite;}
+.btn-main:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(124,58,237,0.4);animation:none;}
 .btn-main:disabled{opacity:0.6;cursor:not-allowed;transform:none;}
-.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:100;justify-content:center;align-items:center;padding:20px;}
+
+/* MODALS */
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:200;justify-content:center;align-items:center;padding:20px;}
 .overlay.show{display:flex;}
-.modal{background:linear-gradient(145deg,#1e293b,#0f172a);border-radius:24px;padding:28px 24px;text-align:center;max-width:340px;width:100%;border:1px solid rgba(255,255,255,0.1);}
-.badge{display:inline-block;background:rgba(250,204,21,0.15);border:1px solid rgba(250,204,21,0.3);border-radius:50px;padding:3px 14px;font-size:11px;letter-spacing:2px;color:#facc15;margin-bottom:10px;text-transform:uppercase;}
+.modal{background:rgba(5,3,25,0.95);border:1px solid rgba(139,92,246,0.3);border-radius:24px;padding:28px 24px;text-align:center;max-width:340px;width:100%;}
+.mbadge{display:inline-block;background:rgba(139,92,246,0.15);border:1px solid rgba(139,92,246,0.4);border-radius:50px;padding:3px 14px;font-size:11px;letter-spacing:2px;color:#a78bfa;margin-bottom:10px;text-transform:uppercase;}
 .modal h3{font-size:20px;margin-bottom:4px;}
 .qr-wrap{background:white;border-radius:14px;padding:10px;display:inline-block;margin:14px 0;}
 .qr-wrap img{width:170px;height:170px;display:block;}
-.amt-box{background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.3);border-radius:12px;padding:12px;margin-bottom:14px;}
+.amt-box{background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.3);border-radius:12px;padding:12px;margin-bottom:14px;}
 .amt-lbl{font-size:12px;color:rgba(255,255,255,0.5);margin-bottom:3px;}
-.amt-val{font-size:26px;font-weight:bold;color:#22c55e;}
+.amt-val{font-size:26px;font-weight:bold;color:#a78bfa;}
 .upi-lbl{font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:3px;}
-.upi-id{font-size:14px;color:#facc15;font-weight:600;margin-bottom:14px;}
+.upi-id{font-size:14px;color:#a78bfa;font-weight:600;margin-bottom:14px;}
 .apps{display:flex;justify-content:center;gap:10px;margin-bottom:16px;}
-.app{background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);border-radius:8px;padding:5px 12px;font-size:12px;color:rgba(255,255,255,0.65);}
-.btn-paid{width:100%;padding:14px;border:none;border-radius:13px;background:linear-gradient(90deg,#22c55e,#16a34a);font-size:15px;font-weight:bold;color:white;cursor:pointer;margin-bottom:8px;transition:0.3s;}
-.btn-paid:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(34,197,94,0.3);}
+.app{background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.2);border-radius:8px;padding:5px 12px;font-size:12px;color:rgba(255,255,255,0.65);}
+.btn-paid{width:100%;padding:14px;border:none;border-radius:13px;background:linear-gradient(135deg,#7c3aed,#3b82f6);color:white;font-size:15px;font-weight:bold;cursor:pointer;margin-bottom:8px;transition:0.3s;font-family:'DM Sans',sans-serif;}
+.btn-paid:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(124,58,237,0.4);}
 .btn-paid:disabled{opacity:0.6;cursor:not-allowed;transform:none;}
-.btn-cancel{width:100%;padding:11px;border:1px solid rgba(255,255,255,0.15);border-radius:13px;background:transparent;color:rgba(255,255,255,0.4);cursor:pointer;font-size:13px;}
-.cash-modal{background:linear-gradient(145deg,#1e293b,#0f172a);border-radius:24px;padding:28px 24px;text-align:center;max-width:340px;width:100%;border:1px solid rgba(255,255,255,0.1);}
-.cash-icon{font-size:48px;margin-bottom:10px;}
-.cash-modal h3{font-size:20px;margin-bottom:8px;}
-.cash-note{font-size:14px;color:rgba(255,255,255,0.55);margin-bottom:20px;line-height:1.6;}
-.spinner{display:inline-block;width:18px;height:18px;border:2px solid rgba(0,0,0,0.3);border-top-color:#0f172a;border-radius:50%;animation:spin 0.7s linear infinite;vertical-align:middle;margin-right:8px;}
-@keyframes spin{to{transform:rotate(360deg);}}
+.btn-cancel{width:100%;padding:11px;border:1px solid rgba(139,92,246,0.2);border-radius:13px;background:transparent;color:rgba(255,255,255,0.4);cursor:pointer;font-size:13px;font-family:'DM Sans',sans-serif;}
+.spinner{display:inline-block;width:16px;height:16px;border:2px solid rgba(255,255,255,0.3);border-top-color:white;border-radius:50%;animation:spin 0.7s linear infinite;vertical-align:middle;margin-right:8px;}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes cardEntry{from{opacity:0;transform:translateY(30px) scale(0.95)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes borderGlow{0%{background:linear-gradient(0deg,rgba(139,92,246,0.6),rgba(59,130,246,0.3),rgba(236,72,153,0.4))}33%{background:linear-gradient(120deg,rgba(139,92,246,0.6),rgba(59,130,246,0.3),rgba(236,72,153,0.4))}66%{background:linear-gradient(240deg,rgba(139,92,246,0.6),rgba(59,130,246,0.3),rgba(236,72,153,0.4))}100%{background:linear-gradient(360deg,rgba(139,92,246,0.6),rgba(59,130,246,0.3),rgba(236,72,153,0.4))}}
+@keyframes loginPulse{0%,100%{box-shadow:0 0 0 0 rgba(124,58,237,0.5)}50%{box-shadow:0 0 14px 6px rgba(124,58,237,0)}}
+@keyframes shine{0%{left:-60%}100%{left:130%}}
 </style>
 </head>
 <body>
-<div class="logo">🍴 ATITHI CANTEEN AVCOE</div>
+<canvas id="galaxy-canvas"></canvas>
+<nav class="gnavbar">
+  <div class="gnav-brand">🍴 Atithi Canteen AVCOE Sangamner</div>
+  <a href="soham.html" class="gnav-back">← Back</a>
+</nav>
+
 <div class="box">
   <div class="sec-title">Customer Details</div>
   <input type="text" id="custName" placeholder="👤 Your Full Name">
   <input type="text" id="custTable" placeholder="🪑 Table Number">
   <div class="sec-title">Your Item</div>
   <div class="item-card">
-    <div>
-      <div class="item-name" id="displayName">—</div>
-      <div class="item-price" id="displayPrice">₹0 per piece</div>
-    </div>
+    <div><div class="item-name" id="displayName">—</div><div class="item-price" id="displayPrice">₹0 per piece</div></div>
     <div class="qty-row">
       <button class="q-btn" onclick="changeQty(-1)">−</button>
       <span class="qty" id="qtyNum">1</span>
@@ -80,12 +95,10 @@ input:focus{border-color:rgba(255,140,0,0.5);background:rgba(255,255,255,0.12);}
     <span class="total-label">Total Amount</span>
     <span class="total-amt" id="totalAmt">₹0</span>
   </div>
-  <div class="pay-section">
-    <div class="pay-title">💳 Payment Method</div>
-    <div class="pay-options">
-      <div class="pay-opt active" id="btnUPI" onclick="selectPay('upi')">📱 UPI</div>
-      <div class="pay-opt" id="btnCash" onclick="selectPay('cash')">💵 Cash</div>
-    </div>
+  <div class="pay-title">💳 Payment Method</div>
+  <div class="pay-options">
+    <div class="pay-opt active" id="btnUPI" onclick="selectPay('upi')">📱 UPI</div>
+    <div class="pay-opt" id="btnCash" onclick="selectPay('cash')">💵 Cash</div>
   </div>
   <button class="btn-main" id="placeBtn" onclick="placeOrder()">Place Order 🚀</button>
 </div>
@@ -93,18 +106,13 @@ input:focus{border-color:rgba(255,140,0,0.5);background:rgba(255,255,255,0.12);}
 <!-- UPI Modal -->
 <div class="overlay" id="upiModal">
   <div class="modal">
-    <div class="badge">SECURE PAYMENT</div>
+    <div class="mbadge">SECURE PAYMENT</div>
     <h3>Scan & Pay 📱</h3>
     <div class="qr-wrap"><img id="qrImg" src="" alt="UPI QR"></div>
-    <div class="amt-box">
-      <div class="amt-lbl">Total Payable</div>
-      <div class="amt-val" id="modalAmt">₹0</div>
-    </div>
+    <div class="amt-box"><div class="amt-lbl">Total Payable</div><div class="amt-val" id="modalAmt">₹0</div></div>
     <div class="upi-lbl">UPI ID</div>
     <div class="upi-id">9272157935@ybl</div>
-    <div class="apps">
-      <span class="app">GPay</span><span class="app">PhonePe</span><span class="app">Paytm</span>
-    </div>
+    <div class="apps"><span class="app">GPay</span><span class="app">PhonePe</span><span class="app">Paytm</span></div>
     <button class="btn-paid" id="upiConfirmBtn" onclick="confirmOrder()">✅ Payment Done — Confirm</button>
     <button class="btn-cancel" onclick="closeUPI()">✕ Cancel</button>
   </div>
@@ -112,49 +120,38 @@ input:focus{border-color:rgba(255,140,0,0.5);background:rgba(255,255,255,0.12);}
 
 <!-- Cash Modal -->
 <div class="overlay" id="cashModal">
-  <div class="cash-modal">
-    <div class="cash-icon">💵</div>
+  <div class="modal">
+    <div style="font-size:48px;margin-bottom:10px;">💵</div>
     <h3>Cash Payment</h3>
-    <div class="amt-box" style="margin:14px 0;">
-      <div class="amt-lbl">Amount to Pay at Counter</div>
-      <div class="amt-val" id="cashAmt">₹0</div>
-    </div>
-    <div class="cash-note">
-      Please pay <strong id="cashAmtText">₹0</strong> cash at the counter after receiving your order.<br><br>
-      Show this screen to the staff if needed.
-    </div>
+    <div class="amt-box" style="margin:14px 0;"><div class="amt-lbl">Amount to Pay at Counter</div><div class="amt-val" id="cashAmt">₹0</div></div>
+    <p style="font-size:14px;color:rgba(255,255,255,0.5);margin-bottom:20px;line-height:1.6;">Please pay <strong id="cashAmtText" style="color:#a78bfa;">₹0</strong> cash at the counter after receiving your order.</p>
     <button class="btn-paid" id="cashConfirmBtn" onclick="confirmOrder()">✅ Confirm Order</button>
     <button class="btn-cancel" onclick="closeCash()">✕ Cancel</button>
   </div>
 </div>
 
 <script>
-const BASE_URL = "https://my-projct-production.up.railway.app";
-const UPI_ID   = "9272157935@ybl";
-const UPI_NAME = "Atithi Canteen";
+const canvas=document.getElementById('galaxy-canvas'),ctx=canvas.getContext('2d');
+function resize(){canvas.width=window.innerWidth;canvas.height=window.innerHeight;}
+resize();window.addEventListener('resize',resize);
+const stars=Array.from({length:180},()=>({x:Math.random(),y:Math.random(),r:Math.random()*1.3+0.2,alpha:Math.random()*0.7+0.2,tSpeed:Math.random()*0.02+0.005,tOff:Math.random()*Math.PI*2,color:[[167,139,250],[96,165,250],[244,114,182],[255,255,255]][Math.floor(Math.random()*4)]}));
+const nebulas=[{xR:0.1,yR:0.25,rR:0.25,c:[139,92,246]},{xR:0.88,yR:0.7,rR:0.2,c:[59,130,246]}];
+const ss=[];setInterval(()=>ss.push({x:Math.random()*0.65,y:Math.random()*0.45,len:0,maxLen:0.12+Math.random()*0.1,speed:0.004+Math.random()*0.003,angle:Math.PI/4+(Math.random()-0.5)*0.4}),2500);
+function draw(){const W=canvas.width,H=canvas.height,now=Date.now();ctx.clearRect(0,0,W,H);nebulas.forEach(n=>{const cx=n.xR*W+Math.sin(now*0.0003+n.xR*5)*18,cy=n.yR*H+Math.cos(now*0.0004+n.yR*5)*14,rad=n.rR*Math.min(W,H),g=ctx.createRadialGradient(cx,cy,0,cx,cy,rad);g.addColorStop(0,`rgba(${n.c[0]},${n.c[1]},${n.c[2]},0.2)`);g.addColorStop(1,`rgba(${n.c[0]},${n.c[1]},${n.c[2]},0)`);ctx.beginPath();ctx.arc(cx,cy,rad,0,Math.PI*2);ctx.fillStyle=g;ctx.fill();});stars.forEach(s=>{const a=s.alpha*(0.5+0.5*Math.sin(now*s.tSpeed+s.tOff));ctx.beginPath();ctx.arc(s.x*W,s.y*H,s.r,0,Math.PI*2);ctx.fillStyle=`rgba(${s.color[0]},${s.color[1]},${s.color[2]},${a})`;ctx.fill();});for(let i=ss.length-1;i>=0;i--){const s=ss[i];s.len+=s.speed;const sx=s.x*W,sy=s.y*H,ex=sx+Math.cos(s.angle)*s.len*W,ey=sy+Math.sin(s.angle)*s.len*H,tail=Math.max(0,s.len-0.05),tx=sx+Math.cos(s.angle)*tail*W,ty=sy+Math.sin(s.angle)*tail*H,g=ctx.createLinearGradient(tx,ty,ex,ey);g.addColorStop(0,'rgba(255,255,255,0)');g.addColorStop(1,'rgba(220,200,255,0.9)');ctx.beginPath();ctx.moveTo(tx,ty);ctx.lineTo(ex,ey);ctx.strokeStyle=g;ctx.lineWidth=1.5;ctx.stroke();if(s.len>=s.maxLen)ss.splice(i,1);}requestAnimationFrame(draw);}
+draw();
 
-let itemName  = "Item";
-let itemPrice = 0;
-let qty       = 1;
-let payMode   = "upi";
-let isLoading = false;
-
-const params = new URLSearchParams(window.location.search);
-if(params.get("item"))  itemName  = decodeURIComponent(params.get("item"));
-if(params.get("price")) itemPrice = parseInt(params.get("price")) || 0;
-
-document.getElementById("displayName").innerText  = itemName;
-document.getElementById("displayPrice").innerText = "Rs." + itemPrice + " per piece";
+const BASE_URL="https://my-projct-production.up.railway.app";
+const UPI_ID="9272157935@ybl",UPI_NAME="Atithi Canteen";
+let itemName="Item",itemPrice=0,qty=1,payMode="upi",isLoading=false;
+const params=new URLSearchParams(window.location.search);
+if(params.get("item"))itemName=decodeURIComponent(params.get("item"));
+if(params.get("price"))itemPrice=parseInt(params.get("price"))||0;
+document.getElementById("displayName").innerText=itemName;
+document.getElementById("displayPrice").innerText="₹"+itemPrice+" per piece";
 updateTotal();
-
-function changeQty(d){ qty=Math.max(1,qty+d); document.getElementById("qtyNum").innerText=qty; updateTotal(); }
-function updateTotal(){ document.getElementById("totalAmt").innerText="Rs."+(itemPrice*qty); }
-function selectPay(mode){
-  payMode=mode;
-  document.getElementById("btnUPI").classList.toggle("active",mode==="upi");
-  document.getElementById("btnCash").classList.toggle("active",mode==="cash");
-}
-
+function changeQty(d){qty=Math.max(1,qty+d);document.getElementById("qtyNum").innerText=qty;updateTotal();}
+function updateTotal(){document.getElementById("totalAmt").innerText="₹"+(itemPrice*qty);}
+function selectPay(mode){payMode=mode;document.getElementById("btnUPI").classList.toggle("active",mode==="upi");document.getElementById("btnCash").classList.toggle("active",mode==="cash");}
 function placeOrder(){
   const name=document.getElementById("custName").value.trim();
   const table=document.getElementById("custTable").value.trim();
@@ -163,54 +160,31 @@ function placeOrder(){
   const total=itemPrice*qty;
   if(payMode==="upi"){
     const upiLink=`upi://pay?pa=${UPI_ID}&pn=${encodeURIComponent(UPI_NAME)}&am=${total}&cu=INR`;
-    const qrUrl=`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(upiLink)}`;
-    document.getElementById("qrImg").src=qrUrl;
-    document.getElementById("modalAmt").innerText="Rs."+total;
+    document.getElementById("qrImg").src=`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(upiLink)}`;
+    document.getElementById("modalAmt").innerText="₹"+total;
     document.getElementById("upiModal").classList.add("show");
   } else {
-    document.getElementById("cashAmt").innerText="Rs."+total;
-    document.getElementById("cashAmtText").innerText="Rs."+total;
+    document.getElementById("cashAmt").innerText="₹"+total;
+    document.getElementById("cashAmtText").innerText="₹"+total;
     document.getElementById("cashModal").classList.add("show");
   }
 }
-
 function confirmOrder(){
-  if(isLoading) return;
+  if(isLoading)return;
   const name=document.getElementById("custName").value.trim();
   const table=document.getElementById("custTable").value.trim();
   const total=itemPrice*qty;
-  if(!name||!table){alert("Please fill name and table number!");return;}
-
   const orderData={name,address:table,payment:payMode==="upi"?"UPI":"Cash",total,items:[{name:itemName,quantity:qty}]};
-
   isLoading=true;
-  const confirmBtn=payMode==="upi"?document.getElementById("upiConfirmBtn"):document.getElementById("cashConfirmBtn");
-  confirmBtn.disabled=true;
-  confirmBtn.innerHTML='<span class="spinner"></span>Placing Order...';
-
+  const btn=payMode==="upi"?document.getElementById("upiConfirmBtn"):document.getElementById("cashConfirmBtn");
+  btn.disabled=true;btn.innerHTML='<span class="spinner"></span>Placing Order...';
   const controller=new AbortController();
   const timeout=setTimeout(()=>controller.abort(),10000);
-
   fetch(`${BASE_URL}/order`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(orderData),signal:controller.signal})
-  .then(r=>{clearTimeout(timeout);if(!r.ok)throw new Error("Server status: "+r.status);return r.json();})
-  .then(d=>{
-    if(d.success){window.location.href="thankyou.html?id="+d.orderId;}
-    else throw new Error(d.message||"Order failed");
-  })
-  .catch(err=>{
-    clearTimeout(timeout);
-    console.error("❌ Order Error:",err);
-    let msg="Order failed. Please try again.";
-    if(err.name==="AbortError") msg="Timeout! Railway server check करा.";
-    else if(err.message.includes("Failed to fetch")) msg="Server connect होत नाही! Internet check करा.";
-    else msg="Error: "+err.message;
-    alert(msg);
-    isLoading=false;
-    confirmBtn.disabled=false;
-    confirmBtn.innerHTML=payMode==="upi"?"✅ Payment Done — Confirm":"✅ Confirm Order";
-  });
+  .then(r=>{clearTimeout(timeout);if(!r.ok)throw new Error("Server error "+r.status);return r.json();})
+  .then(d=>{if(d.success)window.location.href="thankyou.html?id="+d.orderId;else throw new Error(d.message||"Failed");})
+  .catch(err=>{clearTimeout(timeout);let msg="Order failed. Try again.";if(err.name==="AbortError")msg="Timeout!";else if(err.message.includes("Failed to fetch"))msg="Server connect होत नाही!";else msg="Error: "+err.message;alert(msg);isLoading=false;btn.disabled=false;btn.innerHTML=payMode==="upi"?"✅ Payment Done — Confirm":"✅ Confirm Order";});
 }
-
 function closeUPI(){if(!isLoading)document.getElementById("upiModal").classList.remove("show");}
 function closeCash(){if(!isLoading)document.getElementById("cashModal").classList.remove("show");}
 </script>

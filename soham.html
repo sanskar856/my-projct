@@ -1,170 +1,239 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Smart Campus Canteen</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="nn.css">
-</head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Atithi Canteen | Home</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;background:#020010;color:white;overflow-x:hidden;}
 
+#galaxy-canvas{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;}
+
+/* NAVBAR */
+.gnavbar{position:fixed;top:0;left:0;right:0;z-index:100;padding:14px 24px;display:flex;justify-content:space-between;align-items:center;background:rgba(5,3,25,0.7);backdrop-filter:blur(20px);border-bottom:1px solid rgba(139,92,246,0.2);}
+.gnav-brand{font-family:'Playfair Display',serif;font-size:20px;background:linear-gradient(135deg,#a78bfa,#60a5fa,#f472b6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:2px;}
+.gnav-links{display:flex;gap:6px;flex-wrap:wrap;}
+.gnav-links a{padding:7px 14px;border-radius:20px;font-size:13px;color:rgba(255,255,255,0.7);text-decoration:none;transition:0.3s;border:1px solid transparent;}
+.gnav-links a:hover{color:#a78bfa;border-color:rgba(139,92,246,0.4);background:rgba(139,92,246,0.1);}
+.gnav-links a.active{color:#a78bfa;border-color:rgba(139,92,246,0.4);background:rgba(139,92,246,0.1);}
+
+/* HERO */
+.hero{position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:100px 20px 60px;}
+.hero-bg{position:absolute;inset:0;background:url(https://content.jdmagicbox.com/v2/comp/sangamner/g6/9999px241.x241.250530032443.m9g6/catalogue/atithi-canteen-ghulewadi-sangamner-mess-z16fQTGqFB.jpg) no-repeat center center/cover;filter:brightness(0.18);z-index:1;}
+.hero-content{position:relative;z-index:2;}
+.hero-badge{display:inline-block;background:rgba(139,92,246,0.15);border:1px solid rgba(139,92,246,0.4);border-radius:50px;padding:6px 20px;font-size:11px;letter-spacing:3px;color:#a78bfa;margin-bottom:16px;text-transform:uppercase;animation:badgePulse 2.5s ease-in-out infinite;}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(36px,6vw,72px);background:linear-gradient(135deg,#a78bfa,#60a5fa,#f472b6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.1;margin-bottom:16px;animation:cardEntry 1s ease both;}
+.hero p{font-size:18px;color:rgba(255,255,255,0.6);margin-bottom:36px;font-weight:300;}
+.hero-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
+.btn-primary-g{padding:14px 32px;border-radius:50px;background:linear-gradient(135deg,#7c3aed,#3b82f6);color:white;font-weight:700;font-size:15px;text-decoration:none;border:none;cursor:pointer;position:relative;overflow:hidden;transition:transform 0.2s,box-shadow 0.2s;animation:loginPulse 2s ease-in-out infinite;}
+.btn-primary-g::after{content:"";position:absolute;top:-50%;left:-60%;width:30%;height:200%;background:rgba(255,255,255,0.2);transform:skewX(-20deg);animation:shine 2.5s ease-in-out infinite;}
+.btn-primary-g:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(124,58,237,0.45);animation:none;color:white;}
+.btn-outline-g{padding:14px 32px;border-radius:50px;background:transparent;border:1px solid rgba(139,92,246,0.5);color:#a78bfa;font-weight:600;font-size:15px;text-decoration:none;transition:0.3s;}
+.btn-outline-g:hover{background:rgba(139,92,246,0.15);color:#a78bfa;transform:translateY(-2px);}
+
+/* STATS */
+.stats-section{position:relative;z-index:2;padding:60px 20px;background:rgba(5,3,25,0.6);backdrop-filter:blur(10px);border-top:1px solid rgba(139,92,246,0.15);border-bottom:1px solid rgba(139,92,246,0.15);}
+.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:700px;margin:0 auto;text-align:center;}
+.stat-num{font-size:42px;font-weight:700;background:linear-gradient(135deg,#a78bfa,#60a5fa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.stat-label{font-size:13px;color:rgba(255,255,255,0.5);margin-top:4px;letter-spacing:1px;text-transform:uppercase;}
+
+/* MENU SECTION */
+.menu-section{position:relative;z-index:2;padding:70px 20px;max-width:1100px;margin:0 auto;}
+.sec-heading{text-align:center;margin-bottom:40px;}
+.sec-heading h2{font-family:'Playfair Display',serif;font-size:36px;background:linear-gradient(135deg,#a78bfa,#f472b6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:8px;}
+.sec-heading p{color:rgba(255,255,255,0.4);font-size:14px;}
+.menu-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:20px;}
+.menu-card{background:rgba(139,92,246,0.06);border:1px solid rgba(139,92,246,0.2);border-radius:20px;padding:24px 20px;text-align:center;transition:0.3s;cursor:pointer;position:relative;overflow:hidden;animation:cardEntry 0.6s ease both;}
+.menu-card::before{content:"";position:absolute;inset:-1px;border-radius:20px;background:linear-gradient(135deg,rgba(139,92,246,0.4),rgba(59,130,246,0.2),rgba(236,72,153,0.3));-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;opacity:0;transition:opacity 0.3s;}
+.menu-card:hover{transform:translateY(-6px);background:rgba(139,92,246,0.1);}
+.menu-card:hover::before{opacity:1;}
+.menu-emoji{font-size:44px;margin-bottom:12px;display:block;}
+.menu-name{font-size:16px;font-weight:600;margin-bottom:4px;}
+.menu-price{font-size:14px;color:#a78bfa;font-weight:700;margin-bottom:14px;}
+.menu-cat{font-size:11px;color:rgba(255,255,255,0.35);letter-spacing:1px;text-transform:uppercase;margin-bottom:12px;}
+.btn-order{display:inline-block;padding:9px 22px;border-radius:50px;background:linear-gradient(135deg,#7c3aed,#3b82f6);color:white;font-size:13px;font-weight:600;text-decoration:none;border:none;cursor:pointer;transition:0.2s;}
+.btn-order:hover{transform:scale(1.05);color:white;}
+
+/* OFFERS */
+.offers-section{position:relative;z-index:2;padding:60px 20px;background:rgba(139,92,246,0.04);border-top:1px solid rgba(139,92,246,0.1);}
+.offers-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;max-width:900px;margin:0 auto;}
+.offer-card{background:rgba(139,92,246,0.08);border:1px solid rgba(139,92,246,0.2);border-radius:16px;padding:20px;display:flex;align-items:center;gap:16px;transition:0.3s;}
+.offer-card:hover{transform:translateY(-3px);border-color:rgba(139,92,246,0.5);}
+.offer-icon{font-size:32px;flex-shrink:0;}
+.offer-title{font-size:15px;font-weight:600;margin-bottom:4px;}
+.offer-desc{font-size:12px;color:rgba(255,255,255,0.5);}
+
+/* TOKEN */
+.token-section{position:relative;z-index:2;padding:60px 20px;text-align:center;}
+.token-card{max-width:400px;margin:0 auto;background:rgba(5,3,25,0.8);border:1px solid rgba(139,92,246,0.3);border-radius:24px;padding:32px;animation:badgePulse 2s ease-in-out infinite;}
+.token-num{font-size:72px;font-weight:700;background:linear-gradient(135deg,#a78bfa,#60a5fa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;}
+.token-status{font-size:14px;color:#f472b6;margin-top:8px;}
+.token-eta{font-size:13px;color:rgba(255,255,255,0.4);margin-top:4px;}
+
+/* LOCATION */
+.location-section{position:relative;z-index:2;padding:60px 20px;max-width:800px;margin:0 auto;}
+.map-card{background:rgba(5,3,25,0.6);border:1px solid rgba(139,92,246,0.2);border-radius:20px;overflow:hidden;}
+.map-card iframe{display:block;border-radius:0 0 20px 20px;}
+.map-header{padding:16px 20px;border-bottom:1px solid rgba(139,92,246,0.15);display:flex;justify-content:space-between;align-items:center;}
+.map-header h5{font-size:15px;color:#a78bfa;margin:0;}
+.btn-locate{padding:8px 18px;border-radius:20px;background:linear-gradient(135deg,#7c3aed,#3b82f6);color:white;font-size:13px;font-weight:600;border:none;cursor:pointer;transition:0.2s;}
+.btn-locate:hover{transform:scale(1.05);}
+#dist-result{padding:10px 20px;font-size:14px;color:#a78bfa;min-height:36px;}
+
+/* FOOTER */
+footer{position:relative;z-index:2;text-align:center;padding:24px;color:rgba(255,255,255,0.3);font-size:13px;border-top:1px solid rgba(139,92,246,0.1);}
+
+@keyframes cardEntry{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+@keyframes badgePulse{0%,100%{box-shadow:0 0 0 0 rgba(139,92,246,0.4)}50%{box-shadow:0 0 12px 5px rgba(139,92,246,0)}}
+@keyframes loginPulse{0%,100%{box-shadow:0 0 0 0 rgba(124,58,237,0.5)}50%{box-shadow:0 0 14px 6px rgba(124,58,237,0)}}
+@keyframes shine{0%{left:-60%}100%{left:130%}}
+</style>
+</head>
 <body>
 
-<!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-  <div class="container">
-    <a class="navbar-brand fw-bold" href="#">🍴 Atithi Canteen</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav ms-auto align-items-center">
-        <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
-        <li class="nav-item"><a class="nav-link" href="./menu.html">Menu</a></li>
-        <li class="nav-item"><a class="nav-link" href="./feedback.html">Feedback</a></li>
-        <li class="nav-item"><a class="nav-link" href="#offers">Offers</a></li>
-        <li class="nav-item"><a class="nav-link" href="./contact.html">Contact</a></li>
-        <li class="nav-item"><a class="nav-link" href="./order.html">Order Tracking</a></li>
-        <li class="nav-item">
-          <button class="btn btn-outline-light ms-3" onclick="toggleDarkMode()">🌙</button>
-        </li>
-      </ul>
-    </div>
+<canvas id="galaxy-canvas"></canvas>
+
+<nav class="gnavbar">
+  <div class="gnav-brand">🍴 Atithi Canteen</div>
+  <div class="gnav-links">
+    <a href="soham.html" class="active">Home</a>
+    <a href="menu.html">menu</a>
+    <a href="feedback.html">Feedback</a>
+    <a href="contact.html">Contact</a>
+    <a href="order.html">Track Order</a>
+   
   </div>
 </nav>
 
-<!-- Hero -->
+<!-- HERO -->
 <section class="hero">
-    <div class="overlay text-center">
-        <div>
-            <h1>Fresh Food | Fast Service | Smart Ordering</h1>
-            <p>Order Online & Skip the Queue 🚀</p>
-            <a href="./menu.html" class="btn btn-warning btn-lg m-2">Order Now</a>
-            <a href="#offers" class="btn btn-outline-light btn-lg m-2">View Offers</a>
-        </div>
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <div class="hero-badge">AVCOE • Sangmner</div>
+    <h1>Fresh Food.<br>Fast Service.<br>Smart Ordering.</h1>
+    <p>Order online from Atithi Canteen & skip the queue 🚀</p>
+    <div class="hero-btns">
+      <a href="menu.html" class="btn-primary-g">Order Now →</a>
+      <a href="#offers" class="btn-outline-g">View Offers</a>
     </div>
+  </div>
 </section>
 
-<!-- Counter Section -->
-<section id="counter" class="py-5 text-center bg-light">
-    <div class="container">
-        <h2 class="mb-4">📊 Live Canteen Stats</h2>
-        <div class="row">
-            <div class="col-md-4">
-                <h1 class="count" data-target="350">0</h1>
-                <p>Students Served</p>
-            </div>
-            <div class="col-md-4">
-                <h1 class="count" data-target="700">0</h1>
-                <p>Orders Completed</p>
-            </div>
-            <div class="col-md-4">
-                <h1 class="count" data-target="5">0</h1>
-                <p>Star Rating ⭐</p>
-            </div>
-        </div>
-    </div>
+<!-- STATS -->
+<section class="stats-section">
+  <div class="stats-grid">
+    <div><div class="stat-num" id="cnt1">0</div><div class="stat-label">Students Served</div></div>
+    <div><div class="stat-num" id="cnt2">0</div><div class="stat-label">Orders Completed</div></div>
+    <div><div class="stat-num" id="cnt3">0</div><div class="stat-label">Star Rating ⭐</div></div>
+  </div>
 </section>
 
-<!-- Gallery -->
-<section id="gallery" class="py-5 text-center">
-    <div class="container">
-        <h2 class="mb-4">📸 Our Canteen Gallery</h2>
-        <div class="row">
-            <div class="col-md-4"><img src="images/food1.jpg" class="img-fluid rounded shadow"></div>
-            <div class="col-md-4"><img src="images/food2.jpg" class="img-fluid rounded shadow"></div>
-            <div class="col-md-4"><img src="images/food3.jpg" class="img-fluid rounded shadow"></div>
-        </div>
-    </div>
+
+<!-- OFFERS -->
+<section class="offers-section" id="offers">
+  <div class="sec-heading">
+    <h2>🔥 Live Offers</h2>
+    <p>Today's special deals</p>
+  </div>
+  <div class="offers-grid">
+    <div class="offer-card"><div class="offer-icon">🍔</div><div><div class="offer-title">Buy 1 Get 1 Free</div><div class="offer-desc">On all burgers today!</div></div></div>
+    <div class="offer-card"><div class="offer-icon">🍕</div><div><div class="offer-title">20% OFF on Pizza</div><div class="offer-desc">Valid till 4 PM</div></div></div>
+    <div class="offer-card"><div class="offer-icon">🥤</div><div><div class="offer-title">Free Cold Drink</div><div class="offer-desc">With every meal above ₹80</div></div></div>
+  </div>
 </section>
 
-<!-- Offers -->
-<section id="offers" class="py-5 bg-light text-center">
-    <div class="container">
-        <h2 class="mb-4">🔥 Live Offers</h2>
-        <div class="row">
-            <div class="col-md-4"><div class="card p-4 shadow">Buy 1 Get 1 Free 🍔</div></div>
-            <div class="col-md-4"><div class="card p-4 shadow">20% OFF on Pizza 🍕</div></div>
-            <div class="col-md-4"><div class="card p-4 shadow">Free Cold Drink 🥤</div></div>
-        </div>
-    </div>
+<!-- TOKEN -->
+<section class="token-section" id="token">
+  <div class="sec-heading">
+    <h2>🎟 Live Token System</h2>
+    <p>Your current token status</p>
+  </div>
+  <div class="token-card">
+    <div style="font-size:13px;color:rgba(255,255,255,0.4);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;">Your Token</div>
+    <div class="token-num">#45</div>
+    <div class="token-status">🍳 Preparing your order...</div>
+    <div class="token-eta">Estimated time: 8 minutes</div>
+  </div>
 </section>
 
-<!-- Token Demo -->
-<section id="token" class="py-5 text-center">
-    <div class="container">
-        <h2 class="mb-4">🎟 Live Token System</h2>
-        <div class="card p-4 shadow">
-            <h3>Your Token Number: #45</h3>
-            <p>Status: Preparing 🍳</p>
-            <p>Estimated Time: 8 Minutes</p>
-        </div>
+<!-- LOCATION -->
+<section class="location-section" id="location">
+  <div class="sec-heading">
+    <h2>📍 Find Us</h2>
+    <p>Amrutvahini College of Engineering, Sangmner</p>
+  </div>
+  <div class="map-card">
+    <div class="map-header">
+      <h5>📍 Atithi Canteen Location</h5>
+      <button class="btn-locate" onclick="getDistance()">My Distance</button>
     </div>
+    <div id="dist-result"></div>
+    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3756.0!2d74.1828763!3d19.614018!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bdd0070e7eb3683%3A0x812069ad0d4f7f8f!2sAmrutvahini%20College%20of%20Engineering!5e0!3m2!1sen!2sin!4v1" width="100%" height="320" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+  </div>
 </section>
 
-<!-- Location Section -->
-<section id="location" class="py-5 text-center bg-light">
-    <div class="container">
-        <h2 class="mb-4">📍 Atithi Canteen Location</h2>
-        <div class="card p-4 shadow mb-4">
-            <div id="distance-result" class="mb-3" style="font-size:18px; font-weight:bold;"></div>
-            <button class="btn btn-warning btn-lg mb-3" onclick="getDistance()">
-                📍 Canteen location click? (My Location)
-            </button>
-            <iframe 
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3756.0!2d74.1828763!3d19.614018!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bdd0070e7eb3683%3A0x812069ad0d4f7f8f!2sAmrutvahini%20College%20of%20Engineering!5e0!3m2!1sen!2sin!4v1" 
-                width="100%" 
-                height="350" 
-                style="border:0; border-radius:12px;" 
-                allowfullscreen="" 
-                loading="lazy">
-            </iframe>
-        </div>
-    </div>
-</section>
-
-<footer class="bg-dark text-white text-center p-3">
-    © 2026 Smart Campus Canteen | Designed by Sanskar 💻
-</footer>
-
-<script src="script.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<footer>© 2026 Atithi Canteen AVCOE | Designed by Sanskar 💻</footer>
 
 <script>
-function getDistance() {
-    if (!navigator.geolocation) {
-        document.getElementById("distance-result").innerHTML = "❌ Location support nahi!";
-        return;
-    }
-    document.getElementById("distance-result").innerHTML = "📡 Location shodhat ahe...";
-    
-    navigator.geolocation.getCurrentPosition(function(position) {
-        const userLat = position.coords.latitude;
-        const userLng = position.coords.longitude;
-        
-        const canteenLat = 19.614018;
-        const canteenLng = 74.1854512;
-        
-        const R = 6371;
-        const dLat = (canteenLat - userLat) * Math.PI / 180;
-        const dLng = (canteenLng - userLng) * Math.PI / 180;
-        const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-                  Math.cos(userLat * Math.PI / 180) * Math.cos(canteenLat * Math.PI / 180) *
-                  Math.sin(dLng/2) * Math.sin(dLng/2);
-        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-        const distance = R * c;
-        
-        if (distance < 0.1) {
-            document.getElementById("distance-result").innerHTML = "🎉 Tum Canteen madhech ahat!";
-        } else {
-            document.getElementById("distance-result").innerHTML = 
-                `📍 Tumhi Canteen pasun <strong>${distance.toFixed(2)} km</strong> dur ahat!`;
-        }
-    }, function() {
-        document.getElementById("distance-result").innerHTML = "❌ Location permission dya!";
-    });
+// Galaxy canvas
+const canvas = document.getElementById('galaxy-canvas');
+const ctx = canvas.getContext('2d');
+function resize(){canvas.width=window.innerWidth;canvas.height=window.innerHeight;}
+resize(); window.addEventListener('resize',resize);
+const stars=Array.from({length:200},()=>({x:Math.random(),y:Math.random(),r:Math.random()*1.4+0.2,alpha:Math.random()*0.7+0.2,tSpeed:Math.random()*0.02+0.005,tOff:Math.random()*Math.PI*2,color:[[167,139,250],[96,165,250],[244,114,182],[255,255,255]][Math.floor(Math.random()*4)]}));
+const nebulas=[{xR:0.1,yR:0.2,rR:0.25,c:[139,92,246]},{xR:0.85,yR:0.7,rR:0.2,c:[59,130,246]},{xR:0.5,yR:0.05,rR:0.15,c:[236,72,153]}];
+const shootingStars=[];
+setInterval(()=>shootingStars.push({x:Math.random()*0.65,y:Math.random()*0.45,len:0,maxLen:0.15+Math.random()*0.1,speed:0.004+Math.random()*0.003,angle:Math.PI/4+(Math.random()-0.5)*0.4}),2200);
+function drawGalaxy(){
+  const W=canvas.width,H=canvas.height;
+  ctx.clearRect(0,0,W,H);
+  const now=Date.now();
+  nebulas.forEach(n=>{const cx=n.xR*W+Math.sin(now*0.0003+n.xR*5)*18,cy=n.yR*H+Math.cos(now*0.0004+n.yR*5)*14,rad=n.rR*Math.min(W,H),g=ctx.createRadialGradient(cx,cy,0,cx,cy,rad);g.addColorStop(0,`rgba(${n.c[0]},${n.c[1]},${n.c[2]},0.2)`);g.addColorStop(1,`rgba(${n.c[0]},${n.c[1]},${n.c[2]},0)`);ctx.beginPath();ctx.arc(cx,cy,rad,0,Math.PI*2);ctx.fillStyle=g;ctx.fill();});
+  stars.forEach(s=>{const a=s.alpha*(0.5+0.5*Math.sin(now*s.tSpeed+s.tOff));ctx.beginPath();ctx.arc(s.x*W,s.y*H,s.r,0,Math.PI*2);ctx.fillStyle=`rgba(${s.color[0]},${s.color[1]},${s.color[2]},${a})`;ctx.fill();});
+  for(let i=shootingStars.length-1;i>=0;i--){const ss=shootingStars[i];ss.len+=ss.speed;const sx=ss.x*W,sy=ss.y*H,ex=sx+Math.cos(ss.angle)*ss.len*W,ey=sy+Math.sin(ss.angle)*ss.len*H,tail=Math.max(0,ss.len-0.05),tx=sx+Math.cos(ss.angle)*tail*W,ty=sy+Math.sin(ss.angle)*tail*H,g=ctx.createLinearGradient(tx,ty,ex,ey);g.addColorStop(0,'rgba(255,255,255,0)');g.addColorStop(1,'rgba(220,200,255,0.9)');ctx.beginPath();ctx.moveTo(tx,ty);ctx.lineTo(ex,ey);ctx.strokeStyle=g;ctx.lineWidth=1.5;ctx.stroke();if(ss.len>=ss.maxLen)shootingStars.splice(i,1);}
+  requestAnimationFrame(drawGalaxy);
+}
+drawGalaxy();
+
+// Animated counters
+function animCount(id,target){let c=0;const step=Math.ceil(target/60);const t=setInterval(()=>{c=Math.min(c+step,target);document.getElementById(id).innerText=c;if(c>=target)clearInterval(t);},30);}
+const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){animCount('cnt1',350);animCount('cnt2',700);animCount('cnt3',5);obs.disconnect();}});});
+obs.observe(document.querySelector('.stats-section'));
+
+// Menu data
+const menuItems=[
+  {name:"Vada Pav",price:15,emoji:"🍔",cat:"Snacks"},
+  {name:"Samosa",price:10,emoji:"🥟",cat:"Snacks"},
+  {name:"Misal Pav",price:40,emoji:"🍲",cat:"Meals"},
+  {name:"Chai",price:12,emoji:"☕",cat:"Drinks"},
+  {name:"Cold Coffee",price:35,emoji:"🧋",cat:"Drinks"},
+  {name:"Thali",price:70,emoji:"🍱",cat:"Meals"},
+  {name:"Bread Omelette",price:30,emoji:"🍳",cat:"Breakfast"},
+  {name:"Maggi",price:25,emoji:"🍜",cat:"Snacks"},
+];
+const grid=document.getElementById('menuGrid');
+menuItems.forEach((item,i)=>{
+  const d=document.createElement('div');
+  d.className='menu-card';
+  d.style.animationDelay=(i*0.08)+'s';
+  d.innerHTML=`<span class="menu-emoji">${item.emoji}</span><div class="menu-name">${item.name}</div><div class="menu-cat">${item.cat}</div><div class="menu-price">₹${item.price}</div><a href="order_page.html?item=${encodeURIComponent(item.name)}&price=${item.price}" class="btn-order">Order Now</a>`;
+  grid.appendChild(d);
+});
+
+// Distance
+function getDistance(){
+  if(!navigator.geolocation){document.getElementById('dist-result').innerText='❌ Location support nahi!';return;}
+  document.getElementById('dist-result').innerText='📡 Location shodhat ahe...';
+  navigator.geolocation.getCurrentPosition(pos=>{
+    const dLat=(19.614018-pos.coords.latitude)*Math.PI/180,dLng=(74.1854512-pos.coords.longitude)*Math.PI/180;
+    const a=Math.sin(dLat/2)**2+Math.cos(pos.coords.latitude*Math.PI/180)*Math.cos(19.614018*Math.PI/180)*Math.sin(dLng/2)**2;
+    const d=6371*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
+    document.getElementById('dist-result').innerText=d<0.1?'🎉 Tum Canteen madhech ahat!':`📍 Canteen pasun ${d.toFixed(2)} km dur ahat!`;
+  },()=>{document.getElementById('dist-result').innerText='❌ Location permission dya!';});
 }
 </script>
-
 </body>
 </html>
