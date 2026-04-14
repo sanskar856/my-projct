@@ -1,97 +1,63 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>Order Successful</title>
-
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Order Placed! | Atithi Canteen</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
-body{
-    margin:0;
-    font-family:sans-serif;
-    height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    overflow:hidden;
-    
-    /* 🌌 Galaxy Background */
-    background: radial-gradient(circle at top, #0f2027, #203a43, #2c5364);
-}
-
-/* ⭐ Stars Animation */
-body::before{
-    content:"";
-    position:absolute;
-    width:200%;
-    height:200%;
-    background:transparent url('https://www.transparenttextures.com/patterns/stardust.png');
-    animation: moveStars 60s linear infinite;
-    opacity:0.4;
-}
-
-@keyframes moveStars{
-    from{transform:translateY(0);}
-    to{transform:translateY(-1000px);}
-}
-
-/* 💫 Card */
-.card{
-    background: rgba(255,255,255,0.95);
-    padding:40px;
-    border-radius:20px;
-    box-shadow:0 10px 40px rgba(0,0,0,0.4);
-    text-align:center;
-    animation: fadeIn 1.5s ease;
-    backdrop-filter: blur(10px);
-}
-
-/* 🎉 Heading Animation */
-h1{
-    color:#2e7d32;
-    font-size:28px;
-    animation: pop 0.6s ease;
-}
-
-/* ✨ Text */
-p{
-    font-size:16px;
-    margin:10px 0;
-    animation: fadeText 2s ease;
-}
-
-/* 🔥 Animations */
-@keyframes fadeIn{
-    from{opacity:0; transform:scale(0.8);}
-    to{opacity:1; transform:scale(1);}
-}
-
-@keyframes pop{
-    0%{transform:scale(0);}
-    80%{transform:scale(1.1);}
-    100%{transform:scale(1);}
-}
-
-@keyframes fadeText{
-    from{opacity:0;}
-    to{opacity:1;}
-}
-
-/* 🌟 Glow Effect */
-.card:hover{
-    box-shadow:0 0 30px #00ffcc;
-    transition:0.3s;
-}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;background:#020010;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px;color:white;}
+#gc{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;}
+.card{position:relative;z-index:2;width:100%;max-width:400px;background:rgba(5,3,25,0.85);border-radius:28px;padding:40px 32px;text-align:center;border:1px solid rgba(139,92,246,0.2);animation:cardEntry 0.9s cubic-bezier(0.34,1.56,0.64,1) both;}
+.card::before{content:"";position:absolute;inset:-1px;border-radius:28px;background:linear-gradient(120deg,rgba(139,92,246,0.6),rgba(59,130,246,0.3),rgba(236,72,153,0.5));-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:borderGlow 3s linear infinite;pointer-events:none;}
+.check-icon{font-size:72px;margin-bottom:16px;animation:popIn 0.6s cubic-bezier(0.34,1.56,0.64,1) 0.3s both;}
+@keyframes popIn{from{opacity:0;transform:scale(0.3)}to{opacity:1;transform:scale(1)}}
+h1{font-family:'Playfair Display',serif;font-size:28px;background:linear-gradient(135deg,#a78bfa,#60a5fa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:10px;}
+.sub{font-size:15px;color:rgba(255,255,255,0.5);margin-bottom:28px;line-height:1.6;}
+.order-id{background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.3);border-radius:12px;padding:14px;margin-bottom:24px;}
+.order-id-label{font-size:11px;color:rgba(167,139,250,0.5);letter-spacing:2px;text-transform:uppercase;margin-bottom:4px;}
+.order-id-num{font-size:22px;font-weight:700;color:#a78bfa;}
+.confetti-row{font-size:24px;margin-bottom:24px;animation:float 2s ease-in-out infinite;}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.btn-home{display:block;padding:14px;border-radius:14px;background:linear-gradient(135deg,#7c3aed,#3b82f6);color:white;text-decoration:none;font-weight:700;font-size:15px;margin-bottom:10px;transition:0.3s;position:relative;overflow:hidden;}
+.btn-home::after{content:"";position:absolute;top:-50%;left:-60%;width:30%;height:200%;background:rgba(255,255,255,0.2);transform:skewX(-20deg);animation:shine 2.5s ease-in-out infinite;}
+.btn-home:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(124,58,237,0.4);color:white;}
+.btn-track{display:block;padding:12px;border-radius:14px;background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.3);color:#a78bfa;text-decoration:none;font-weight:600;font-size:14px;transition:0.3s;}
+.btn-track:hover{background:rgba(139,92,246,0.2);color:#a78bfa;transform:translateY(-2px);}
+@keyframes cardEntry{from{opacity:0;transform:translateY(40px) scale(0.93)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes borderGlow{0%{background:linear-gradient(0deg,rgba(139,92,246,0.7),rgba(59,130,246,0.3),rgba(236,72,153,0.5))}33%{background:linear-gradient(120deg,rgba(139,92,246,0.7),rgba(59,130,246,0.3),rgba(236,72,153,0.5))}66%{background:linear-gradient(240deg,rgba(139,92,246,0.7),rgba(59,130,246,0.3),rgba(236,72,153,0.5))}100%{background:linear-gradient(360deg,rgba(139,92,246,0.7),rgba(59,130,246,0.3),rgba(236,72,153,0.5))}}
+@keyframes shine{0%{left:-60%}100%{left:130%}}
 </style>
-
 </head>
-
 <body>
-
+<canvas id="gc"></canvas>
 <div class="card">
-    <h1>✅ Order Placed!</h1>
-    <p>Thank you for ordering from Athiti Canteen 🍛</p>
-    <p>Please complete your UPI payment.</p>
-    <p><b>Sanskar Gaikwad</b></p>
+  <div class="check-icon">🎉</div>
+  <h1>Order Placed!</h1>
+  <p class="sub">Thank you for ordering from<br><strong style="color:#a78bfa;">Atithi Canteen Avcoe</strong> 🍛<br>Your food is being prepared!</p>
+  <h2>Hi, I’m Sanskar. I recently built a website as part of my project.</h2>
+  <br>
+  <div class="order-id">
+    <div class="order-id-label">Order ID</div>
+    <div class="order-id-num" id="orderIdDisplay">#—</div>
+  </div>
+  <div class="confetti-row">🌟 ✨ 🍽️ ✨ 🌟</div>
+  <a href="order.html" class="btn-home" id="trackBtn">📍 Track My Order</a>
+  <a href="soham.html" class="btn-track">← Back to Home</a>
 </div>
-
+<script>
+const canvas=document.getElementById('gc'),ctx=canvas.getContext('2d');
+function resize(){canvas.width=window.innerWidth;canvas.height=window.innerHeight;}
+resize();window.addEventListener('resize',resize);
+const stars=Array.from({length:200},()=>({x:Math.random(),y:Math.random(),r:Math.random()*1.4+0.2,alpha:Math.random()*0.8+0.2,tSpeed:Math.random()*0.02+0.005,tOff:Math.random()*Math.PI*2,color:[[167,139,250],[96,165,250],[244,114,182],[255,255,255]][Math.floor(Math.random()*4)]}));
+const nebulas=[{xR:0.15,yR:0.2,rR:0.28,c:[139,92,246]},{xR:0.85,yR:0.75,rR:0.22,c:[59,130,246]},{xR:0.5,yR:0.05,rR:0.15,c:[236,72,153]}];
+const ss=[];setInterval(()=>ss.push({x:Math.random()*0.65,y:Math.random()*0.45,len:0,maxLen:0.15+Math.random()*0.12,speed:0.004+Math.random()*0.003,angle:Math.PI/4+(Math.random()-0.5)*0.4}),1800);
+function draw(){const W=canvas.width,H=canvas.height,now=Date.now();ctx.clearRect(0,0,W,H);nebulas.forEach(n=>{const cx=n.xR*W+Math.sin(now*0.0003+n.xR*5)*18,cy=n.yR*H+Math.cos(now*0.0004+n.yR*5)*14,rad=n.rR*Math.min(W,H),g=ctx.createRadialGradient(cx,cy,0,cx,cy,rad);g.addColorStop(0,`rgba(${n.c[0]},${n.c[1]},${n.c[2]},0.22)`);g.addColorStop(1,`rgba(${n.c[0]},${n.c[1]},${n.c[2]},0)`);ctx.beginPath();ctx.arc(cx,cy,rad,0,Math.PI*2);ctx.fillStyle=g;ctx.fill();});stars.forEach(s=>{const a=s.alpha*(0.5+0.5*Math.sin(now*s.tSpeed+s.tOff));ctx.beginPath();ctx.arc(s.x*W,s.y*H,s.r,0,Math.PI*2);ctx.fillStyle=`rgba(${s.color[0]},${s.color[1]},${s.color[2]},${a})`;ctx.fill();});for(let i=ss.length-1;i>=0;i--){const s=ss[i];s.len+=s.speed;const sx=s.x*W,sy=s.y*H,ex=sx+Math.cos(s.angle)*s.len*W,ey=sy+Math.sin(s.angle)*s.len*H,tail=Math.max(0,s.len-0.05),tx=sx+Math.cos(s.angle)*tail*W,ty=sy+Math.sin(s.angle)*tail*H,g=ctx.createLinearGradient(tx,ty,ex,ey);g.addColorStop(0,'rgba(255,255,255,0)');g.addColorStop(1,'rgba(220,200,255,0.9)');ctx.beginPath();ctx.moveTo(tx,ty);ctx.lineTo(ex,ey);ctx.strokeStyle=g;ctx.lineWidth=1.5;ctx.stroke();if(s.len>=s.maxLen)ss.splice(i,1);}requestAnimationFrame(draw);}
+draw();
+const params=new URLSearchParams(window.location.search);
+const oid=params.get("id")||"";
+if(oid){document.getElementById("orderIdDisplay").innerText="#"+oid;document.getElementById("trackBtn").href="order.html?id="+oid;}
+</script>
 </body>
 </html>

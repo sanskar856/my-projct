@@ -1,170 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Smart Campus Canteen</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="nn.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Order Placed! | Atithi Canteen</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;background:#020010;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px;color:white;}
+#gc{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;}
+.card{position:relative;z-index:2;width:100%;max-width:400px;background:rgba(5,3,25,0.85);border-radius:28px;padding:40px 32px;text-align:center;border:1px solid rgba(139,92,246,0.2);animation:cardEntry 0.9s cubic-bezier(0.34,1.56,0.64,1) both;}
+.card::before{content:"";position:absolute;inset:-1px;border-radius:28px;background:linear-gradient(120deg,rgba(139,92,246,0.6),rgba(59,130,246,0.3),rgba(236,72,153,0.5));-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:borderGlow 3s linear infinite;pointer-events:none;}
+.check-icon{font-size:72px;margin-bottom:16px;animation:popIn 0.6s cubic-bezier(0.34,1.56,0.64,1) 0.3s both;}
+@keyframes popIn{from{opacity:0;transform:scale(0.3)}to{opacity:1;transform:scale(1)}}
+h1{font-family:'Playfair Display',serif;font-size:28px;background:linear-gradient(135deg,#a78bfa,#60a5fa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:10px;}
+.sub{font-size:15px;color:rgba(255,255,255,0.5);margin-bottom:28px;line-height:1.6;}
+.order-id{background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.3);border-radius:12px;padding:14px;margin-bottom:24px;}
+.order-id-label{font-size:11px;color:rgba(167,139,250,0.5);letter-spacing:2px;text-transform:uppercase;margin-bottom:4px;}
+.order-id-num{font-size:22px;font-weight:700;color:#a78bfa;}
+.confetti-row{font-size:24px;margin-bottom:24px;animation:float 2s ease-in-out infinite;}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.btn-home{display:block;padding:14px;border-radius:14px;background:linear-gradient(135deg,#7c3aed,#3b82f6);color:white;text-decoration:none;font-weight:700;font-size:15px;margin-bottom:10px;transition:0.3s;position:relative;overflow:hidden;}
+.btn-home::after{content:"";position:absolute;top:-50%;left:-60%;width:30%;height:200%;background:rgba(255,255,255,0.2);transform:skewX(-20deg);animation:shine 2.5s ease-in-out infinite;}
+.btn-home:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(124,58,237,0.4);color:white;}
+.btn-track{display:block;padding:12px;border-radius:14px;background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.3);color:#a78bfa;text-decoration:none;font-weight:600;font-size:14px;transition:0.3s;}
+.btn-track:hover{background:rgba(139,92,246,0.2);color:#a78bfa;transform:translateY(-2px);}
+@keyframes cardEntry{from{opacity:0;transform:translateY(40px) scale(0.93)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes borderGlow{0%{background:linear-gradient(0deg,rgba(139,92,246,0.7),rgba(59,130,246,0.3),rgba(236,72,153,0.5))}33%{background:linear-gradient(120deg,rgba(139,92,246,0.7),rgba(59,130,246,0.3),rgba(236,72,153,0.5))}66%{background:linear-gradient(240deg,rgba(139,92,246,0.7),rgba(59,130,246,0.3),rgba(236,72,153,0.5))}100%{background:linear-gradient(360deg,rgba(139,92,246,0.7),rgba(59,130,246,0.3),rgba(236,72,153,0.5))}}
+@keyframes shine{0%{left:-60%}100%{left:130%}}
+</style>
 </head>
-
 <body>
-
-<!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-  <div class="container">
-    <a class="navbar-brand fw-bold" href="#">🍴 Atithi Canteen</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav ms-auto align-items-center">
-        <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
-        <li class="nav-item"><a class="nav-link" href="./menu.html">Menu</a></li>
-        <li class="nav-item"><a class="nav-link" href="./feedback.html">Feedback</a></li>
-        <li class="nav-item"><a class="nav-link" href="#offers">Offers</a></li>
-        <li class="nav-item"><a class="nav-link" href="./contact.html">Contact</a></li>
-        <li class="nav-item"><a class="nav-link" href="./order.html">Order Tracking</a></li>
-        <li class="nav-item">
-          <button class="btn btn-outline-light ms-3" onclick="toggleDarkMode()">🌙</button>
-        </li>
-      </ul>
-    </div>
+<canvas id="gc"></canvas>
+<div class="card">
+  <div class="check-icon">🎉</div>
+  <h1>Order Placed!</h1>
+  <p class="sub">Thank you for ordering from<br><strong style="color:#a78bfa;">Atithi Canteen Avcoe</strong> 🍛<br>Your food is being prepared!</p>
+  <h2>Hi, I’m Sanskar. I recently built a website as part of my project.</h2>
+  <br>
+  <div class="order-id">
+    <div class="order-id-label">Order ID</div>
+    <div class="order-id-num" id="orderIdDisplay">#—</div>
   </div>
-</nav>
-
-<!-- Hero -->
-<section class="hero">
-    <div class="overlay text-center">
-        <div>
-            <h1>Fresh Food | Fast Service | Smart Ordering</h1>
-            <p>Order Online & Skip the Queue 🚀</p>
-            <a href="./menu.html" class="btn btn-warning btn-lg m-2">Order Now</a>
-            <a href="#offers" class="btn btn-outline-light btn-lg m-2">View Offers</a>
-        </div>
-    </div>
-</section>
-
-<!-- Counter Section -->
-<section id="counter" class="py-5 text-center bg-light">
-    <div class="container">
-        <h2 class="mb-4">📊 Live Canteen Stats</h2>
-        <div class="row">
-            <div class="col-md-4">
-                <h1 class="count" data-target="350">0</h1>
-                <p>Students Served</p>
-            </div>
-            <div class="col-md-4">
-                <h1 class="count" data-target="700">0</h1>
-                <p>Orders Completed</p>
-            </div>
-            <div class="col-md-4">
-                <h1 class="count" data-target="5">0</h1>
-                <p>Star Rating ⭐</p>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Gallery -->
-<section id="gallery" class="py-5 text-center">
-    <div class="container">
-        <h2 class="mb-4">📸 Our Canteen Gallery</h2>
-        <div class="row">
-            <div class="col-md-4"><img src="images/food1.jpg" class="img-fluid rounded shadow"></div>
-            <div class="col-md-4"><img src="images/food2.jpg" class="img-fluid rounded shadow"></div>
-            <div class="col-md-4"><img src="images/food3.jpg" class="img-fluid rounded shadow"></div>
-        </div>
-    </div>
-</section>
-
-<!-- Offers -->
-<section id="offers" class="py-5 bg-light text-center">
-    <div class="container">
-        <h2 class="mb-4">🔥 Live Offers</h2>
-        <div class="row">
-            <div class="col-md-4"><div class="card p-4 shadow">Buy 1 Get 1 Free 🍔</div></div>
-            <div class="col-md-4"><div class="card p-4 shadow">20% OFF on Pizza 🍕</div></div>
-            <div class="col-md-4"><div class="card p-4 shadow">Free Cold Drink 🥤</div></div>
-        </div>
-    </div>
-</section>
-
-<!-- Token Demo -->
-<section id="token" class="py-5 text-center">
-    <div class="container">
-        <h2 class="mb-4">🎟 Live Token System</h2>
-        <div class="card p-4 shadow">
-            <h3>Your Token Number: #45</h3>
-            <p>Status: Preparing 🍳</p>
-            <p>Estimated Time: 8 Minutes</p>
-        </div>
-    </div>
-</section>
-
-<!-- Location Section -->
-<section id="location" class="py-5 text-center bg-light">
-    <div class="container">
-        <h2 class="mb-4">📍 Atithi Canteen Location</h2>
-        <div class="card p-4 shadow mb-4">
-            <div id="distance-result" class="mb-3" style="font-size:18px; font-weight:bold;"></div>
-            <button class="btn btn-warning btn-lg mb-3" onclick="getDistance()">
-                📍 Canteen location click? (My Location)
-            </button>
-            <iframe 
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3756.0!2d74.1828763!3d19.614018!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bdd0070e7eb3683%3A0x812069ad0d4f7f8f!2sAmrutvahini%20College%20of%20Engineering!5e0!3m2!1sen!2sin!4v1" 
-                width="100%" 
-                height="350" 
-                style="border:0; border-radius:12px;" 
-                allowfullscreen="" 
-                loading="lazy">
-            </iframe>
-        </div>
-    </div>
-</section>
-
-<footer class="bg-dark text-white text-center p-3">
-    © 2026 Smart Campus Canteen | Designed by Sanskar 💻
-</footer>
-
-<script src="script.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
+  <div class="confetti-row">🌟 ✨ 🍽️ ✨ 🌟</div>
+  <a href="order.html" class="btn-home" id="trackBtn">📍 Track My Order</a>
+  <a href="soham.html" class="btn-track">← Back to Home</a>
+</div>
 <script>
-function getDistance() {
-    if (!navigator.geolocation) {
-        document.getElementById("distance-result").innerHTML = "❌ Location support nahi!";
-        return;
-    }
-    document.getElementById("distance-result").innerHTML = "📡 Location shodhat ahe...";
-    
-    navigator.geolocation.getCurrentPosition(function(position) {
-        const userLat = position.coords.latitude;
-        const userLng = position.coords.longitude;
-        
-        const canteenLat = 19.614018;
-        const canteenLng = 74.1854512;
-        
-        const R = 6371;
-        const dLat = (canteenLat - userLat) * Math.PI / 180;
-        const dLng = (canteenLng - userLng) * Math.PI / 180;
-        const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-                  Math.cos(userLat * Math.PI / 180) * Math.cos(canteenLat * Math.PI / 180) *
-                  Math.sin(dLng/2) * Math.sin(dLng/2);
-        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-        const distance = R * c;
-        
-        if (distance < 0.1) {
-            document.getElementById("distance-result").innerHTML = "🎉 Tum Canteen madhech ahat!";
-        } else {
-            document.getElementById("distance-result").innerHTML = 
-                `📍 Tumhi Canteen pasun <strong>${distance.toFixed(2)} km</strong> dur ahat!`;
-        }
-    }, function() {
-        document.getElementById("distance-result").innerHTML = "❌ Location permission dya!";
-    });
-}
+const canvas=document.getElementById('gc'),ctx=canvas.getContext('2d');
+function resize(){canvas.width=window.innerWidth;canvas.height=window.innerHeight;}
+resize();window.addEventListener('resize',resize);
+const stars=Array.from({length:200},()=>({x:Math.random(),y:Math.random(),r:Math.random()*1.4+0.2,alpha:Math.random()*0.8+0.2,tSpeed:Math.random()*0.02+0.005,tOff:Math.random()*Math.PI*2,color:[[167,139,250],[96,165,250],[244,114,182],[255,255,255]][Math.floor(Math.random()*4)]}));
+const nebulas=[{xR:0.15,yR:0.2,rR:0.28,c:[139,92,246]},{xR:0.85,yR:0.75,rR:0.22,c:[59,130,246]},{xR:0.5,yR:0.05,rR:0.15,c:[236,72,153]}];
+const ss=[];setInterval(()=>ss.push({x:Math.random()*0.65,y:Math.random()*0.45,len:0,maxLen:0.15+Math.random()*0.12,speed:0.004+Math.random()*0.003,angle:Math.PI/4+(Math.random()-0.5)*0.4}),1800);
+function draw(){const W=canvas.width,H=canvas.height,now=Date.now();ctx.clearRect(0,0,W,H);nebulas.forEach(n=>{const cx=n.xR*W+Math.sin(now*0.0003+n.xR*5)*18,cy=n.yR*H+Math.cos(now*0.0004+n.yR*5)*14,rad=n.rR*Math.min(W,H),g=ctx.createRadialGradient(cx,cy,0,cx,cy,rad);g.addColorStop(0,`rgba(${n.c[0]},${n.c[1]},${n.c[2]},0.22)`);g.addColorStop(1,`rgba(${n.c[0]},${n.c[1]},${n.c[2]},0)`);ctx.beginPath();ctx.arc(cx,cy,rad,0,Math.PI*2);ctx.fillStyle=g;ctx.fill();});stars.forEach(s=>{const a=s.alpha*(0.5+0.5*Math.sin(now*s.tSpeed+s.tOff));ctx.beginPath();ctx.arc(s.x*W,s.y*H,s.r,0,Math.PI*2);ctx.fillStyle=`rgba(${s.color[0]},${s.color[1]},${s.color[2]},${a})`;ctx.fill();});for(let i=ss.length-1;i>=0;i--){const s=ss[i];s.len+=s.speed;const sx=s.x*W,sy=s.y*H,ex=sx+Math.cos(s.angle)*s.len*W,ey=sy+Math.sin(s.angle)*s.len*H,tail=Math.max(0,s.len-0.05),tx=sx+Math.cos(s.angle)*tail*W,ty=sy+Math.sin(s.angle)*tail*H,g=ctx.createLinearGradient(tx,ty,ex,ey);g.addColorStop(0,'rgba(255,255,255,0)');g.addColorStop(1,'rgba(220,200,255,0.9)');ctx.beginPath();ctx.moveTo(tx,ty);ctx.lineTo(ex,ey);ctx.strokeStyle=g;ctx.lineWidth=1.5;ctx.stroke();if(s.len>=s.maxLen)ss.splice(i,1);}requestAnimationFrame(draw);}
+draw();
+const params=new URLSearchParams(window.location.search);
+const oid=params.get("id")||"";
+if(oid){document.getElementById("orderIdDisplay").innerText="#"+oid;document.getElementById("trackBtn").href="order.html?id="+oid;}
 </script>
-
 </body>
 </html>
