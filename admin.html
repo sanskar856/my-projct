@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Admin Panel</title>
+
+<style>
+
+body {
+  font-family: Arial;
+  background: #020617;
+  color: white;
+  text-align: center;
+  overflow-x: hidden;
+}
+
+/* ✨ PARTICLES BACKGROUND */
+canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -1;
+}
+
+/* 🔥 heading */
+h1 {
+  margin: 20px;
+  font-size: 28px;
+  text-shadow: 0 0 15px #22c55e;
+  animation: glow 2s infinite alternate;
+}
+
+@keyframes glow {
+  from { text-shadow: 0 0 10px #22c55e; }
+  to { text-shadow: 0 0 25px #22c55e; }
+}
+
+/* 🧊 GLASS TABLE */
+table {
+  width: 90%;
+  margin: auto;
+  border-collapse: collapse;
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(15px);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+th, td {
+  padding: 12px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+/* hover neon */
+tr:hover {
+  background: rgba(34,197,94,0.1);
+  box-shadow: 0 0 10px #22c55e;
+}
+
+/* buttons */
+button {
+  padding: 6px 12px;
+  margin: 2px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.cook {
+  background: orange;
+}
+
+.done {
+  background: #22c55e;
+  color: white;
+}
+
+button:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 10px white;
+}
+
+/* status badge */
+.status {
+  font-weight: bold;
+  padding: 4px 10px;
+  border-radius: 20px;
+  background: rgba(34,197,94,0.2);
+}
+
+/* popup */
+#popup {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: #22c55e;
+  padding: 10px 20px;
+  border-radius: 8px;
+  display: none;
+}
+
+/* loading */
+#loading {
+  margin-top: 50px;
+  font-size: 20px;
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  50% { opacity: 0.3; }
+}
+
+</style>
+</head>
+
+<body>
+
+<canvas id="bg"></canvas>
+
+<h1>🚀 Smart Admin Panel Atithi Canteen</h1>
+
+<div id="popup">Updated ✅</div>
+<div id="loading">Loading Orders...</div>
+
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Name</th>
+<th>Table</th>
+<th>Total</th>
+<th>Status</th>
+<th>Action</th>
+</tr>
+</thead>
+
+<tbody id="orders"></tbody>
+</table>
+
+<script>
+
+/* 🌌 PARTICLES */
+const canvas = document.getElementById("bg");
+const ctx = canvas.getContext("2d");
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let particles = [];
+
+for(let i=0;i<80;i++){
+  particles.push({
+    x: Math.random()*canvas.width,
+    y: Math.random()*canvas.height,
+    r: Math.random()*2
+  });
+}
+
+function draw(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.fillStyle = "#22c55e";
+
+  particles.forEach(p=>{
+    ctx.beginPath();
+    ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    ctx.fill();
+
+    p.y += 0.3;
+    if(p.y > canvas.height) p.y = 0;
+  });
+
+  requestAnimationFrame(draw);
+}
+draw();
+
+/* 🌐 API */
+const BASE_URL = "https://YOUR-RAILWAY-URL.up.railway.app";
+
+function loadOrders(){
+  fetch(BASE_URL + "/orders")
+  .then(res => res.json())
+  .then(data => {
+
+    document.getElementById("loading").style.display="none";
+
+    let html = "";
+
+    data.forEach(o => {
+      html += `
+      <tr>
+        <td>${o.id}</td>
+        <td>${o.name}</td>
+        <td>${o.address}</td>
+        <td>₹${o.total}</td>
+        <td class="status">${o.status}</td>
+        <td>
+          <button class="cook" onclick="updateStatus(${o.id}, 'Cooking')">Cooking</button>
+          <button class="done" onclick="updateStatus(${o.id}, 'Delivered')">Done</button>
+        </td>
+      </tr>
+      `;
+    });
+
+    document.getElementById("orders").innerHTML = html;
+  });
+}
+
+function showPopup(){
+  let p = document.getElementById("popup");
+  p.style.display = "block";
+  setTimeout(()=> p.style.display="none", 2000);
+}
+
+function updateStatus(id, status){
+  fetch(BASE_URL + "/update-status", {
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body: JSON.stringify({ id, status })
+  })
+  .then(() => {
+    loadOrders();
+    showPopup();
+  });
+}
+
+setInterval(loadOrders, 5000);
+loadOrders();
+
+</script>
+
+</body>
+</html>

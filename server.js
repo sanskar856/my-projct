@@ -86,3 +86,36 @@ app.use((err, req, res, next) => res.status(500).json({success:false,message:"Se
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log("🚀 PORT:", PORT));
+
+app.get("/orders", (req, res) => {
+  db.query("SELECT * FROM orders ORDER BY id DESC", (err, result) => {
+    if(err) return res.send(err);
+    res.json(result);
+  });
+});
+
+app.post("/update-status", (req, res) => {
+  const { id, status } = req.body;
+
+  db.query(
+    "UPDATE orders SET status=? WHERE id=?",
+    [status, id],
+    (err) => {
+      if(err) return res.send(err);
+      res.send("Updated");
+    }
+  );
+});
+
+db.query(`
+CREATE TABLE IF NOT EXISTS orders (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(100),
+  address VARCHAR(100),
+  payment VARCHAR(20),
+  total INT,
+  items TEXT,
+  status VARCHAR(50) DEFAULT 'Pending',
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+)
+`);
