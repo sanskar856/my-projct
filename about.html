@@ -3,577 +3,336 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>About | Atithi Canteen</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<title>About | Atithi Canteen AVCOE</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
-*{ margin:0; padding:0; box-sizing:border-box; }
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{--gold:#a78bfa;--green:#4ade80;--dark:#020010;--card:rgba(139,92,246,0.07);--border:rgba(139,92,246,0.2);}
+body{font-family:'DM Sans',sans-serif;background:var(--dark);color:white;min-height:100vh;overflow-x:hidden;}
 
-:root{
-    --gold:#facc15;
-    --orange:#ff8c00;
-    --green:#22c55e;
-    --dark:#0a0f1e;
-    --card:rgba(255,255,255,0.06);
-    --border:rgba(255,255,255,0.1);
-}
+/* particles */
+.particles{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;overflow:hidden;}
+.particle{position:absolute;animation:floatUp linear infinite;opacity:0.08;font-size:20px;}
+@keyframes floatUp{0%{transform:translateY(100vh) rotate(0deg);opacity:0.08;}100%{transform:translateY(-100px) rotate(360deg);opacity:0;}}
 
-body{
-    font-family:'DM Sans',sans-serif;
-    background: var(--dark);
-    color:white;
-    min-height:100vh;
-    overflow-x:hidden;
-}
+/* header */
+.canteen-header{text-align:center;padding:40px 20px 10px;position:relative;z-index:1;}
+.fork-icon{font-size:36px;display:block;margin-bottom:8px;animation:swing 2s ease-in-out infinite;transform-origin:top center;}
+@keyframes swing{0%,100%{transform:rotate(-8deg);}50%{transform:rotate(8deg);}}
+.logo-text{font-family:'Playfair Display',serif;font-size:30px;font-weight:900;background:linear-gradient(90deg,#a78bfa,#60a5fa,#a78bfa);background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shimmer 2.5s linear infinite;}
+@keyframes shimmer{0%{background-position:0% center;}100%{background-position:200% center;}}
+.avcoe-badge{display:inline-block;margin-top:8px;padding:5px 18px;border-radius:50px;font-size:11px;letter-spacing:3px;color:#a78bfa;border:1px solid rgba(167,139,250,0.4);background:rgba(167,139,250,0.08);animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(167,139,250,0.3);}50%{box-shadow:0 0 0 6px rgba(167,139,250,0);}}
 
-body::before{
-    content:"";
-    position:fixed;
-    top:-50%; left:-50%;
-    width:200%; height:200%;
-    background: radial-gradient(ellipse at 60% 30%, rgba(250,204,21,0.06) 0%, transparent 50%),
-                radial-gradient(ellipse at 20% 80%, rgba(34,197,94,0.05) 0%, transparent 40%);
-    z-index:0;
-    pointer-events:none;
-}
+/* container */
+.container{max-width:640px;margin:0 auto;padding:20px;position:relative;z-index:1;}
 
-/* floating particles */
-.particles{
-    position:fixed;
-    top:0;left:0;
-    width:100%;height:100%;
-    pointer-events:none;
-    z-index:0;
-    overflow:hidden;
-}
-.particle{
-    position:absolute;
-    animation: floatUp linear infinite;
-    opacity:0.1;
-}
-@keyframes floatUp{
-    0%{transform:translateY(100vh) rotate(0deg);opacity:0.1;}
-    100%{transform:translateY(-100px) rotate(360deg);opacity:0;}
-}
+.header{text-align:center;padding:20px 0 36px;}
+.logo-badge{display:inline-block;background:rgba(167,139,250,0.12);border:1px solid rgba(167,139,250,0.3);border-radius:50px;padding:6px 20px;font-size:12px;letter-spacing:2px;color:#a78bfa;margin-bottom:16px;}
+.header h1{font-family:'Playfair Display',serif;font-size:40px;background:linear-gradient(135deg,#a78bfa,#60a5fa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.2;margin-bottom:12px;}
+.header p{color:rgba(255,255,255,0.5);font-size:15px;font-weight:300;line-height:1.6;}
 
-.container{
-    max-width:600px;
-    margin:0 auto;
-    padding:20px;
-    position:relative;
-    z-index:1;
-}
+/* sections */
+.section{margin-bottom:18px;animation:fadeUp 0.6s ease both;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+.section:nth-child(2){animation-delay:0.1s;}
+.section:nth-child(3){animation-delay:0.15s;}
+.section:nth-child(4){animation-delay:0.2s;}
+.section:nth-child(5){animation-delay:0.25s;}
+.section:nth-child(6){animation-delay:0.3s;}
+.section:nth-child(7){animation-delay:0.35s;}
+.section:nth-child(8){animation-delay:0.4s;}
 
-/* ===== ANIMATED LOGO HEADER ===== */
-.canteen-header{
-    text-align:center;
-    padding:30px 0 10px;
-    animation: fadeDown 0.8s ease;
-}
-.fork-icon{
-    font-size:34px;
-    display:block;
-    margin-bottom:6px;
-    animation: swing 2s ease-in-out infinite;
-    transform-origin: top center;
-}
-@keyframes swing{
-    0%,100%{transform:rotate(-10deg);}
-    50%{transform:rotate(10deg);}
-}
-.logo-text{
-    font-size:28px;
-    font-weight:900;
-    letter-spacing:4px;
-    background: linear-gradient(90deg, #facc15, #ff8c00, #facc15);
-    background-size:200% auto;
-    -webkit-background-clip:text;
-    -webkit-text-fill-color:transparent;
-    background-clip:text;
-    animation: shimmer 2.5s linear infinite;
-}
-@keyframes shimmer{
-    0%{background-position:0% center;}
-    100%{background-position:200% center;}
-}
-.avcoe-badge{
-    display:inline-block;
-    margin-top:8px;
-    padding:4px 16px;
-    border-radius:50px;
-    font-size:11px;
-    letter-spacing:3px;
-    color:#facc15;
-    border:1px solid rgba(250,204,21,0.4);
-    background:rgba(250,204,21,0.08);
-    animation: pulse 2s infinite;
-}
-@keyframes pulse{
-    0%,100%{box-shadow:0 0 0 0 rgba(250,204,21,0.3);}
-    50%{box-shadow:0 0 0 6px rgba(250,204,21,0);}
-}
+.card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:22px;backdrop-filter:blur(10px);transition:0.3s;}
+.card:hover{border-color:rgba(167,139,250,0.35);box-shadow:0 8px 30px rgba(0,0,0,0.3);}
+.section-title{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#a78bfa;margin-bottom:16px;display:flex;align-items:center;gap:10px;}
+.section-title::after{content:"";flex:1;height:1px;background:rgba(167,139,250,0.2);}
 
-.header{
-    text-align:center;
-    padding:30px 0 40px;
-    animation: fadeDown 0.8s ease forwards;
-}
-.logo-badge{
-    display:inline-block;
-    background: linear-gradient(135deg, rgba(250,204,21,0.15), rgba(255,140,0,0.15));
-    border:1px solid rgba(250,204,21,0.3);
-    border-radius:50px;
-    padding:8px 20px;
-    font-size:12px;
-    letter-spacing:3px;
-    color:var(--gold);
-    margin-bottom:20px;
-    text-transform:uppercase;
-}
-.header h1{
-    font-family:'Playfair Display',serif;
-    font-size:42px;
-    background: linear-gradient(135deg, #facc15, #ff8c00);
-    -webkit-background-clip:text;
-    -webkit-text-fill-color:transparent;
-    background-clip:text;
-    line-height:1.2;
-    margin-bottom:12px;
-}
-.header p{
-    color:rgba(255,255,255,0.5);
-    font-size:15px;
-    font-weight:300;
-    line-height:1.6;
-}
+/* about text */
+.about-text{font-size:15px;color:rgba(255,255,255,0.7);line-height:1.8;font-weight:300;}
+.about-text strong{color:white;font-weight:500;}
 
-.section{
-    margin-bottom:20px;
-    animation: fadeUp 0.8s ease forwards;
-    opacity:0;
-}
-.section:nth-child(2){ animation-delay:0.1s; }
-.section:nth-child(3){ animation-delay:0.2s; }
-.section:nth-child(4){ animation-delay:0.3s; }
-.section:nth-child(5){ animation-delay:0.4s; }
-.section:nth-child(6){ animation-delay:0.5s; }
-.section:nth-child(7){ animation-delay:0.6s; }
+/* stats */
+.stats-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;}
+.stat-box{text-align:center;padding:16px 10px;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:16px;transition:0.3s;}
+.stat-box:hover{transform:translateY(-3px);border-color:rgba(167,139,250,0.3);}
+.stat-number{font-family:'Playfair Display',serif;font-size:30px;background:linear-gradient(135deg,#a78bfa,#60a5fa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.stat-label{font-size:11px;color:rgba(255,255,255,0.4);margin-top:4px;letter-spacing:0.5px;}
 
-.card{
-    background: var(--card);
-    border:1px solid var(--border);
-    border-radius:20px;
-    padding:24px;
-    backdrop-filter:blur(10px);
-    transition:0.3s;
-}
-.card:hover{
-    border-color:rgba(250,204,21,0.2);
-    box-shadow:0 8px 30px rgba(0,0,0,0.3);
-}
+/* tech stack */
+.tech-grid{display:flex;flex-wrap:wrap;gap:10px;}
+.tech-badge{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:12px;padding:10px 16px;font-size:13px;color:rgba(255,255,255,0.8);transition:0.3s;}
+.tech-badge:hover{background:rgba(139,92,246,0.12);border-color:rgba(167,139,250,0.35);transform:translateY(-2px);}
+.tech-icon{font-size:18px;}
 
-.section-title{
-    font-size:11px;
-    letter-spacing:3px;
-    text-transform:uppercase;
-    color:var(--gold);
-    margin-bottom:16px;
-    display:flex;
-    align-items:center;
-    gap:10px;
-}
-.section-title::after{
-    content:"";
-    flex:1;
-    height:1px;
-    background: rgba(250,204,21,0.2);
-}
+/* features */
+.features-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.feature-item{background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:12px;padding:14px;display:flex;align-items:center;gap:10px;font-size:13px;color:rgba(255,255,255,0.8);transition:0.3s;}
+.feature-item:hover{background:rgba(139,92,246,0.1);border-color:rgba(167,139,250,0.3);}
 
-.about-text{
-    font-size:15px;
-    color:rgba(255,255,255,0.7);
-    line-height:1.8;
-    font-weight:300;
-}
-.about-text strong{ color:white; font-weight:500; }
+/* team */
+.team-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;}
+.team-member{text-align:center;padding:18px 10px;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:16px;transition:0.3s;}
+.team-member:hover{background:rgba(139,92,246,0.1);border-color:rgba(74,222,128,0.3);transform:translateY(-3px);}
+.avatar{width:54px;height:54px;border-radius:50%;background:linear-gradient(135deg,rgba(74,222,128,0.3),rgba(167,139,250,0.2));border:1px solid rgba(74,222,128,0.3);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;margin:0 auto 10px;color:#4ade80;animation:avatarPulse 3s infinite;}
+@keyframes avatarPulse{0%,100%{box-shadow:0 0 0 0 rgba(74,222,128,0.2);}50%{box-shadow:0 0 0 6px rgba(74,222,128,0);}}
+.member-name{font-size:13px;font-weight:600;color:white;}
+.member-role{font-size:11px;color:rgba(255,255,255,0.4);margin-top:3px;}
+.member-skill{font-size:11px;color:#a78bfa;margin-top:4px;}
 
-.features-grid{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:10px;
-}
-.feature-item{
-    background:rgba(255,255,255,0.04);
-    border:1px solid var(--border);
-    border-radius:12px;
-    padding:14px;
-    display:flex;
-    align-items:center;
-    gap:10px;
-    font-size:13px;
-    color:rgba(255,255,255,0.8);
-    transition:0.3s;
-}
-.feature-item:hover{
-    background:rgba(255,255,255,0.08);
-    border-color:rgba(250,204,21,0.3);
-    transform:translateY(-2px);
-}
-.feature-dot{
-    width:8px;
-    height:8px;
-    border-radius:50%;
-    background: linear-gradient(135deg, var(--gold), var(--orange));
-    flex-shrink:0;
-}
+/* built items */
+.built-list{display:flex;flex-direction:column;gap:10px;}
+.built-item{display:flex;align-items:flex-start;gap:12px;padding:14px;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:12px;transition:0.3s;}
+.built-item:hover{background:rgba(255,255,255,0.07);border-color:rgba(74,222,128,0.3);transform:translateX(4px);}
+.built-icon{font-size:22px;flex-shrink:0;}
+.built-info h4{font-size:14px;font-weight:600;color:white;margin-bottom:3px;}
+.built-info p{font-size:12px;color:rgba(255,255,255,0.45);line-height:1.5;}
 
-.team-grid{
-    display:grid;
-    grid-template-columns:1fr 1fr 1fr;
-    gap:12px;
-}
-.team-member{
-    text-align:center;
-    padding:16px 10px;
-    background:rgba(255,255,255,0.04);
-    border:1px solid var(--border);
-    border-radius:16px;
-    transition:0.3s;
-}
-.team-member:hover{
-    background:rgba(255,255,255,0.08);
-    border-color:rgba(34,197,94,0.3);
-    transform:translateY(-3px);
-    box-shadow:0 8px 20px rgba(34,197,94,0.1);
-}
-.avatar{
-    width:50px;
-    height:50px;
-    border-radius:50%;
-    background: linear-gradient(135deg, rgba(34,197,94,0.3), rgba(250,204,21,0.2));
-    border:1px solid rgba(34,197,94,0.3);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:20px;
-    margin:0 auto 10px;
-    font-weight:700;
-    color:var(--green);
-    animation: avatarPulse 3s infinite;
-}
-@keyframes avatarPulse{
-    0%,100%{box-shadow:0 0 0 0 rgba(34,197,94,0.2);}
-    50%{box-shadow:0 0 0 6px rgba(34,197,94,0);}
-}
-.member-name{ font-size:13px; font-weight:500; color:white; }
-.member-role{ font-size:11px; color:rgba(255,255,255,0.4); margin-top:3px; }
+/* college */
+.college-info{display:flex;align-items:center;gap:16px;}
+.college-icon{width:52px;height:52px;border-radius:14px;background:rgba(167,139,250,0.15);border:1px solid rgba(167,139,250,0.2);display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;}
+.college-name{font-size:16px;font-weight:500;color:white;line-height:1.3;}
+.college-sub{font-size:12px;color:rgba(255,255,255,0.4);margin-top:3px;}
 
-.college-info{ display:flex; align-items:center; gap:16px; }
-.college-icon{
-    width:50px; height:50px;
-    border-radius:14px;
-    background: linear-gradient(135deg, rgba(250,204,21,0.2), rgba(255,140,0,0.1));
-    border:1px solid rgba(250,204,21,0.2);
-    display:flex; align-items:center; justify-content:center;
-    font-size:22px; flex-shrink:0;
-}
-.college-name{ font-size:16px; font-weight:500; color:white; line-height:1.3; }
-.college-sub{ font-size:12px; color:rgba(255,255,255,0.4); margin-top:3px; }
+/* contact */
+.contact-row{display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid var(--border);}
+.contact-row:last-child{border-bottom:none;}
+.contact-label{font-size:12px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:1px;}
+.contact-value{font-size:15px;color:white;font-weight:500;}
+.contact-value a{color:#4ade80;text-decoration:none;}
 
-.contact-row{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    padding:14px 0;
-    border-bottom:1px solid var(--border);
-}
-.contact-row:last-child{ border-bottom:none; }
-.contact-label{ font-size:12px; color:rgba(255,255,255,0.4); text-transform:uppercase; letter-spacing:1px; }
-.contact-value{ font-size:15px; color:white; font-weight:500; }
-.contact-value a{ color:var(--green); text-decoration:none; }
+/* back btn */
+.btn-back{display:block;text-align:center;margin:10px 0 50px;padding:16px;border-radius:16px;background:transparent;border:1px solid var(--border);color:white;font-size:15px;font-family:'DM Sans',sans-serif;cursor:pointer;text-decoration:none;position:relative;overflow:hidden;transition:0.3s;}
+.btn-back::before{content:"";position:absolute;top:-50%;left:-60%;width:40%;height:200%;background:rgba(255,255,255,0.06);transform:skewX(-20deg);animation:btnshine 3s infinite;}
+@keyframes btnshine{0%{left:-60%;}100%{left:130%;}}
+.btn-back:hover{background:rgba(139,92,246,0.1);border-color:rgba(167,139,250,0.3);}
 
-.stats-grid{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; }
-.stat-box{
-    text-align:center;
-    padding:16px 10px;
-    background:rgba(255,255,255,0.04);
-    border:1px solid var(--border);
-    border-radius:16px;
-    transition:0.3s;
-}
-.stat-box:hover{
-    transform:translateY(-3px);
-    border-color:rgba(250,204,21,0.3);
-}
-.stat-number{
-    font-family:'Playfair Display',serif;
-    font-size:28px;
-    background: linear-gradient(135deg, var(--gold), var(--orange));
-    -webkit-background-clip:text;
-    -webkit-text-fill-color:transparent;
-    background-clip:text;
-}
-.stat-label{ font-size:11px; color:rgba(255,255,255,0.4); margin-top:4px; }
-
-/* what we added section */
-.added-list{ display:flex; flex-direction:column; gap:10px; }
-.added-item{
-    display:flex;
-    align-items:flex-start;
-    gap:12px;
-    padding:14px;
-    background:rgba(255,255,255,0.04);
-    border:1px solid var(--border);
-    border-radius:12px;
-    transition:0.3s;
-}
-.added-item:hover{
-    background:rgba(255,255,255,0.08);
-    border-color:rgba(34,197,94,0.3);
-    transform:translateX(4px);
-}
-.added-icon{ font-size:20px; flex-shrink:0; }
-.added-info h4{ font-size:14px; font-weight:600; color:white; margin-bottom:3px; }
-.added-info p{ font-size:12px; color:rgba(255,255,255,0.45); line-height:1.5; }
-
-.btn-back{
-    display:block;
-    width:100%;
-    padding:16px;
-    border:1px solid var(--border);
-    border-radius:16px;
-    background:transparent;
-    color:white;
-    font-size:15px;
-    font-family:'DM Sans',sans-serif;
-    cursor:pointer;
-    text-align:center;
-    margin-bottom:40px;
-    transition:0.3s;
-    text-decoration:none;
-    position:relative;
-    overflow:hidden;
-}
-.btn-back::before{
-    content:"";
-    position:absolute;
-    top:-50%; left:-60%;
-    width:40%; height:200%;
-    background:rgba(255,255,255,0.08);
-    transform:skewX(-20deg);
-    animation:btnshine 3s infinite;
-}
-@keyframes btnshine{
-    0%{left:-60%;}
-    100%{left:130%;}
-}
-.btn-back:hover{
-    background:rgba(255,255,255,0.06);
-    border-color:rgba(250,204,21,0.3);
-}
-
-@keyframes fadeDown{
-    from{ opacity:0; transform:translateY(-20px); }
-    to{ opacity:1; transform:translateY(0); }
-}
-@keyframes fadeUp{
-    from{ opacity:0; transform:translateY(20px); }
-    to{ opacity:1; transform:translateY(0); }
-}
+/* navbar */
+.gnavbar{position:fixed;top:0;left:0;right:0;z-index:100;padding:14px 24px;display:flex;justify-content:space-between;align-items:center;background:rgba(5,3,25,0.85);backdrop-filter:blur(20px);border-bottom:1px solid rgba(139,92,246,0.2);}
+.gnav-brand{font-family:'Playfair Display',serif;font-size:18px;background:linear-gradient(135deg,#a78bfa,#60a5fa,#f472b6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.gnav-back{padding:7px 16px;border-radius:20px;font-size:13px;color:rgba(255,255,255,0.7);text-decoration:none;border:1px solid rgba(139,92,246,0.3);transition:0.3s;}
+.gnav-back:hover{color:#a78bfa;background:rgba(139,92,246,0.1);}
 </style>
 </head>
 <body>
 
+<!-- Floating Particles -->
 <div class="particles" id="particles"></div>
 
-<div class="container">
+<!-- Navbar -->
+<nav class="gnavbar">
+  <div class="gnav-brand">🍴 Atithi Canteen AVCOE</div>
+  <a href="index.html" class="gnav-back">← Back</a>
+</nav>
 
-    <!-- Animated Logo -->
-    <div class="canteen-header">
-        <span class="fork-icon">🍴</span>
-        <div class="logo-text">ATITHI CANTEEN</div>
-        <div class="avcoe-badge">✦ AVCOE ✦</div>
+<div class="container" style="padding-top:80px;">
+
+  <!-- Animated Logo -->
+  <div class="canteen-header">
+    <span class="fork-icon">🍴</span>
+    <div class="logo-text">ATITHI CANTEEN</div>
+    <div class="avcoe-badge">✦ AVCOE SANGAMNER ✦</div>
+  </div>
+
+  <div class="header">
+    <div class="logo-badge">🏆 Competition Project 2025</div>
+    <h1>About Our Project</h1>
+    <p>A smart digital canteen built with real technology — no shortcuts, no templates.</p>
+  </div>
+
+  <!-- ABOUT -->
+  <div class="section">
+    <div class="card">
+      <div class="section-title">What We Built</div>
+      <p class="about-text">
+        <strong>Atithi Canteen</strong> is a full-stack digital ordering system for college canteens. Students can browse the menu, place orders, pay via UPI, and track real-time status — all from their phone. No more queues. No more confusion.
+        <br><br>
+        This isn't just a static website. It has a <strong>live MySQL database</strong> deployed on Railway, a <strong>Node.js backend</strong>, real UPI payment QR codes, an admin panel for canteen staff, and a feedback system.
+      </p>
     </div>
+  </div>
 
-    <div class="header">
-        <div class="logo-badge">AVCOE Project</div>
-        <h1>About Us</h1>
-        <p>A smart canteen ordering system built for students, by students.</p>
+  <!-- STATS -->
+  <div class="section">
+    <div class="card">
+      <div class="section-title">Project Stats</div>
+      <div class="stats-grid">
+        <div class="stat-box"><div class="stat-number">8+</div><div class="stat-label">Pages Built</div></div>
+        <div class="stat-box"><div class="stat-number">6+</div><div class="stat-label">API Endpoints</div></div>
+        <div class="stat-box"><div class="stat-number">3</div><div class="stat-label">Tech Layers</div></div>
+      </div>
     </div>
+  </div>
 
-    <!-- ABOUT -->
-    <div class="section">
-        <div class="card">
-            <div class="section-title">About</div>
-            <p class="about-text">
-                <strong>Atithi Canteen</strong> is a digital ordering platform designed to make canteen experience faster and hassle-free. Students can browse the menu, place orders, select payment method, and give feedback — all from their phone or browser. No more waiting in long queues!
-            </p>
+  <!-- TECH STACK -->
+  <div class="section">
+    <div class="card">
+      <div class="section-title">Tech Stack</div>
+      <div class="tech-grid">
+        <div class="tech-badge"><span class="tech-icon">🌐</span>HTML / CSS / JS</div>
+        <div class="tech-badge"><span class="tech-icon">⚙️</span>Node.js + Express</div>
+        <div class="tech-badge"><span class="tech-icon">🗄️</span>MySQL (Railway)</div>
+        <div class="tech-badge"><span class="tech-icon">🚀</span>Railway Deployment</div>
+        <div class="tech-badge"><span class="tech-icon">💳</span>UPI QR Generator</div>
+        <div class="tech-badge"><span class="tech-icon">🔐</span>Auth System</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FEATURES -->
+  <div class="section">
+    <div class="card">
+      <div class="section-title">Features</div>
+      <div class="features-grid">
+        <div class="feature-item">🛒 Online Ordering</div>
+        <div class="feature-item">💳 UPI & Cash Payment</div>
+        <div class="feature-item">🔐 Login & Signup</div>
+        <div class="feature-item">⭐ Feedback System</div>
+        <div class="feature-item">🗄️ MySQL Database</div>
+        <div class="feature-item">📦 Order Tracking</div>
+        <div class="feature-item">🔧 Admin Panel</div>
+        <div class="feature-item">📱 Mobile Responsive</div>
+        <div class="feature-item">📍 Location Map</div>
+        <div class="feature-item">🔢 Token System</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WHAT WE BUILT -->
+  <div class="section">
+    <div class="card">
+      <div class="section-title">Key Achievements</div>
+      <div class="built-list">
+        <div class="built-item">
+          <div class="built-icon">🚀</div>
+          <div class="built-info">
+            <h4>Live Cloud Deployment</h4>
+            <p>Backend deployed on Railway — accessible from anywhere in the world. Real URL, real database.</p>
+          </div>
         </div>
-    </div>
-
-    <!-- STATS -->
-    <div class="section">
-        <div class="card">
-            <div class="section-title">Project Stats</div>
-            <div class="stats-grid">
-                <div class="stat-box">
-                    <div class="stat-number">3+</div>
-                    <div class="stat-label">Team Members</div>
-                </div>
-                <div class="stat-box">
-                    <div class="stat-number">5+</div>
-                    <div class="stat-label">Features</div>
-                </div>
-                <div class="stat-box">
-                    <div class="stat-number">3</div>
-                    <div class="stat-label">Tech Stack</div>
-                </div>
-            </div>
+        <div class="built-item">
+          <div class="built-icon">💳</div>
+          <div class="built-info">
+            <h4>Real UPI Payment Flow</h4>
+            <p>Dynamic QR code generation with UPI deep-links. GPay, PhonePe, Paytm all supported.</p>
+          </div>
         </div>
-    </div>
-
-    <!-- FEATURES -->
-    <div class="section">
-        <div class="card">
-            <div class="section-title">Features</div>
-            <div class="features-grid">
-                <div class="feature-item"><div class="feature-dot"></div>Online Ordering</div>
-                <div class="feature-item"><div class="feature-dot"></div>UPI & Cash Payment</div>
-                <div class="feature-item"><div class="feature-dot"></div>User Login & Signup</div>
-                <div class="feature-item"><div class="feature-dot"></div>Feedback System</div>
-                <div class="feature-item"><div class="feature-dot"></div>MySQL Database</div>
-                <div class="feature-item"><div class="feature-dot"></div>Real-time Orders</div>
-                <div class="feature-item"><div class="feature-dot"></div>Table Number Entry</div>
-                <div class="feature-item"><div class="feature-dot"></div>Order History</div>
-            </div>
+        <div class="built-item">
+          <div class="built-icon">🔐</div>
+          <div class="built-info">
+            <h4>Full Authentication System</h4>
+            <p>User registration and login stored securely in MySQL. No local storage hacks.</p>
+          </div>
         </div>
-    </div>
-
-    <!-- WHAT WE ADDED -->
-    <div class="section">
-        <div class="card">
-            <div class="section-title">What We Built</div>
-            <div class="added-list">
-                <div class="added-item">
-                    <div class="added-icon">🚀</div>
-                    <div class="added-info">
-                        <h4>Railway Cloud Deployment</h4>
-                        <p>Backend deployed on Railway with MySQL database — accessible from anywhere!</p>
-                    </div>
-                </div>
-                <div class="added-item">
-                    <div class="added-icon">💳</div>
-                    <div class="added-info">
-                        <h4>UPI & Cash Payment</h4>
-                        <p>QR code generation for UPI payments + cash payment confirmation flow.</p>
-                    </div>
-                </div>
-                <div class="added-item">
-                    <div class="added-icon">🔐</div>
-                    <div class="added-info">
-                        <h4>Login & Signup System</h4>
-                        <p>User authentication with email & password stored securely in MySQL.</p>
-                    </div>
-                </div>
-                <div class="added-item">
-                    <div class="added-icon">📦</div>
-                    <div class="added-info">
-                        <h4>Order Management</h4>
-                        <p>Orders saved in DB with name, table, items, payment method & total.</p>
-                    </div>
-                </div>
-                <div class="added-item">
-                    <div class="added-icon">⭐</div>
-                    <div class="added-info">
-                        <h4>Feedback System</h4>
-                        <p>Emoji taste rating + star hygiene rating + suggestions — all saved to DB.</p>
-                    </div>
-                </div>
-                <div class="added-item">
-                    <div class="added-icon">✨</div>
-                    <div class="added-info">
-                        <h4>Animated UI</h4>
-                        <p>Shimmer logo, floating particles, swing animations across all pages.</p>
-                    </div>
-                </div>
-            </div>
+        <div class="built-item">
+          <div class="built-icon">📦</div>
+          <div class="built-info">
+            <h4>Real-time Order Management</h4>
+            <p>Orders saved to DB with customer name, table number, items, payment method and total.</p>
+          </div>
         </div>
-    </div>
-
-    <!-- TEAM -->
-    <div class="section">
-        <div class="card">
-            <div class="section-title">Team</div>
-            <div class="team-grid">
-                <div class="team-member">
-                    <div class="avatar">S</div>
-                    <div class="member-name">Sanskar</div>
-                    <div class="member-role">Developer</div>
-                </div>
-                <div class="team-member">
-                    <div class="avatar">K</div>
-                    <div class="member-name">Karan</div>
-                    <div class="member-role">Developer</div>
-                </div>
-                <div class="team-member">
-                    <div class="avatar">A</div>
-                    <div class="member-name">Aditya</div>
-                    <div class="member-role">Developer</div>
-                </div>
-            </div>
+        <div class="built-item">
+          <div class="built-icon">🔧</div>
+          <div class="built-info">
+            <h4>Smart Admin Panel</h4>
+            <p>Canteen staff can view all orders and update status (Cooking / Delivered) in real time.</p>
+          </div>
         </div>
-    </div>
-
-    <!-- COLLEGE -->
-    <div class="section">
-        <div class="card">
-            <div class="section-title">College</div>
-            <div class="college-info">
-                <div class="college-icon">🏛️</div>
-                <div>
-                    <div class="college-name">Amrutvahini College of Engineering</div>
-                    <div class="college-sub">Sangamner, Maharashtra</div>
-                </div>
-            </div>
+        <div class="built-item">
+          <div class="built-icon">✨</div>
+          <div class="built-info">
+            <h4>Premium Galaxy UI</h4>
+            <p>Custom canvas animations — shooting stars, nebulas, animated borders across all pages.</p>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
 
-    <!-- CONTACT -->
-    <div class="section">
-        <div class="card">
-            <div class="section-title">Contact</div>
-            <div class="contact-row">
-                <span class="contact-label">Phone</span>
-                <span class="contact-value"><a href="tel:9272157935">+91 92721 57935</a></span>
-            </div>
-            <div class="contact-row">
-                <span class="contact-label">Project</span>
-                <span class="contact-value">Atithi Canteen</span>
-            </div>
-            <div class="contact-row">
-                <span class="contact-label">Tech Stack</span>
-                <span class="contact-value">HTML · Node.js · MySQL</span>
-            </div>
+  <!-- TEAM -->
+  <div class="section">
+    <div class="card">
+      <div class="section-title">Our Team</div>
+      <div class="team-grid">
+        <div class="team-member">
+          <div class="avatar">S</div>
+          <div class="member-name">Sanskar</div>
+          <div class="member-role">Full Stack</div>
+          <div class="member-skill">Frontend + Backend</div>
         </div>
+        <div class="team-member">
+          <div class="avatar">K</div>
+          <div class="member-name">Karan</div>
+          <div class="member-role">Developer</div>
+          <div class="member-skill">Database + API</div>
+        </div>
+        <div class="team-member">
+          <div class="avatar">A</div>
+          <div class="member-name">Aditya</div>
+          <div class="member-role">Developer</div>
+          <div class="member-skill">UI + Testing</div>
+        </div>
+      </div>
     </div>
+  </div>
 
-    <a href="index.html" class="btn-back">← Back to Login</a>
+  <!-- COLLEGE -->
+  <div class="section">
+    <div class="card">
+      <div class="section-title">Institution</div>
+      <div class="college-info">
+        <div class="college-icon">🏛️</div>
+        <div>
+          <div class="college-name">Amrutvahini College of Engineering</div>
+          <div class="college-sub">Sangamner, Maharashtra — AVCOE</div>
+        </div>
+      </div>
+    </div>
+  </div>
 
+  <!-- CONTACT -->
+  <div class="section">
+    <div class="card">
+      <div class="section-title">Contact</div>
+      <div class="contact-row">
+        <span class="contact-label">Phone / WhatsApp</span>
+        <span class="contact-value"><a href="tel:9272157935">+91 92721 57935</a></span>
+      </div>
+      <div class="contact-row">
+        <span class="contact-label">Project Name</span>
+        <span class="contact-value">Atithi Canteen</span>
+      </div>
+      <div class="contact-row">
+        <span class="contact-label">Frontend</span>
+        <span class="contact-value">HTML · CSS · JavaScript</span>
+      </div>
+      <div class="contact-row">
+        <span class="contact-label">Backend</span>
+        <span class="contact-value">Node.js · Express</span>
+      </div>
+      <div class="contact-row">
+        <span class="contact-label">Database</span>
+        <span class="contact-value">MySQL (Railway Cloud)</span>
+      </div>
+    </div>
+  </div>
+
+  <a href="index.html" class="btn-back">← Back to Login</a>
 </div>
 
 <script>
-const emojis = ["🍕","🍔","🍜","🍱","⭐","💻","🚀","🎓"];
-const container = document.getElementById("particles");
-for(let i = 0; i < 12; i++){
-    const p = document.createElement("div");
-    p.className = "particle";
-    p.innerText = emojis[Math.floor(Math.random() * emojis.length)];
-    p.style.left = Math.random() * 100 + "vw";
-    p.style.animationDuration = (6 + Math.random() * 8) + "s";
-    p.style.animationDelay = (Math.random() * 6) + "s";
-    p.style.fontSize = (14 + Math.random() * 16) + "px";
-    container.appendChild(p);
+const emojis=["🍕","🍔","🍜","🍱","☕","💻","🚀","🎓","⭐","🏆"];
+const container=document.getElementById("particles");
+for(let i=0;i<14;i++){
+  const p=document.createElement("div");
+  p.className="particle";
+  p.innerText=emojis[Math.floor(Math.random()*emojis.length)];
+  p.style.left=Math.random()*100+"vw";
+  p.style.animationDuration=(7+Math.random()*9)+"s";
+  p.style.animationDelay=(Math.random()*7)+"s";
+  p.style.fontSize=(14+Math.random()*14)+"px";
+  container.appendChild(p);
 }
 </script>
-
 </body>
 </html>
