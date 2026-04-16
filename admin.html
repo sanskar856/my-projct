@@ -8,7 +8,9 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;}
 body{background:#020617;color:white;min-height:100vh;}
-canvas#bg{position:fixed;top:0;left:0;z-index:0;}
+canvas#bg{
+  position:absolute;
+}
 
 /* ======= LOGIN OVERLAY ======= */
 #loginOverlay{
@@ -135,7 +137,7 @@ tr.new-row{animation:highlightRow 3s ease forwards;}
 </head>
 <body>
 
-<canvas id="bg"></canvas>
+
 
 <!-- ======= LOGIN OVERLAY ======= -->
 <div id="loginOverlay">
@@ -216,14 +218,28 @@ canvas.width=window.innerWidth;canvas.height=window.innerHeight;
 window.addEventListener("resize",()=>{canvas.width=window.innerWidth;canvas.height=window.innerHeight;});
 const particles=[];
 for(let i=0;i<70;i++)particles.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,r:Math.random()*1.5+0.3,s:0.3+Math.random()*0.3});
+let isScrolling = false;
+
+window.addEventListener("scroll", () => {
+  isScrolling = true;
+  setTimeout(() => isScrolling = false, 100);
+});
+
 function drawBg(){
-  ctx.clearRect(0,0,canvas.width,canvas.height);
-  ctx.fillStyle="rgba(34,197,94,0.6)";
-  particles.forEach(p=>{ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill();p.y+=p.s;if(p.y>canvas.height)p.y=0;});
+  if(!isScrolling){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    ctx.fillStyle="rgba(34,197,94,0.6)";
+    particles.forEach(p=>{
+      ctx.beginPath();
+      ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fill();
+   p.y += p.s * 0.3;
+      if(p.y > canvas.height) p.y = 0;
+    });
+  }
   requestAnimationFrame(drawBg);
 }
 drawBg();
-
 /* ======= LOGIN ======= */
 const ADMIN_PASSWORD = "avcoe"; // Change this!
 let isLoggedIn = false;
