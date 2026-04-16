@@ -1,15 +1,17 @@
 const express = require("express");
 const mysql = require("mysql2");
 const cors = require("cors");
+const path = require("path");
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
+app.use(express.static(path.join(__dirname)));
 
 /* ================= ROOT ================= */
 app.get("/", (req, res) => {
-    res.send("🚀 Atithi Canteen API Running Successfully");
+    res.sendFile(path.join(__dirname, "index.html"));
 });
 
 /* ================= DB CONNECTION ================= */
@@ -22,7 +24,7 @@ const db = mysql.createPool({
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0,
-    ssl: { rejectUnauthorized: false }   // ⚠️ IMPORTANT for Railway
+    ssl: { rejectUnauthorized: false }
 });
 
 /* ================= TEST DB ================= */
