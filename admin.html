@@ -4,36 +4,103 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Admin Panel | Atithi Canteen</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;}
 body{background:#020617;color:white;min-height:100vh;}
-canvas{position:fixed;top:0;left:0;z-index:0;}
+canvas#bg{position:fixed;top:0;left:0;z-index:0;}
 
-/* header */
-.header{position:relative;z-index:10;text-align:center;padding:30px 20px 10px;}
-h1{font-size:26px;background:linear-gradient(135deg,#22c55e,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:glow 2s infinite alternate;}
-@keyframes glow{from{filter:brightness(1);}to{filter:brightness(1.2);}}
+/* ======= LOGIN OVERLAY ======= */
+#loginOverlay{
+  position:fixed;inset:0;z-index:999;
+  background:rgba(2,6,23,0.97);backdrop-filter:blur(20px);
+  display:flex;align-items:center;justify-content:center;
+}
+.login-box{
+  background:rgba(5,3,25,0.9);border:1px solid rgba(139,92,246,0.35);
+  border-radius:24px;padding:40px 36px;width:340px;text-align:center;
+  position:relative;animation:fadeIn 0.6s ease both;
+}
+.login-box::before{content:"";position:absolute;inset:-1px;border-radius:24px;
+  background:linear-gradient(120deg,rgba(139,92,246,0.6),rgba(59,130,246,0.3),rgba(236,72,153,0.4));
+  -webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);
+  -webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none;}
+.login-icon{font-size:52px;margin-bottom:12px;}
+.login-box h2{font-size:22px;margin-bottom:4px;
+  background:linear-gradient(135deg,#a78bfa,#60a5fa);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.login-box p{font-size:13px;color:rgba(255,255,255,0.4);margin-bottom:24px;}
+.login-input{
+  width:100%;padding:12px 16px;border-radius:12px;
+  border:1px solid rgba(139,92,246,0.3);background:rgba(139,92,246,0.08);
+  color:white;font-size:15px;outline:none;margin-bottom:14px;
+  font-family:'Segoe UI',sans-serif;transition:0.3s;
+}
+.login-input:focus{border-color:rgba(139,92,246,0.7);background:rgba(139,92,246,0.15);}
+.login-input::placeholder{color:rgba(167,139,250,0.35);}
+.login-btn{
+  width:100%;padding:13px;border:none;border-radius:13px;
+  background:linear-gradient(135deg,#7c3aed,#3b82f6);color:white;
+  font-size:15px;font-weight:700;cursor:pointer;transition:0.3s;
+  font-family:'Segoe UI',sans-serif;
+}
+.login-btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(124,58,237,0.5);}
+.login-err{font-size:13px;color:#f472b6;margin-top:8px;min-height:18px;}
+@keyframes fadeIn{from{opacity:0;transform:scale(0.94)}to{opacity:1;transform:scale(1)}}
+
+/* ======= HEADER ======= */
+.header{position:relative;z-index:10;text-align:center;padding:28px 20px 10px;}
+h1{font-size:26px;background:linear-gradient(135deg,#22c55e,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
 .subtitle{font-size:13px;color:rgba(255,255,255,0.4);margin-top:4px;}
+.logout-btn{
+  position:absolute;right:20px;top:26px;
+  padding:7px 16px;border-radius:20px;font-size:13px;
+  color:rgba(255,255,255,0.5);border:1px solid rgba(139,92,246,0.3);
+  background:transparent;cursor:pointer;transition:0.3s;
+}
+.logout-btn:hover{color:#f472b6;border-color:rgba(244,114,182,0.5);}
 
-/* stats row */
+/* ======= STATS CARDS ======= */
 .stats-row{position:relative;z-index:10;display:flex;gap:12px;justify-content:center;flex-wrap:wrap;padding:16px 20px;}
-.stat-card{background:rgba(255,255,255,0.05);border:1px solid rgba(34,197,94,0.2);border-radius:14px;padding:14px 22px;text-align:center;min-width:110px;}
-.stat-num{font-size:26px;font-weight:700;color:#22c55e;}
+.stat-card{background:rgba(255,255,255,0.05);border:1px solid rgba(34,197,94,0.2);border-radius:14px;padding:14px 22px;text-align:center;min-width:110px;transition:0.3s;}
+.stat-card:hover{transform:translateY(-3px);}
+.stat-num{font-size:28px;font-weight:700;color:#22c55e;}
 .stat-lbl{font-size:11px;color:rgba(255,255,255,0.4);margin-top:2px;letter-spacing:1px;text-transform:uppercase;}
+.revenue-card{border-color:rgba(251,191,36,0.3);}
+.revenue-card .stat-num{color:#fbbf24;}
 
-/* controls */
-.controls{position:relative;z-index:10;display:flex;gap:10px;justify-content:center;flex-wrap:wrap;padding:0 20px 16px;}
+/* ======= CHART ======= */
+.chart-section{position:relative;z-index:10;padding:0 16px 16px;max-width:700px;margin:0 auto;}
+.chart-box{background:rgba(255,255,255,0.03);border:1px solid rgba(34,197,94,0.15);border-radius:16px;padding:20px;}
+.chart-title{font-size:13px;color:rgba(255,255,255,0.5);letter-spacing:1px;text-transform:uppercase;margin-bottom:14px;}
+
+/* ======= CONTROLS ======= */
+.controls{position:relative;z-index:10;display:flex;gap:10px;justify-content:center;flex-wrap:wrap;padding:0 20px 14px;}
 .btn-refresh{padding:10px 24px;border:none;border-radius:20px;background:linear-gradient(135deg,#22c55e,#16a34a);color:white;font-size:14px;font-weight:600;cursor:pointer;transition:0.2s;}
 .btn-refresh:hover{transform:scale(1.05);box-shadow:0 4px 14px rgba(34,197,94,0.4);}
 .filter-row{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;}
 .filter-btn{padding:7px 16px;border:1px solid rgba(255,255,255,0.15);border-radius:20px;background:transparent;color:rgba(255,255,255,0.6);font-size:13px;cursor:pointer;transition:0.2s;}
 .filter-btn.active,.filter-btn:hover{background:rgba(34,197,94,0.15);border-color:rgba(34,197,94,0.4);color:#22c55e;}
+.auto-badge{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:rgba(34,197,94,0.7);padding:5px 12px;border-radius:20px;border:1px solid rgba(34,197,94,0.2);background:rgba(34,197,94,0.08);}
+.dot{width:7px;height:7px;border-radius:50%;background:#22c55e;animation:pulse 1.5s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.3;}}
 
-/* loading */
+/* ======= NEW ORDER BADGE ======= */
+#newOrderBadge{
+  position:fixed;top:80px;right:20px;z-index:200;
+  background:linear-gradient(135deg,#22c55e,#16a34a);
+  color:white;padding:10px 18px;border-radius:14px;
+  font-size:14px;font-weight:700;display:none;
+  box-shadow:0 4px 20px rgba(34,197,94,0.6);
+  animation:slideInRight 0.4s ease;
+}
+@keyframes slideInRight{from{opacity:0;transform:translateX(60px)}to{opacity:1;transform:translateX(0)}}
+
+/* ======= LOADING ======= */
 #loading{position:relative;z-index:10;text-align:center;padding:40px;font-size:16px;animation:blink 1s infinite;}
 @keyframes blink{50%{opacity:0.3;}}
 
-/* table */
+/* ======= TABLE ======= */
 .table-wrap{position:relative;z-index:10;overflow-x:auto;padding:0 16px 40px;}
 table{width:100%;border-collapse:collapse;background:rgba(255,255,255,0.03);backdrop-filter:blur(10px);border-radius:16px;overflow:hidden;}
 thead{background:rgba(34,197,94,0.1);}
@@ -41,56 +108,80 @@ th{padding:14px 12px;font-size:12px;letter-spacing:1px;text-transform:uppercase;
 td{padding:13px 12px;border-bottom:1px solid rgba(255,255,255,0.05);font-size:14px;vertical-align:top;}
 tr:hover td{background:rgba(34,197,94,0.06);}
 tr:last-child td{border-bottom:none;}
+tr.new-row{animation:highlightRow 3s ease forwards;}
+@keyframes highlightRow{0%{background:rgba(34,197,94,0.25)}100%{background:transparent}}
 
-/* badges */
+/* ======= BADGES ======= */
 .status-badge{padding:4px 12px;border-radius:20px;font-size:12px;font-weight:600;letter-spacing:0.5px;}
 .s-pending{background:rgba(251,191,36,0.15);color:#fbbf24;border:1px solid rgba(251,191,36,0.3);}
 .s-cooking{background:rgba(249,115,22,0.15);color:#f97316;border:1px solid rgba(249,115,22,0.3);}
 .s-delivered{background:rgba(34,197,94,0.15);color:#22c55e;border:1px solid rgba(34,197,94,0.3);}
-
 .pay-badge{padding:3px 10px;border-radius:12px;font-size:11px;}
 .pay-upi{background:rgba(167,139,250,0.15);color:#a78bfa;}
 .pay-cash{background:rgba(96,165,250,0.15);color:#60a5fa;}
 
-/* action buttons */
+/* ======= ACTION BUTTONS ======= */
 .btn-cook{background:rgba(249,115,22,0.2);border:1px solid rgba(249,115,22,0.4);color:#f97316;padding:6px 14px;border-radius:10px;font-size:12px;cursor:pointer;transition:0.2s;margin:2px;}
 .btn-done{background:rgba(34,197,94,0.2);border:1px solid rgba(34,197,94,0.4);color:#22c55e;padding:6px 14px;border-radius:10px;font-size:12px;cursor:pointer;transition:0.2s;margin:2px;}
 .btn-cook:hover,.btn-done:hover{transform:scale(1.05);filter:brightness(1.2);}
 
-/* popup */
+/* ======= POPUP ======= */
 #popup{position:fixed;top:20px;right:20px;background:linear-gradient(135deg,#22c55e,#16a34a);padding:12px 22px;border-radius:12px;font-size:14px;font-weight:600;display:none;z-index:999;box-shadow:0 4px 20px rgba(34,197,94,0.4);animation:slideIn 0.3s ease;}
 @keyframes slideIn{from{opacity:0;transform:translateX(30px);}to{opacity:1;transform:translateX(0);}}
 
 .empty-state{text-align:center;padding:50px;color:rgba(255,255,255,0.3);}
 .empty-state .icon{font-size:48px;margin-bottom:12px;}
-
-/* auto-refresh indicator */
-.auto-badge{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:rgba(34,197,94,0.7);padding:5px 12px;border-radius:20px;border:1px solid rgba(34,197,94,0.2);background:rgba(34,197,94,0.08);}
-.dot{width:7px;height:7px;border-radius:50%;background:#22c55e;animation:pulse 1.5s infinite;}
-@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.3;}}
 </style>
 </head>
 <body>
 
 <canvas id="bg"></canvas>
 
+<!-- ======= LOGIN OVERLAY ======= -->
+<div id="loginOverlay">
+  <div class="login-box">
+    <div class="login-icon">🔐</div>
+    <h2>Admin Login</h2>
+    <p>Atithi Canteen AVCOE — Staff Only</p>
+    <input class="login-input" type="password" id="adminPass" placeholder="🔑 Enter Admin Password" onkeydown="if(event.key==='Enter')tryLogin()">
+    <button class="login-btn" onclick="tryLogin()">Login →</button>
+    <div class="login-err" id="loginErr"></div>
+  </div>
+</div>
+
+<!-- ======= NEW ORDER BADGE ======= -->
+<div id="newOrderBadge">🔔 New Order Arrived!</div>
+
+<canvas id="bg"></canvas>
+
 <div class="header">
   <h1>🚀 Admin Panel — Atithi Canteen</h1>
   <p class="subtitle">AVCOE Sangamner • Live Orders Dashboard</p>
+  <button class="logout-btn" onclick="logout()">🚪 Logout</button>
 </div>
 
+<!-- STATS -->
 <div class="stats-row">
   <div class="stat-card"><div class="stat-num" id="totalCount">0</div><div class="stat-lbl">Total Orders</div></div>
   <div class="stat-card" style="border-color:rgba(251,191,36,0.3);"><div class="stat-num" style="color:#fbbf24;" id="pendingCount">0</div><div class="stat-lbl">Pending</div></div>
   <div class="stat-card" style="border-color:rgba(249,115,22,0.3);"><div class="stat-num" style="color:#f97316;" id="cookingCount">0</div><div class="stat-lbl">Cooking</div></div>
-  <div class="stat-card" style="border-color:rgba(34,197,94,0.3);"><div class="stat-num" id="doneCount">0</div><div class="stat-lbl">Delivered</div></div>
+  <div class="stat-card"><div class="stat-num" id="doneCount">0</div><div class="stat-lbl">Delivered</div></div>
+  <div class="stat-card revenue-card"><div class="stat-num" id="revenueCount">₹0</div><div class="stat-lbl">Revenue Today</div></div>
 </div>
 
+<!-- CHART -->
+<div class="chart-section">
+  <div class="chart-box">
+    <div class="chart-title">📊 Orders by Status</div>
+    <canvas id="statusChart" height="120"></canvas>
+  </div>
+</div>
+
+<!-- CONTROLS -->
 <div class="controls">
   <button class="btn-refresh" onclick="loadOrders()">🔄 Refresh Now</button>
   <div class="auto-badge"><div class="dot"></div>Auto-refresh: 5s</div>
 </div>
-
 <div class="controls" style="padding-top:0;">
   <div class="filter-row">
     <button class="filter-btn active" onclick="filterOrders('all',this)">All</button>
@@ -104,29 +195,22 @@ tr:last-child td{border-bottom:none;}
 <div id="loading">Loading Orders... 🍽️</div>
 
 <div class="table-wrap">
-<table id="ordersTable" style="display:none;">
-<thead>
-<tr>
-<th>#ID</th>
-<th>Customer</th>
-<th>Table</th>
-<th>Items</th>
-<th>Total</th>
-<th>Payment</th>
-<th>Status</th>
-<th>Actions</th>
-</tr>
-</thead>
-<tbody id="orders"></tbody>
-</table>
-<div id="emptyState" class="empty-state" style="display:none;">
-  <div class="icon">📭</div>
-  <div>No orders yet</div>
-</div>
+  <table id="ordersTable" style="display:none;">
+    <thead>
+      <tr>
+        <th>#ID</th><th>Customer</th><th>Table</th><th>Items</th>
+        <th>Total</th><th>Payment</th><th>Status</th><th>Actions</th>
+      </tr>
+    </thead>
+    <tbody id="orders"></tbody>
+  </table>
+  <div id="emptyState" class="empty-state" style="display:none;">
+    <div class="icon">📭</div><div>No orders yet</div>
+  </div>
 </div>
 
 <script>
-/* ===== PARTICLES ===== */
+/* ======= PARTICLES ======= */
 const canvas=document.getElementById("bg"),ctx=canvas.getContext("2d");
 canvas.width=window.innerWidth;canvas.height=window.innerHeight;
 window.addEventListener("resize",()=>{canvas.width=window.innerWidth;canvas.height=window.innerHeight;});
@@ -140,12 +224,91 @@ function drawBg(){
 }
 drawBg();
 
-/* ===== API ===== */
+/* ======= LOGIN ======= */
+const ADMIN_PASSWORD = "avcoe"; // Change this!
+let isLoggedIn = false;
+
+function tryLogin(){
+  const pass = document.getElementById("adminPass").value;
+  const err = document.getElementById("loginErr");
+  if(pass === ADMIN_PASSWORD){
+    isLoggedIn = true;
+    document.getElementById("loginOverlay").style.display = "none";
+    sessionStorage.setItem("adminLoggedIn","1");
+    loadOrders();
+  } else {
+    err.innerText = "❌ Wrong password!";
+    document.getElementById("adminPass").value = "";
+    setTimeout(()=>err.innerText="",3000);
+  }
+}
+
+function logout(){
+  sessionStorage.removeItem("adminLoggedIn");
+  document.getElementById("loginOverlay").style.display = "flex";
+  document.getElementById("adminPass").value = "";
+  isLoggedIn = false;
+}
+
+// Auto-restore session
+if(sessionStorage.getItem("adminLoggedIn")==="1"){
+  isLoggedIn = true;
+  document.getElementById("loginOverlay").style.display = "none";
+}
+
+/* ======= CHART ======= */
+let statusChart;
+function initChart(pending,cooking,delivered){
+  const chartCanvas = document.getElementById("statusChart");
+  if(statusChart) statusChart.destroy();
+  statusChart = new Chart(chartCanvas, {
+    type: 'doughnut',
+    data: {
+      labels: ['Pending','Cooking','Delivered'],
+      datasets:[{
+        data: [pending, cooking, delivered],
+        backgroundColor: ['rgba(251,191,36,0.7)','rgba(249,115,22,0.7)','rgba(34,197,94,0.7)'],
+        borderColor: ['rgba(251,191,36,1)','rgba(249,115,22,1)','rgba(34,197,94,1)'],
+        borderWidth: 2
+      }]
+    },
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{labels:{color:'rgba(255,255,255,0.7)',font:{size:13}}}}
+    }
+  });
+  chartCanvas.style.height = "200px";
+}
+
+/* ======= API ======= */
 const BASE_URL="https://my-projct-production.up.railway.app";
 let allOrders=[];
 let currentFilter="all";
+let prevOrderCount = 0;
+let firstLoad = true;
+
+function playNotif(){
+  try{
+    const ctx2 = new (window.AudioContext||window.webkitAudioContext)();
+    const osc = ctx2.createOscillator();
+    const gain = ctx2.createGain();
+    osc.connect(gain); gain.connect(ctx2.destination);
+    osc.frequency.setValueAtTime(880,ctx2.currentTime);
+    osc.frequency.setValueAtTime(660,ctx2.currentTime+0.1);
+    gain.gain.setValueAtTime(0.3,ctx2.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001,ctx2.currentTime+0.5);
+    osc.start(ctx2.currentTime); osc.stop(ctx2.currentTime+0.5);
+  }catch(e){}
+}
+
+function showNewOrderBadge(){
+  const b = document.getElementById("newOrderBadge");
+  b.style.display = "block";
+  setTimeout(()=>b.style.display="none",3500);
+}
 
 function loadOrders(){
+  if(!isLoggedIn) return;
   fetch(BASE_URL+"/orders")
   .then(r=>r.json())
   .then(data=>{
@@ -153,17 +316,28 @@ function loadOrders(){
     if(!Array.isArray(data)||data.length===0){
       document.getElementById("ordersTable").style.display="none";
       document.getElementById("emptyState").style.display="block";
-      updateStats([]);
-      return;
+      updateStats([]);initChart(0,0,0);prevOrderCount=0;return;
     }
+
+    // New order notification
+    if(!firstLoad && data.length > prevOrderCount){
+      playNotif();showNewOrderBadge();
+    }
+    firstLoad = false;
+    prevOrderCount = data.length;
+
     allOrders=data;
     document.getElementById("ordersTable").style.display="table";
     document.getElementById("emptyState").style.display="none";
     updateStats(data);
     renderTable(data,currentFilter);
+    // Chart
+    const pend=data.filter(o=>!o.status||o.status==="Pending").length;
+    const cook=data.filter(o=>o.status==="Cooking").length;
+    const done=data.filter(o=>o.status==="Delivered").length;
+    initChart(pend,cook,done);
   })
   .catch(err=>{
-    console.log("Error:",err);
     document.getElementById("loading").innerText="⚠️ Could not load orders. Check connection.";
   });
 }
@@ -173,6 +347,8 @@ function updateStats(data){
   document.getElementById("pendingCount").innerText=data.filter(o=>!o.status||o.status==="Pending").length;
   document.getElementById("cookingCount").innerText=data.filter(o=>o.status==="Cooking").length;
   document.getElementById("doneCount").innerText=data.filter(o=>o.status==="Delivered").length;
+  const revenue = data.reduce((s,o)=>s+(parseInt(o.total)||0),0);
+  document.getElementById("revenueCount").innerText="₹"+revenue;
 }
 
 function renderTable(data,filter){
@@ -180,7 +356,6 @@ function renderTable(data,filter){
     if(filter==="Pending") return !o.status||o.status==="Pending";
     return o.status===filter;
   });
-  
   let html="";
   if(filtered.length===0){
     html=`<tr><td colspan="8" style="text-align:center;padding:40px;color:rgba(255,255,255,0.3);">No orders in this category</td></tr>`;
@@ -221,9 +396,7 @@ function filterOrders(filter,btn){
 }
 
 function showPopup(){
-  const p=document.getElementById("popup");
-  p.style.display="block";
-  setTimeout(()=>p.style.display="none",2000);
+  const p=document.getElementById("popup");p.style.display="block";setTimeout(()=>p.style.display="none",2000);
 }
 
 function updateStatus(id,status){
@@ -232,8 +405,11 @@ function updateStatus(id,status){
   .catch(err=>console.log(err));
 }
 
+// Auto-refresh every 5s
 setInterval(loadOrders,5000);
-loadOrders();
+
+// Initial load only if logged in
+if(isLoggedIn) loadOrders();
 </script>
 </body>
 </html>
