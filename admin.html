@@ -7,9 +7,22 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;}
+html{scroll-behavior:smooth;}
 body{background:#020617;color:white;min-height:100vh;}
+
+/* FIX 1: canvas fixed + behind everything, no scroll issue */
 canvas#bg{
-  position:absolute;
+  position:fixed;
+  top:0;left:0;
+  width:100%;height:100%;
+  z-index:0;
+  pointer-events:none;
+}
+
+/* All content above canvas */
+.header,.stats-row,.chart-section,.controls,.table-wrap,#loading,#newOrderBadge,#popup{
+  position:relative;
+  z-index:10;
 }
 
 /* ======= LOGIN OVERLAY ======= */
@@ -51,7 +64,7 @@ canvas#bg{
 @keyframes fadeIn{from{opacity:0;transform:scale(0.94)}to{opacity:1;transform:scale(1)}}
 
 /* ======= HEADER ======= */
-.header{position:relative;z-index:10;text-align:center;padding:28px 20px 10px;}
+.header{text-align:center;padding:28px 20px 10px;}
 h1{font-size:26px;background:linear-gradient(135deg,#22c55e,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
 .subtitle{font-size:13px;color:rgba(255,255,255,0.4);margin-top:4px;}
 .logout-btn{
@@ -63,7 +76,7 @@ h1{font-size:26px;background:linear-gradient(135deg,#22c55e,#a78bfa);-webkit-bac
 .logout-btn:hover{color:#f472b6;border-color:rgba(244,114,182,0.5);}
 
 /* ======= STATS CARDS ======= */
-.stats-row{position:relative;z-index:10;display:flex;gap:12px;justify-content:center;flex-wrap:wrap;padding:16px 20px;}
+.stats-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;padding:16px 20px;}
 .stat-card{background:rgba(255,255,255,0.05);border:1px solid rgba(34,197,94,0.2);border-radius:14px;padding:14px 22px;text-align:center;min-width:110px;transition:0.3s;}
 .stat-card:hover{transform:translateY(-3px);}
 .stat-num{font-size:28px;font-weight:700;color:#22c55e;}
@@ -72,12 +85,12 @@ h1{font-size:26px;background:linear-gradient(135deg,#22c55e,#a78bfa);-webkit-bac
 .revenue-card .stat-num{color:#fbbf24;}
 
 /* ======= CHART ======= */
-.chart-section{position:relative;z-index:10;padding:0 16px 16px;max-width:700px;margin:0 auto;}
+.chart-section{padding:0 16px 16px;max-width:700px;margin:0 auto;}
 .chart-box{background:rgba(255,255,255,0.03);border:1px solid rgba(34,197,94,0.15);border-radius:16px;padding:20px;}
 .chart-title{font-size:13px;color:rgba(255,255,255,0.5);letter-spacing:1px;text-transform:uppercase;margin-bottom:14px;}
 
 /* ======= CONTROLS ======= */
-.controls{position:relative;z-index:10;display:flex;gap:10px;justify-content:center;flex-wrap:wrap;padding:0 20px 14px;}
+.controls{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;padding:0 20px 14px;}
 .btn-refresh{padding:10px 24px;border:none;border-radius:20px;background:linear-gradient(135deg,#22c55e,#16a34a);color:white;font-size:14px;font-weight:600;cursor:pointer;transition:0.2s;}
 .btn-refresh:hover{transform:scale(1.05);box-shadow:0 4px 14px rgba(34,197,94,0.4);}
 .filter-row{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;}
@@ -99,19 +112,24 @@ h1{font-size:26px;background:linear-gradient(135deg,#22c55e,#a78bfa);-webkit-bac
 @keyframes slideInRight{from{opacity:0;transform:translateX(60px)}to{opacity:1;transform:translateX(0)}}
 
 /* ======= LOADING ======= */
-#loading{position:relative;z-index:10;text-align:center;padding:40px;font-size:16px;animation:blink 1s infinite;}
+#loading{text-align:center;padding:40px;font-size:16px;animation:blink 1s infinite;}
 @keyframes blink{50%{opacity:0.3;}}
 
 /* ======= TABLE ======= */
-.table-wrap{position:relative;z-index:10;overflow-x:auto;padding:0 16px 40px;}
+.table-wrap{overflow-x:auto;padding:0 16px 40px;}
 table{width:100%;border-collapse:collapse;background:rgba(255,255,255,0.03);backdrop-filter:blur(10px);border-radius:16px;overflow:hidden;}
 thead{background:rgba(34,197,94,0.1);}
 th{padding:14px 12px;font-size:12px;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,0.5);text-align:left;border-bottom:1px solid rgba(255,255,255,0.08);}
 td{padding:13px 12px;border-bottom:1px solid rgba(255,255,255,0.05);font-size:14px;vertical-align:top;}
 tr:hover td{background:rgba(34,197,94,0.06);}
 tr:last-child td{border-bottom:none;}
-tr.new-row{animation:highlightRow 3s ease forwards;}
-@keyframes highlightRow{0%{background:rgba(34,197,94,0.25)}100%{background:transparent}}
+
+/* FIX 4: new-row animation — only triggers on newly added rows */
+@keyframes highlightRow{
+  0%{background:rgba(34,197,94,0.3);}
+  100%{background:transparent;}
+}
+tr.new-row td{animation:highlightRow 3s ease forwards;}
 
 /* ======= BADGES ======= */
 .status-badge{padding:4px 12px;border-radius:20px;font-size:12px;font-weight:600;letter-spacing:0.5px;}
@@ -137,8 +155,6 @@ tr.new-row{animation:highlightRow 3s ease forwards;}
 </head>
 <body>
 
-
-
 <!-- ======= LOGIN OVERLAY ======= -->
 <div id="loginOverlay">
   <div class="login-box">
@@ -154,6 +170,7 @@ tr.new-row{animation:highlightRow 3s ease forwards;}
 <!-- ======= NEW ORDER BADGE ======= -->
 <div id="newOrderBadge">🔔 New Order Arrived!</div>
 
+<!-- FIX 1: canvas is now fixed via CSS, no inline style needed -->
 <canvas id="bg"></canvas>
 
 <div class="header">
@@ -212,36 +229,46 @@ tr.new-row{animation:highlightRow 3s ease forwards;}
 </div>
 
 <script>
-/* ======= PARTICLES ======= */
-const canvas=document.getElementById("bg"),ctx=canvas.getContext("2d");
-canvas.width=window.innerWidth;canvas.height=window.innerHeight;
-window.addEventListener("resize",()=>{canvas.width=window.innerWidth;canvas.height=window.innerHeight;});
-const particles=[];
-for(let i=0;i<70;i++)particles.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,r:Math.random()*1.5+0.3,s:0.3+Math.random()*0.3});
-let isScrolling = false;
+/* ======= PARTICLES — FIX 1 & 2 ======= */
+/* canvas is position:fixed via CSS — scroll problem solved */
+/* isScrolling flag completely removed — no more blank canvas */
+const canvas = document.getElementById("bg");
+const ctx = canvas.getContext("2d");
 
-window.addEventListener("scroll", () => {
-  isScrolling = true;
-  setTimeout(() => isScrolling = false, 100);
-});
+function resizeCanvas(){
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+resizeCanvas();
+window.addEventListener("resize", resizeCanvas);
+
+const particles = [];
+for(let i = 0; i < 70; i++){
+  particles.push({
+    x: Math.random() * window.innerWidth,
+    y: Math.random() * window.innerHeight,
+    r: Math.random() * 1.5 + 0.3,
+    s: 0.3 + Math.random() * 0.3
+  });
+}
 
 function drawBg(){
-  if(!isScrolling){
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    ctx.fillStyle="rgba(34,197,94,0.6)";
-    particles.forEach(p=>{
-      ctx.beginPath();
-      ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-      ctx.fill();
-   p.y += p.s * 0.3;
-      if(p.y > canvas.height) p.y = 0;
-    });
-  }
+  /* FIX 2: No isScrolling check — always draw, canvas is fixed so it never disappears */
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = "rgba(34,197,94,0.6)";
+  particles.forEach(p => {
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+    ctx.fill();
+    p.y += p.s * 0.3;
+    if(p.y > canvas.height) p.y = 0;
+  });
   requestAnimationFrame(drawBg);
 }
 drawBg();
+
 /* ======= LOGIN ======= */
-const ADMIN_PASSWORD = "avcoe"; // Change this!
+const ADMIN_PASSWORD = "avcoe";
 let isLoggedIn = false;
 
 function tryLogin(){
@@ -255,7 +282,7 @@ function tryLogin(){
   } else {
     err.innerText = "❌ Wrong password!";
     document.getElementById("adminPass").value = "";
-    setTimeout(()=>err.innerText="",3000);
+    setTimeout(()=>err.innerText="", 3000);
   }
 }
 
@@ -266,41 +293,50 @@ function logout(){
   isLoggedIn = false;
 }
 
-// Auto-restore session
-if(sessionStorage.getItem("adminLoggedIn")==="1"){
+if(sessionStorage.getItem("adminLoggedIn") === "1"){
   isLoggedIn = true;
   document.getElementById("loginOverlay").style.display = "none";
 }
 
-/* ======= CHART ======= */
-let statusChart;
-function initChart(pending,cooking,delivered){
+/* ======= CHART — FIX 3 ======= */
+/* Chart is created once, then only data is updated — no more destroy/recreate flicker */
+let statusChart = null;
+
+function initChart(pending, cooking, delivered){
   const chartCanvas = document.getElementById("statusChart");
-  if(statusChart) statusChart.destroy();
-  statusChart = new Chart(chartCanvas, {
-    type: 'doughnut',
-    data: {
-      labels: ['Pending','Cooking','Delivered'],
-      datasets:[{
-        data: [pending, cooking, delivered],
-        backgroundColor: ['rgba(251,191,36,0.7)','rgba(249,115,22,0.7)','rgba(34,197,94,0.7)'],
-        borderColor: ['rgba(251,191,36,1)','rgba(249,115,22,1)','rgba(34,197,94,1)'],
-        borderWidth: 2
-      }]
-    },
-    options:{
-      responsive:true,maintainAspectRatio:false,
-      plugins:{legend:{labels:{color:'rgba(255,255,255,0.7)',font:{size:13}}}}
-    }
-  });
-  chartCanvas.style.height = "200px";
+
+  if(!statusChart){
+    /* First time only — create chart */
+    chartCanvas.style.height = "200px";
+    statusChart = new Chart(chartCanvas, {
+      type: 'doughnut',
+      data: {
+        labels: ['Pending','Cooking','Delivered'],
+        datasets:[{
+          data: [pending, cooking, delivered],
+          backgroundColor: ['rgba(251,191,36,0.7)','rgba(249,115,22,0.7)','rgba(34,197,94,0.7)'],
+          borderColor: ['rgba(251,191,36,1)','rgba(249,115,22,1)','rgba(34,197,94,1)'],
+          borderWidth: 2
+        }]
+      },
+      options:{
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins:{legend:{labels:{color:'rgba(255,255,255,0.7)',font:{size:13}}}}
+      }
+    });
+  } else {
+    /* Subsequent updates — just update data, no flicker */
+    statusChart.data.datasets[0].data = [pending, cooking, delivered];
+    statusChart.update('none'); /* 'none' skips animation on update */
+  }
 }
 
 /* ======= API ======= */
-const BASE_URL="https://my-projct-production.up.railway.app";
-let allOrders=[];
-let currentFilter="all";
-let prevOrderCount = 0;
+const BASE_URL = "https://my-projct-production.up.railway.app";
+let allOrders = [];
+let currentFilter = "all";
+let prevOrderIds = new Set(); /* FIX 4: track IDs not just count */
 let firstLoad = true;
 
 function playNotif(){
@@ -309,10 +345,10 @@ function playNotif(){
     const osc = ctx2.createOscillator();
     const gain = ctx2.createGain();
     osc.connect(gain); gain.connect(ctx2.destination);
-    osc.frequency.setValueAtTime(880,ctx2.currentTime);
-    osc.frequency.setValueAtTime(660,ctx2.currentTime+0.1);
-    gain.gain.setValueAtTime(0.3,ctx2.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001,ctx2.currentTime+0.5);
+    osc.frequency.setValueAtTime(880, ctx2.currentTime);
+    osc.frequency.setValueAtTime(660, ctx2.currentTime+0.1);
+    gain.gain.setValueAtTime(0.3, ctx2.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx2.currentTime+0.5);
     osc.start(ctx2.currentTime); osc.stop(ctx2.currentTime+0.5);
   }catch(e){}
 }
@@ -320,111 +356,180 @@ function playNotif(){
 function showNewOrderBadge(){
   const b = document.getElementById("newOrderBadge");
   b.style.display = "block";
-  setTimeout(()=>b.style.display="none",3500);
+  setTimeout(()=>b.style.display="none", 3500);
 }
 
 function loadOrders(){
   if(!isLoggedIn) return;
-  fetch(BASE_URL+"/orders")
-  .then(r=>r.json())
-  .then(data=>{
-    document.getElementById("loading").style.display="none";
-    if(!Array.isArray(data)||data.length===0){
-      document.getElementById("ordersTable").style.display="none";
-      document.getElementById("emptyState").style.display="block";
-      updateStats([]);initChart(0,0,0);prevOrderCount=0;return;
+  fetch(BASE_URL + "/orders")
+  .then(r => r.json())
+  .then(data => {
+    document.getElementById("loading").style.display = "none";
+
+    if(!Array.isArray(data) || data.length === 0){
+      document.getElementById("ordersTable").style.display = "none";
+      document.getElementById("emptyState").style.display = "block";
+      updateStats([]);
+      initChart(0,0,0);
+      prevOrderIds = new Set();
+      firstLoad = false;
+      return;
     }
 
-    // New order notification
-    if(!firstLoad && data.length > prevOrderCount){
-      playNotif();showNewOrderBadge();
+    /* FIX 4: detect new orders by ID comparison */
+    const currentIds = new Set(data.map(o => o.id));
+    let newOrderIds = new Set();
+    if(!firstLoad){
+      data.forEach(o => {
+        if(!prevOrderIds.has(o.id)) newOrderIds.add(o.id);
+      });
+      if(newOrderIds.size > 0){
+        playNotif();
+        showNewOrderBadge();
+      }
     }
     firstLoad = false;
-    prevOrderCount = data.length;
+    prevOrderIds = currentIds;
 
-    allOrders=data;
-    document.getElementById("ordersTable").style.display="table";
-    document.getElementById("emptyState").style.display="none";
+    allOrders = data;
+    document.getElementById("ordersTable").style.display = "table";
+    document.getElementById("emptyState").style.display = "none";
     updateStats(data);
-    renderTable(data,currentFilter);
-    // Chart
-    const pend=data.filter(o=>!o.status||o.status==="Pending").length;
-    const cook=data.filter(o=>o.status==="Cooking").length;
-    const done=data.filter(o=>o.status==="Delivered").length;
-    initChart(pend,cook,done);
+
+    /* FIX 4: pass newOrderIds so only new rows get highlight animation */
+    renderTable(data, currentFilter, newOrderIds);
+
+    const pend = data.filter(o => !o.status || o.status === "Pending").length;
+    const cook = data.filter(o => o.status === "Cooking").length;
+    const done = data.filter(o => o.status === "Delivered").length;
+    initChart(pend, cook, done);
   })
-  .catch(err=>{
-    document.getElementById("loading").innerText="⚠️ Could not load orders. Check connection.";
+  .catch(err => {
+    document.getElementById("loading").innerText = "⚠️ Could not load orders. Check connection.";
   });
 }
 
 function updateStats(data){
-  document.getElementById("totalCount").innerText=data.length;
-  document.getElementById("pendingCount").innerText=data.filter(o=>!o.status||o.status==="Pending").length;
-  document.getElementById("cookingCount").innerText=data.filter(o=>o.status==="Cooking").length;
-  document.getElementById("doneCount").innerText=data.filter(o=>o.status==="Delivered").length;
-  const revenue = data.reduce((s,o)=>s+(parseInt(o.total)||0),0);
-  document.getElementById("revenueCount").innerText="₹"+revenue;
+  document.getElementById("totalCount").innerText = data.length;
+  document.getElementById("pendingCount").innerText = data.filter(o => !o.status || o.status === "Pending").length;
+  document.getElementById("cookingCount").innerText = data.filter(o => o.status === "Cooking").length;
+  document.getElementById("doneCount").innerText = data.filter(o => o.status === "Delivered").length;
+  const revenue = data.reduce((s,o) => s + (parseInt(o.total) || 0), 0);
+  document.getElementById("revenueCount").innerText = "₹" + revenue;
 }
 
-function renderTable(data,filter){
-  const filtered=filter==="all"?data:data.filter(o=>{
-    if(filter==="Pending") return !o.status||o.status==="Pending";
-    return o.status===filter;
+/* FIX 4: Smart table render — existing rows update in place, new rows get animation */
+function buildRowHTML(o){
+  const status = o.status || "Pending";
+  const sc = status === "Pending" ? "s-pending" : status === "Cooking" ? "s-cooking" : "s-delivered";
+  const pc = (o.payment || "Cash").toLowerCase().includes("upi") ? "pay-upi" : "pay-cash";
+  let items = "";
+  try{
+    const parsed = typeof o.items === "string" ? JSON.parse(o.items) : o.items;
+    if(Array.isArray(parsed)) items = parsed.map(i => i.name || (typeof i === "string" ? i : "")).filter(Boolean).join(", ") || "—";
+    else items = o.items || "—";
+  }catch{ items = o.items || "—"; }
+
+  return `
+    <td style="color:#a78bfa;font-weight:700;">#${o.id}</td>
+    <td><div style="font-weight:600;">${o.name || "—"}</div></td>
+    <td style="color:rgba(255,255,255,0.6);">${o.address || "—"}</td>
+    <td style="max-width:160px;color:rgba(255,255,255,0.7);font-size:13px;">${items}</td>
+    <td style="font-weight:700;color:#22c55e;">₹${o.total || 0}</td>
+    <td><span class="pay-badge ${pc}">${o.payment || "Cash"}</span></td>
+    <td><span class="status-badge ${sc}">${status}</span></td>
+    <td>
+      <button class="btn-cook" onclick="updateStatus(${o.id},'Cooking')">🍳 Cooking</button>
+      <button class="btn-done" onclick="updateStatus(${o.id},'Delivered')">✅ Done</button>
+    </td>`;
+}
+
+function renderTable(data, filter, newOrderIds = new Set()){
+  const tbody = document.getElementById("orders");
+
+  const filtered = filter === "all" ? data : data.filter(o => {
+    if(filter === "Pending") return !o.status || o.status === "Pending";
+    return o.status === filter;
   });
-  let html="";
-  if(filtered.length===0){
-    html=`<tr><td colspan="8" style="text-align:center;padding:40px;color:rgba(255,255,255,0.3);">No orders in this category</td></tr>`;
-  } else {
-    filtered.forEach(o=>{
-      const status=o.status||"Pending";
-      const sc=status==="Pending"?"s-pending":status==="Cooking"?"s-cooking":"s-delivered";
-      const pc=(o.payment||"Cash").toLowerCase().includes("upi")?"pay-upi":"pay-cash";
-      let items="";
-      try{
-        const parsed=typeof o.items==="string"?JSON.parse(o.items):o.items;
-        if(Array.isArray(parsed))items=parsed.map(i=>i.name||(typeof i==="string"?i:"")).filter(Boolean).join(", ")||"—";
-        else items=o.items||"—";
-      }catch{items=o.items||"—";}
-      html+=`<tr>
-        <td style="color:#a78bfa;font-weight:700;">#${o.id}</td>
-        <td><div style="font-weight:600;">${o.name||"—"}</div></td>
-        <td style="color:rgba(255,255,255,0.6);">${o.address||"—"}</td>
-        <td style="max-width:160px;color:rgba(255,255,255,0.7);font-size:13px;">${items}</td>
-        <td style="font-weight:700;color:#22c55e;">₹${o.total||0}</td>
-        <td><span class="pay-badge ${pc}">${o.payment||"Cash"}</span></td>
-        <td><span class="status-badge ${sc}">${status}</span></td>
-        <td>
-          <button class="btn-cook" onclick="updateStatus(${o.id},'Cooking')">🍳 Cooking</button>
-          <button class="btn-done" onclick="updateStatus(${o.id},'Delivered')">✅ Done</button>
-        </td>
-      </tr>`;
-    });
+
+  if(filtered.length === 0){
+    tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;padding:40px;color:rgba(255,255,255,0.3);">No orders in this category</td></tr>`;
+    return;
   }
-  document.getElementById("orders").innerHTML=html;
+
+  /* Build a map of existing rows by order ID */
+  const existingRows = {};
+  tbody.querySelectorAll("tr[data-id]").forEach(tr => {
+    existingRows[tr.dataset.id] = tr;
+  });
+
+  /* Build set of filtered IDs to keep */
+  const filteredIds = new Set(filtered.map(o => String(o.id)));
+
+  /* Remove rows that are no longer in filter */
+  Object.keys(existingRows).forEach(id => {
+    if(!filteredIds.has(id)){
+      existingRows[id].remove();
+      delete existingRows[id];
+    }
+  });
+
+  /* Update existing rows or insert new ones */
+  filtered.forEach((o, index) => {
+    const id = String(o.id);
+    if(existingRows[id]){
+      /* Row already exists — update its content in place, no animation reset */
+      existingRows[id].innerHTML = buildRowHTML(o);
+    } else {
+      /* New row — create and animate */
+      const tr = document.createElement("tr");
+      tr.dataset.id = id;
+      tr.innerHTML = buildRowHTML(o);
+      if(newOrderIds.has(o.id)){
+        tr.classList.add("new-row");
+      }
+      /* Insert at correct position */
+      const rows = tbody.querySelectorAll("tr[data-id]");
+      let inserted = false;
+      for(let i = 0; i < rows.length; i++){
+        if(Number(rows[i].dataset.id) < o.id){
+          tbody.insertBefore(tr, rows[i]);
+          inserted = true;
+          break;
+        }
+      }
+      if(!inserted) tbody.appendChild(tr);
+    }
+  });
 }
 
-function filterOrders(filter,btn){
-  currentFilter=filter;
-  document.querySelectorAll(".filter-btn").forEach(b=>b.classList.remove("active"));
+function filterOrders(filter, btn){
+  currentFilter = filter;
+  document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
   btn.classList.add("active");
-  renderTable(allOrders,filter);
+  renderTable(allOrders, filter);
 }
 
 function showPopup(){
-  const p=document.getElementById("popup");p.style.display="block";setTimeout(()=>p.style.display="none",2000);
+  const p = document.getElementById("popup");
+  p.style.display = "block";
+  setTimeout(()=>p.style.display="none", 2000);
 }
 
-function updateStatus(id,status){
-  fetch(BASE_URL+"/update-status",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({id,status})})
-  .then(()=>{loadOrders();showPopup();})
-  .catch(err=>console.log(err));
+function updateStatus(id, status){
+  fetch(BASE_URL + "/update-status", {
+    method: "POST",
+    headers: {"Content-Type":"application/json"},
+    body: JSON.stringify({id, status})
+  })
+  .then(() => { loadOrders(); showPopup(); })
+  .catch(err => console.log(err));
 }
 
-// Auto-refresh every 5s
-setInterval(loadOrders,5000);
+/* Auto-refresh every 5s */
+setInterval(loadOrders, 5000);
 
-// Initial load only if logged in
+/* Initial load only if logged in */
 if(isLoggedIn) loadOrders();
 </script>
 </body>
