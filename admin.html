@@ -7,7 +7,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;}
-html{scroll-behavior:smooth;}
+html{scroll-behavior:auto;}
 body{background:#020617;color:white;min-height:100vh;}
 
 /* FIX 1: canvas fixed + behind everything, no scroll issue */
@@ -396,7 +396,7 @@ function loadOrders(){
     document.getElementById("emptyState").style.display = "none";
     updateStats(data);
 
-    /* FIX 4: pass newOrderIds so only new rows get highlight animation */
+    /* FIX 4+5: pass newOrderIds, scroll position preserved inside renderTable */
     renderTable(data, currentFilter, newOrderIds);
 
     const pend = data.filter(o => !o.status || o.status === "Pending").length;
@@ -417,6 +417,10 @@ function updateStats(data){
   const revenue = data.reduce((s,o) => s + (parseInt(o.total) || 0), 0);
   document.getElementById("revenueCount").innerText = "₹" + revenue;
 }
+
+/* FIX 5: Save scroll position before any DOM change, restore after */
+function saveScroll(){ return window.scrollY; }
+function restoreScroll(y){ window.scrollTo({top: y, behavior: 'instant'}); }
 
 /* FIX 4: Smart table render — existing rows update in place, new rows get animation */
 function buildRowHTML(o){
@@ -445,6 +449,7 @@ function buildRowHTML(o){
 }
 
 function renderTable(data, filter, newOrderIds = new Set()){
+  const scrollY = saveScroll(); /* save before any DOM change */
   const tbody = document.getElementById("orders");
 
   const filtered = filter === "all" ? data : data.filter(o => {
@@ -501,6 +506,8 @@ function renderTable(data, filter, newOrderIds = new Set()){
       if(!inserted) tbody.appendChild(tr);
     }
   });
+
+  restoreScroll(scrollY); /* restore after all DOM changes done */
 }
 
 function filterOrders(filter, btn){
